@@ -322,6 +322,11 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .fac-dup-warn{background:#fff3cd;border:1.5px solid #f59e0b;border-radius:8px;
   padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:#856404;display:none}
 
+.btn-export{padding:7px 16px;background:#166534;color:#fff;border:none;
+  border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px}
+.btn-export:hover{background:#14532d}
+.export-progress{font-size:12px;color:#e8c46a;margin-left:12px;display:none}
 [hidden]{display:none!important}
 /* ── SOP Panel ─────────────────────────────── */
 .sop-panel{margin-top:18px;border:1.5px solid #c8d6ee;border-radius:10px;overflow:hidden}
@@ -349,6 +354,8 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .sop-scope{font-size:11.5px;color:#92400e;background:#fffbeb;border-left:3px solid #f59e0b;
   padding:6px 10px;border-radius:0 5px 5px 0;margin-top:6px;line-height:1.5}
 </style>
+<!-- SheetJS for Excel export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -416,8 +423,12 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
       <div class="adm-sep"></div>
       <span class="adm-title">Unified MIS — Admin Dashboard</span>
     </div>
-    <div style="display:flex;gap:12px;align-items:center">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <span style="font-size:11px;color:#7a8db5">All Departments</span>
+      <button type="button" class="btn-export" id="btn-export-xl" onclick="exportToExcel()">
+        📊 Export to Excel
+      </button>
+      <span class="export-progress" id="export-progress">⏳ Preparing…</span>
       <button type="button" class="btn btn-prev" id="btn-adm-out"
               style="font-size:12px;padding:6px 13px;margin:0">Logout</button>
     </div>
@@ -1976,6 +1987,209 @@ function collectFacultyData(secId){
   return window.FAC[secId]||[];
 }
 
+
+
+/* ════════════════════════════════════════════════════════════════
+   EXPORT TO EXCEL — Full Firebase data → XLSX
+   Uses SheetJS (already loaded from CDN)
+════════════════════════════════════════════════════════════════ */
+async function exportToExcel(){
+  const db=getDB();
+  const btn=document.getElementById('btn-export-xl');
+  const prog=document.getElementById('export-progress');
+  if(!db){alert('Firebase not connected. Check internet connection.');return;}
+
+  if(btn)btn.disabled=true;
+  if(prog){prog.style.display='inline';prog.textContent='⏳ Fetching data…';}
+
+  try{
+    const snap=await db.ref(ROOT).once('value');
+    if(!snap.exists()){
+      alert('No submissions found in the database yet.');
+      if(btn)btn.disabled=false;
+      if(prog)prog.style.display='none';
+      return;
+    }
+
+    if(prog)prog.textContent='⏳ Building workbook…';
+
+    const wb=XLSX.utils.book_new();
+    const allRows=[];     // for summary sheet
+    const deptMap={};     // dept name → array of flat rows
+
+    /* ── Walk the DB tree: ROOT/dept/year/period ── */
+    snap.forEach(function(deptSnap){
+      deptSnap.forEach(function(yearSnap){
+        yearSnap.forEach(function(periodSnap){
+          const v=periodSnap.val();
+          if(!v||!v.__name) return;
+
+          const deptName=v.__name||'Unknown';
+          const year=v.__year||'';
+          const period=v.__period||'';
+          const ts=v.__ts||'';
+          const type=v.__type||'';
+
+          if(!deptMap[deptName]) deptMap[deptName]=[];
+
+          /* Flatten table rows for each section */
+          const rows=v.rows||{};
+          const form=v.form||{};
+          const uploads=v.uploads||{};
+
+          /* Find dept config */
+          const deptCfg=DEPTS.find(function(d){return d.name===deptName;});
+
+          if(deptCfg){
+            deptCfg.sections.forEach(function(sec){
+              const secRows=rows[sec.id]||[];
+              const secForm=form[sec.id]||{};
+              const secUploads=uploads[sec.id]||[];
+
+              if(sec.mode==='table'&&secRows.length){
+                secRows.forEach(function(row){
+                  const flat={
+                    'Department':deptName,
+                    'Academic Year':year,
+                    'Period':period,
+                    'Submission Type':type,
+                    'Submitted At':ts,
+                    'Section':sec.title,
+                  };
+                  /* Add each column value */
+                  (sec.cols||[]).forEach(function(col){
+                    flat[col]=row[san(col)]||'';
+                  });
+                  /* Add uploaded file links */
+                  if(secUploads.length){
+                    flat['Evidence Files']=secUploads.map(function(f){return f.name+': '+f.url;}).join(' | ');
+                  }
+                  deptMap[deptName].push(flat);
+                  allRows.push(flat);
+                });
+              }else if(sec.mode==='faculty'){
+                /* Faculty master sheet rows */
+                secRows.forEach(function(fac){
+                  const flat={
+                    'Department':deptName,
+                    'Academic Year':year,
+                    'Period':period,
+                    'Section':sec.title,
+                    'Employee ID':fac.empId||'',
+                    'Name':fac.name||'',
+                    'Designation':fac.designation||'',
+                    'Employment Type':fac.empType||'',
+                    'Faculty/School':fac.school||'',
+                    'Department':fac.dept||'',
+                    'Date of Joining':fac.doj||'',
+                    'Email':fac.email||'',
+                    'PAN':fac.pan||'',
+                    'Highest Qualification':fac.highestQual||'',
+                    'PhD?':fac.hasPHD||'',
+                    'Specialisation':fac.specialization||'',
+                    'University':fac.univName||'',
+                    'Nature of Appointment':fac.appointType||'',
+                    'Date of Appointment':fac.dateAppt||'',
+                    'Total Experience':fac.totalExp||'',
+                    'Teaching Experience':fac.teachExp||'',
+                    'Industry Experience':fac.indExp||'',
+                    'PhD Verified':fac.phdVerified||'',
+                    'Appt Verified':fac.apptVerified||'',
+                    'Exp Verified':fac.expVerified||'',
+                    'Status':fac._status||'',
+                    'PhD Certificate':fac.phdCertUrl||'',
+                    'Appointment Letter':fac.apptLetterUrl||'',
+                    'Experience Certificate':fac.expCertUrl||'',
+                    'Submitted At':ts,
+                  };
+                  deptMap[deptName].push(flat);
+                  allRows.push(flat);
+                });
+              }else if(sec.mode==='form'||sec.mode==='fixed'){
+                if(Object.keys(secForm).length){
+                  const flat={
+                    'Department':deptName,
+                    'Academic Year':year,
+                    'Period':period,
+                    'Submission Type':type,
+                    'Submitted At':ts,
+                    'Section':sec.title,
+                  };
+                  Object.entries(secForm).forEach(function(kv){
+                    flat[kv[0]]=typeof kv[1]==='object'?JSON.stringify(kv[1]):kv[1];
+                  });
+                  if(secUploads&&secUploads.length){
+                    flat['Evidence Files']=secUploads.map(function(f){return f.name+': '+f.url;}).join(' | ');
+                  }
+                  deptMap[deptName].push(flat);
+                  allRows.push(flat);
+                }
+              }
+            });
+          }
+        });
+      });
+    });
+
+    /* ── SUMMARY SHEET ── */
+    const summaryData=[];
+    summaryData.push(['FLAME University — Unified MIS Export']);
+    summaryData.push(['Generated on',new Date().toLocaleString('en-IN')]);
+    summaryData.push(['Total Submissions',allRows.length]);
+    summaryData.push(['']);
+    summaryData.push(['#','Department','Sections Submitted','Last Submitted']);
+
+    const deptSummary={};
+    allRows.forEach(function(r){
+      const d=r['Department']||'Unknown';
+      if(!deptSummary[d]){deptSummary[d]={count:0,ts:''};}
+      deptSummary[d].count++;
+      if(r['Submitted At']) deptSummary[d].ts=r['Submitted At'];
+    });
+
+    let si=1;
+    Object.entries(deptSummary).sort(function(a,b){return a[0].localeCompare(b[0]);}).forEach(function(kv){
+      summaryData.push([si++,kv[0],kv[1].count,kv[1].ts]);
+    });
+
+    const wsSummary=XLSX.utils.aoa_to_sheet(summaryData);
+    wsSummary['!cols']=[{wch:4},{wch:40},{wch:20},{wch:25}];
+    XLSX.utils.book_append_sheet(wb,wsSummary,'Summary');
+
+    /* ── ALL DATA SHEET ── */
+    if(allRows.length){
+      const wsAll=XLSX.utils.json_to_sheet(allRows);
+      wsAll['!cols']=Object.keys(allRows[0]).map(function(){return{wch:22};});
+      XLSX.utils.book_append_sheet(wb,wsAll,'All Data');
+    }
+
+    /* ── ONE SHEET PER DEPARTMENT ── */
+    if(prog)prog.textContent='⏳ Writing department sheets…';
+    Object.entries(deptMap).sort(function(a,b){return a[0].localeCompare(b[0]);}).forEach(function(kv){
+      const dName=kv[0];
+      const dRows=kv[1];
+      if(!dRows.length) return;
+      /* Sheet name max 31 chars, no special chars */
+      const sheetName=dName.replace(/[:\\\/\?\*\[\]]/g,'').substring(0,31);
+      const ws=XLSX.utils.json_to_sheet(dRows);
+      ws['!cols']=Object.keys(dRows[0]).map(function(){return{wch:22};});
+      XLSX.utils.book_append_sheet(wb,ws,sheetName);
+    });
+
+    /* ── DOWNLOAD ── */
+    if(prog)prog.textContent='⏳ Downloading…';
+    const ay=$('af-yr')&&$('af-yr').value?$('af-yr').value:'All';
+    const filename='FLAME_MIS_Export_'+ay+'_'+new Date().toLocaleDateString('en-IN').replace(/\//g,'-')+'.xlsx';
+    XLSX.writeFile(wb,filename);
+
+    if(prog){prog.textContent='✅ Downloaded!';setTimeout(function(){prog.style.display='none';},3000);}
+
+  }catch(e){
+    alert('Export error: '+e.message);
+    if(prog)prog.style.display='none';
+  }
+  if(btn)btn.disabled=false;
+}
 
 window.addRow=addRow;
 window.delRow=delRow;
