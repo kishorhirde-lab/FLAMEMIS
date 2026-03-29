@@ -354,6 +354,33 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .sop-scope{font-size:11.5px;color:#92400e;background:#fffbeb;border-left:3px solid #f59e0b;
   padding:6px 10px;border-radius:0 5px 5px 0;margin-top:6px;line-height:1.5}
 
+
+/* ── REPORT TABS ─────────────────────────────────── */
+.an-bar-wrap{overflow-x:auto;margin-bottom:6px}
+.an-bar{display:flex;align-items:flex-end;gap:3px;height:160px;padding:0 4px}
+.an-bar-item{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:44px;cursor:default}
+.an-bar-fill{background:#c8922a;border-radius:3px 3px 0 0;width:28px;transition:.4s;min-height:4px}
+.an-bar-lbl{font-size:9.5px;color:#555;max-width:52px;text-align:center;word-break:break-word;line-height:1.2}
+.an-bar-val{font-size:10px;font-weight:700;color:#0d1f3c}
+.an-month-bar-fill{background:#1565c0;border-radius:3px 3px 0 0;width:28px;transition:.4s;min-height:4px}
+.cr-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.cr-tbl th{background:#0d1f3c;color:#e8c46a;padding:8px 10px;font-size:11px;font-weight:700;text-align:left;white-space:nowrap}
+.cr-tbl td{padding:7px 10px;border-bottom:1px solid #f0f0f0}
+.cr-tbl tr:hover td{background:#f8faff}
+.cr-dot-y{display:inline-block;width:10px;height:10px;border-radius:50%;background:#2e7d32}
+.cr-dot-n{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e0e0e0;border:1px solid #ccc}
+.cr-dot-p{display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b}
+.accrep-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.accrep-tbl th{background:#e8f0fe;color:#1a3a6b;padding:7px 10px;font-size:11px;font-weight:700;text-align:left}
+.accrep-tbl td{padding:6px 10px;border-bottom:1px solid #f0f0f0}
+.accrep-tbl tr:hover td{background:#f8faff}
+.cr-missing-chip{display:inline-flex;align-items:center;background:#fff3cd;color:#856404;border:1px solid #fcd34d;border-radius:12px;padding:3px 10px;font-size:11.5px;margin:3px;font-weight:600}
+@media print{
+  .adm-bar,.adm-tab-bar,.acc-save-bar{display:none!important}
+  .adm-tab-content{display:block!important}
+  #adm-tab-analytics,#adm-tab-comprep{display:none!important}
+  #adm-tab-accrep{display:block!important}
+}
 /* ── ADMIN TABS ──────────────────────────────── */
 .adm-tab-bar{background:#fff;border-bottom:2px solid #e2e8f0;padding:0 16px;
   display:flex;gap:0;flex-shrink:0;overflow-x:auto;box-shadow:0 2px 6px rgba(0,0,0,.06)}
@@ -551,6 +578,9 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
     <div class="adm-tab" onclick="switchAdmTab('qs',this)">🌐 QS I-GAUGE</div>
     <div class="adm-tab" onclick="switchAdmTab('nirf',this)">📊 NIRF</div>
     <div class="adm-tab" onclick="switchAdmTab('aishe',this)">📁 AISHE</div>
+    <div class="adm-tab" onclick="switchAdmTab('analytics',this)">📈 Analytics</div>
+    <div class="adm-tab" onclick="switchAdmTab('accrep',this)">📄 Accreditation Report</div>
+    <div class="adm-tab" onclick="switchAdmTab('comprep',this)">📑 Compliance Report</div>
   </div>
 
   <!-- ═══ TAB: DEPARTMENT REPORTS (original) ═══ -->
@@ -672,6 +702,113 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
       <button class="acc-btn acc-btn-gold" onclick="accSaveAll()">💾 Save to Firebase</button>
       <button class="acc-btn acc-btn-white" onclick="accAisheExport()">📤 Export AISHE Data</button>
       <span class="acc-save-msg">Last saved: —</span>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: ANALYTICS ═══ -->
+  <div class="adm-tab-content" id="adm-tab-analytics">
+    <div class="acc-body">
+      <div class="acc-card">
+        <div class="acc-card-title">📈 Submission Analytics — All Departments</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+          <select class="afi-sel" id="an-yr" style="width:140px" onchange="buildAnalytics()">
+            <option value="">All Years</option>
+          </select>
+          <select class="afi-sel" id="an-type" style="width:140px" onchange="buildAnalytics()">
+            <option value="">All Types</option>
+            <option value="monthly">Monthly</option>
+            <option value="annual">Annual</option>
+          </select>
+          <button class="acc-btn acc-btn-gold" onclick="buildAnalytics()">🔄 Refresh</button>
+        </div>
+        <div class="acc-summary-grid" id="an-stats"></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-card-title">📊 Department-wise Submission Count</div>
+        <div id="an-dept-chart" style="overflow-x:auto"></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-card-title">📅 Monthly Submission Trend (Current AY)</div>
+        <div id="an-month-chart" style="overflow-x:auto"></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-card-title">🗂️ Submission Log</div>
+        <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+          <input id="an-search" class="afi-inp" placeholder="Search dept, period…" style="width:220px" oninput="anFilterTable()">
+        </div>
+        <div style="overflow-x:auto"><table class="afi-tbl" id="an-log-tbl">
+          <thead><tr><th>#</th><th>Department</th><th>Type</th><th>Year</th><th>Period</th><th>Submitted</th></tr></thead>
+          <tbody id="an-log-body"></tbody>
+        </table></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: ACCREDITATION REPORT ═══ -->
+  <div class="adm-tab-content" id="adm-tab-accrep">
+    <div class="acc-body">
+      <div class="acc-card" style="display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap">
+        <div class="acc-card-title" style="border:none;padding:0;margin:0">📄 Consolidated Accreditation Report</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="acc-btn acc-btn-gold" onclick="window.print()">🖨️ Print / PDF</button>
+          <button class="acc-btn acc-btn-white" onclick="exportAccReport()">📤 Export (.txt)</button>
+        </div>
+      </div>
+      <!-- NAAC Summary -->
+      <div class="acc-card" id="accrep-naac">
+        <div class="acc-card-title">📋 NAAC SSR — Metric Status Summary</div>
+        <div id="accrep-naac-body"></div>
+      </div>
+      <!-- ISO Summary -->
+      <div class="acc-card" id="accrep-iso">
+        <div class="acc-card-title">🏅 ISO 41001:2018 — Clause Status</div>
+        <div id="accrep-iso-body"></div>
+      </div>
+      <!-- NIRF Summary -->
+      <div class="acc-card" id="accrep-nirf">
+        <div class="acc-card-title">📊 NIRF — Data Entry Status</div>
+        <div id="accrep-nirf-body"></div>
+      </div>
+      <!-- QS Summary -->
+      <div class="acc-card" id="accrep-qs">
+        <div class="acc-card-title">🌐 QS I-GAUGE — Pillar Readiness</div>
+        <div id="accrep-qs-body"></div>
+      </div>
+      <!-- AISHE Summary -->
+      <div class="acc-card" id="accrep-aishe">
+        <div class="acc-card-title">📁 AISHE — Data Completion</div>
+        <div id="accrep-aishe-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: COMPLIANCE REPORT ═══ -->
+  <div class="adm-tab-content" id="adm-tab-comprep">
+    <div class="acc-body">
+      <div class="acc-card">
+        <div class="acc-card-title">📑 Department-wise Compliance Status</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+          <select class="afi-sel" id="cr-yr" style="width:140px" onchange="buildComplianceReport()">
+            <option value="">All Years</option>
+          </select>
+          <select class="afi-sel" id="cr-type" style="width:140px" onchange="buildComplianceReport()">
+            <option value="">All Types</option>
+            <option value="monthly">Monthly</option>
+            <option value="annual">Annual</option>
+          </select>
+          <button class="acc-btn acc-btn-gold" onclick="buildComplianceReport()">🔄 Refresh</button>
+          <button class="acc-btn acc-btn-white" onclick="exportComplianceReport()">📤 Export Excel</button>
+        </div>
+        <div class="acc-summary-grid" id="cr-stats"></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-card-title">🗂️ Department Submission Matrix</div>
+        <div style="overflow-x:auto" id="cr-matrix"></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-card-title">⚠️ Departments with No Submissions</div>
+        <div id="cr-missing"></div>
+      </div>
     </div>
   </div>
 
@@ -2439,6 +2576,9 @@ function switchAdmTab(id, el){
   if(id==='qs'&&!window._qsBuilt){buildQS();window._qsBuilt=true;}
   if(id==='nirf'&&!window._nirfBuilt){buildNIRF();window._nirfBuilt=true;}
   if(id==='aishe'&&!window._aisheBuilt){buildAISHE();window._aisheBuilt=true;}
+  if(id==='analytics'){buildAnalytics();}
+  if(id==='accrep'){buildAccReport();}
+  if(id==='comprep'){buildComplianceReport();}
 }
 
 // ── State ──────────────────────────────────────────────────
@@ -2751,6 +2891,265 @@ function accAisheExport(){
   if(typeof XLSX!=='undefined'){const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'AISHE Data');XLSX.writeFile(wb,'FLAME_AISHE_'+new Date().toISOString().split('T')[0]+'.xlsx');}
   else{alert('Export not available.');}
 }
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   REPORT TABS — Analytics / Accreditation Report / Compliance
+══════════════════════════════════════════════════════════════ */
+
+// ── Shared helper: get all submission rows from Firebase cache ──
+function getAdminRows(){ return window._arows || []; }
+
+// ── Populate year selectors in report tabs ──────────────────────
+function populateReportSelectors(){
+  const rows = getAdminRows();
+  const years = [...new Set(rows.map(r=>r.year))].sort();
+  ['an-yr','cr-yr'].forEach(id=>{
+    const el=document.getElementById(id); if(!el)return;
+    const cur=el.value;
+    el.innerHTML='<option value="">All Years</option>'+years.map(y=>`<option ${y===cur?'selected':''}>${y}</option>`).join('');
+  });
+}
+
+// ══ ANALYTICS TAB ══════════════════════════════════════════════
+function buildAnalytics(){
+  populateReportSelectors();
+  let rows = getAdminRows();
+  const yr = (document.getElementById('an-yr')||{}).value||'';
+  const tp = (document.getElementById('an-type')||{}).value||'';
+  if(yr) rows = rows.filter(r=>r.year===yr);
+  if(tp) rows = rows.filter(r=>r.type===tp);
+
+  // Stats
+  const depts=[...new Set(rows.map(r=>r.dept))].sort();
+  const mon=rows.filter(r=>r.type==='monthly').length;
+  const ann=rows.filter(r=>r.type==='annual').length;
+  const anSt=document.getElementById('an-stats');
+  if(anSt) anSt.innerHTML=[
+    {n:rows.length,l:'Total Submissions',c:''},
+    {n:depts.length,l:'Active Departments',c:'color:#2e7d32'},
+    {n:mon,l:'Monthly Submissions',c:'color:#1565c0'},
+    {n:ann,l:'Annual Submissions',c:'color:#c8922a'},
+    {n:DEPTS.length,l:'Total Departments',c:''},
+    {n:DEPTS.length-depts.length,l:'No Submissions Yet',c:'color:#c62828'}
+  ].map(s=>`<div class="acc-stat-card"><div class="acc-stat-num" style="${s.c}">${s.n}</div><div class="acc-stat-lbl">${s.l}</div></div>`).join('');
+
+  // Dept bar chart
+  const deptCount={};
+  rows.forEach(r=>{deptCount[r.dept]=(deptCount[r.dept]||0)+1;});
+  const maxD=Math.max(...Object.values(deptCount),1);
+  const deptChartEl=document.getElementById('an-dept-chart');
+  if(deptChartEl){
+    const sorted=Object.entries(deptCount).sort((a,b)=>b[1]-a[1]);
+    const bars=sorted.map(([d,v])=>{
+      const h=Math.round((v/maxD)*120);
+      return `<div class="an-bar-item"><div class="an-bar-val">${v}</div><div class="an-bar-fill" style="height:${h}px" title="${d}: ${v} submissions"></div><div class="an-bar-lbl">${d.substring(0,14)}</div></div>`;
+    }).join('');
+    deptChartEl.innerHTML=`<div class="an-bar-wrap"><div class="an-bar">${bars}</div></div>`;
+  }
+
+  // Monthly trend
+  const monthCount={};
+  const MONTH_ORDER=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  MONTH_ORDER.forEach(m=>monthCount[m]=0);
+  rows.filter(r=>r.type==='monthly').forEach(r=>{if(monthCount[r.period]!==undefined)monthCount[r.period]++;});
+  const maxM=Math.max(...Object.values(monthCount),1);
+  const monthEl=document.getElementById('an-month-chart');
+  if(monthEl){
+    const bars=MONTH_ORDER.map(m=>{
+      const v=monthCount[m];const h=Math.round((v/maxM)*120);
+      return `<div class="an-bar-item"><div class="an-bar-val">${v}</div><div class="an-month-bar-fill" style="height:${h}px" title="${m}: ${v} submissions"></div><div class="an-bar-lbl">${m}</div></div>`;
+    }).join('');
+    monthEl.innerHTML=`<div class="an-bar-wrap"><div class="an-bar">${bars}</div></div>`;
+  }
+
+  // Log table
+  anBuildLog(rows);
+}
+
+function anBuildLog(rows){
+  const tbody=document.getElementById('an-log-body'); if(!tbody)return;
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" style="color:#9ca3af;padding:12px">No records found.</td></tr>';return;}
+  tbody.innerHTML=rows.map((r,i)=>`<tr>
+    <td>${i+1}</td><td><strong>${esc(r.dept)}</strong></td>
+    <td><span class="badge ${r.type==='monthly'?'b-monthly':'b-annual'}">${r.type}</span></td>
+    <td>${esc(r.year)}</td><td>${esc(r.period)}</td>
+    <td style="font-size:11px;color:#6b7a99">${esc(r.ts)}</td>
+  </tr>`).join('');
+}
+window._anRows=[];
+function anFilterTable(){
+  const q=(document.getElementById('an-search')||{}).value?.toLowerCase()||'';
+  const rows=(window._anRows||getAdminRows()).filter(r=>(r.dept+r.period+r.year+r.type).toLowerCase().includes(q));
+  anBuildLog(rows);
+}
+
+
+// ══ ACCREDITATION REPORT TAB ════════════════════════════════════
+function buildAccReport(){
+  // ── NAAC ──
+  const naacEl=document.getElementById('accrep-naac-body');
+  if(naacEl){
+    let rows='';
+    let tot=0,comp=0,ip=0,dvv=0,ns_=0;
+    NAAC_CRITERIA.forEach(c=>{
+      c.kis.forEach(ki=>{
+        ki.metrics.forEach(m=>{
+          tot++;
+          const s=(accState.naac[m.num]||{}).status||'ns';
+          if(s==='comp')comp++;else if(s==='ip')ip++;else if(s==='dvv')dvv++;else ns_++;
+          const sLbl={ns:'<span style="color:#9e9e9e">Not Started</span>',ip:'<span style="color:#1565c0;font-weight:600">In Progress</span>',comp:'<span style="color:#2e7d32;font-weight:600">✅ Complete</span>',dvv:'<span style="color:#7b1fa2;font-weight:600">🔵 DVV Ready</span>'};
+          const notes=(accState.naac[m.num]||{}).notes||'—';
+          rows+=`<tr><td style="font-weight:700;color:#c8922a;white-space:nowrap">${m.num}</td><td>${esc(m.desc.substring(0,80))}${m.desc.length>80?'…':''}</td><td>C${c.num}</td><td>${sLbl[s]}</td><td style="font-size:11px;color:#6b7a99">${esc(notes)}</td></tr>`;
+        });
+      });
+    });
+    const pct=tot?Math.round((comp+dvv)/tot*100):0;
+    naacEl.innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      ${[{v:tot,l:'Total',c:''},{v:comp,l:'Complete',c:'#2e7d32'},{v:ip,l:'In Progress',c:'#1565c0'},{v:dvv,l:'DVV Ready',c:'#7b1fa2'},{v:ns_,l:'Not Started',c:'#9e9e9e'},{v:pct+'%',l:'Progress',c:'#c8922a'}]
+        .map(s=>`<div style="background:#f8f9fa;border:1px solid #e2e8f0;border-radius:6px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:800;color:${s.c||'#0d1f3c'}">${s.v}</div><div style="font-size:10px;color:#6b7a99">${s.l}</div></div>`).join('')}
+      </div>
+      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Metric</th><th>Description</th><th>Criterion</th><th>Status</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  // ── ISO ──
+  const isoEl=document.getElementById('accrep-iso-body');
+  if(isoEl){
+    let rows='';let ok=0,obs=0,nc=0;
+    ISO_CLAUSES_DATA.forEach(cl=>{
+      cl.subs.forEach(s=>{
+        const f=accState.iso[s.num]||s.def;
+        if(f==='ok')ok++;else if(f==='obs')obs++;else nc++;
+        const fLbl={ok:'<span style="color:#2e7d32;font-weight:600">✅ Compliant</span>',obs:'<span style="color:#e65100;font-weight:600">⚠️ Observation</span>',nc:'<span style="color:#c62828;font-weight:600">❌ Non-Conformity</span>'};
+        rows+=`<tr><td style="font-weight:700;color:#555">${s.num}</td><td>${esc(s.name)}</td><td>Clause ${cl.num}: ${esc(cl.name)}</td><td>${fLbl[f]}</td></tr>`;
+      });
+    });
+    isoEl.innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      ${[{v:ok,l:'Compliant',c:'#2e7d32'},{v:obs,l:'Observations',c:'#e65100'},{v:nc,l:'Non-Conformities',c:'#c62828'}]
+        .map(s=>`<div style="background:#f8f9fa;border:1px solid #e2e8f0;border-radius:6px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:800;color:${s.c}">${s.v}</div><div style="font-size:10px;color:#6b7a99">${s.l}</div></div>`).join('')}
+      </div>
+      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Clause</th><th>Sub-clause Name</th><th>Section</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  // ── NIRF ──
+  const nirfEl=document.getElementById('accrep-nirf-body');
+  if(nirfEl){
+    let rows='';let filled=0,tot=0;
+    NIRF_PARAMS_DATA.forEach(p=>{
+      p.metrics.forEach(m=>{
+        tot++;
+        const v=(accState.nirf||{})[m.key]||'';
+        if(v)filled++;
+        rows+=`<tr><td style="color:#555;font-weight:600">${esc(p.name)}</td><td>${esc(m.name)}</td><td style="font-weight:700;color:${v?'#2e7d32':'#9e9e9e'}">${v||'—'}</td><td style="font-size:11px;color:#6b7a99">${m.unit||'—'}</td></tr>`;
+      });
+    });
+    nirfEl.innerHTML=`<div style="margin-bottom:12px;font-size:13px"><strong>${filled}/${tot}</strong> data points entered &nbsp;·&nbsp; <span style="color:${filled===tot?'#2e7d32':'#e65100'}">${Math.round(filled/tot*100)}% complete</span></div>
+      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Parameter</th><th>Metric</th><th>Value</th><th>Unit</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  // ── QS ──
+  const qsEl=document.getElementById('accrep-qs-body');
+  if(qsEl){
+    const rows=QS_PILLARS_DATA.map((p,i)=>`<tr><td style="font-weight:700;color:${p.color}">${esc(p.name)}</td><td>${esc(p.weight)}</td><td>${p.indicators.length}</td><td><span style="color:#9e9e9e">Pending</span></td></tr>`).join('');
+    qsEl.innerHTML=`<div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Pillar</th><th>Weight</th><th>Indicators</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  // ── AISHE ──
+  const aisheEl=document.getElementById('accrep-aishe-body');
+  if(aisheEl){
+    let filled=0,tot=0;
+    const rows=AISHE_SECTIONS_DATA.map(sec=>{
+      const fieldRows=sec.fields.map(f=>{tot++;const v=(accState.aishe||{})[f.key]||'';if(v)filled++;return `<tr><td style="color:#555;padding-left:20px">${esc(sec.title)}</td><td>${esc(f.label)}</td><td style="font-weight:700;color:${v?'#2e7d32':'#9e9e9e'}">${esc(v)||'—'}</td></tr>`;}).join('');
+      return fieldRows;
+    }).join('');
+    aisheEl.innerHTML=`<div style="margin-bottom:12px;font-size:13px"><strong>${filled}/${tot}</strong> fields completed &nbsp;·&nbsp; <span style="color:${filled===tot?'#2e7d32':'#e65100'}">${Math.round(filled/tot*100)}% complete</span></div>
+      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Section</th><th>Field</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+}
+
+function exportAccReport(){
+  const lines=['FLAME University — Consolidated Accreditation Report','Generated: '+new Date().toLocaleString('en-IN'),'='.repeat(60),''];
+  // NAAC
+  lines.push('NAAC SSR METRIC STATUS','─'.repeat(40));
+  NAAC_CRITERIA.forEach(c=>{lines.push(`\nCriterion ${c.num}: ${c.name} (${c.weight} marks)`);c.kis.forEach(ki=>{lines.push(`  KI ${ki.num}: ${ki.name}`);ki.metrics.forEach(m=>{const s=(accState.naac[m.num]||{}).status||'ns';const sl={ns:'Not Started',ip:'In Progress',comp:'Complete',dvv:'DVV Ready'};lines.push(`    ${m.num} [${sl[s]}] ${m.desc.substring(0,70)}`);});});});
+  lines.push('','ISO 41001:2018 CLAUSE STATUS','─'.repeat(40));
+  ISO_CLAUSES_DATA.forEach(cl=>{cl.subs.forEach(s=>{const f=accState.iso[s.num]||s.def;const fl={ok:'Compliant',obs:'Observation',nc:'Non-Conformity'};lines.push(`  ${s.num} [${fl[f]}] ${s.name}`);});});
+  const blob=new Blob([lines.join('\n')],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='FLAME_Accreditation_Report_'+new Date().toISOString().split('T')[0]+'.txt';a.click();
+}
+
+
+// ══ COMPLIANCE REPORT TAB ════════════════════════════════════════
+function buildComplianceReport(){
+  populateReportSelectors();
+  let rows = getAdminRows();
+  const yr=(document.getElementById('cr-yr')||{}).value||'';
+  const tp=(document.getElementById('cr-type')||{}).value||'';
+  if(yr) rows=rows.filter(r=>r.year===yr);
+  if(tp) rows=rows.filter(r=>r.type===tp);
+  window._crRows=rows;
+
+  // Stats
+  const subDepts=[...new Set(rows.map(r=>r.dept))];
+  const totalDepts=DEPTS.length;
+  const pct=Math.round(subDepts.length/totalDepts*100);
+  const crSt=document.getElementById('cr-stats');
+  if(crSt) crSt.innerHTML=[
+    {n:totalDepts,l:'Total Departments',c:''},
+    {n:subDepts.length,l:'Submitted',c:'color:#2e7d32'},
+    {n:totalDepts-subDepts.length,l:'Not Submitted',c:'color:#c62828'},
+    {n:rows.filter(r=>r.type==='monthly').length,l:'Monthly Entries',c:'color:#1565c0'},
+    {n:rows.filter(r=>r.type==='annual').length,l:'Annual Entries',c:'color:#c8922a'},
+    {n:pct+'%',l:'Coverage Rate',c:'color:'+(pct>=80?'#2e7d32':pct>=50?'#e65100':'#c62828')}
+  ].map(s=>`<div class="acc-stat-card"><div class="acc-stat-num" style="${s.c}">${s.n}</div><div class="acc-stat-lbl">${s.l}</div></div>`).join('');
+
+  // Matrix: depts × months (for monthly) or depts × years (for annual)
+  const matEl=document.getElementById('cr-matrix'); if(!matEl)return;
+  const MONTH_ORDER=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  // Group by dept
+  const deptSubs={};
+  rows.forEach(r=>{if(!deptSubs[r.dept])deptSubs[r.dept]=[];deptSubs[r.dept].push(r);});
+  // All periods
+  const periods=tp==='annual'?[...new Set(rows.map(r=>r.year))].sort():MONTH_ORDER;
+  const thead='<tr><th style="min-width:160px">Department</th><th>Type</th>'+periods.map(p=>`<th style="text-align:center;min-width:40px">${p}</th>`).join('')+'<th>Total</th></tr>';
+  const tbody=DEPTS.map(d=>{
+    const subs=deptSubs[d.name]||[];
+    const cells=periods.map(p=>{
+      const match=subs.find(s=>(tp==='annual'?s.year:s.period)===p);
+      return `<td style="text-align:center">${match?`<span class="cr-dot-y" title="${match.ts}"></span>`:'<span class="cr-dot-n"></span>'}</td>`;
+    }).join('');
+    const total=subs.length;
+    return `<tr><td><strong>${esc(d.name)}</strong></td><td><span class="badge ${d.type==='monthly'?'b-monthly':'b-annual'}">${d.type}</span></td>${cells}<td style="font-weight:700;color:${total>0?'#2e7d32':'#c62828'}">${total}</td></tr>`;
+  }).join('');
+  matEl.innerHTML=`<table class="cr-tbl"><thead>${thead}</thead><tbody>${tbody}</tbody></table>`;
+
+  // Missing
+  const missing=DEPTS.filter(d=>!subDepts.includes(d.name));
+  const missEl=document.getElementById('cr-missing');
+  if(missEl) missEl.innerHTML=missing.length?missing.map(d=>`<span class="cr-missing-chip">⚠ ${esc(d.name)}</span>`).join(''):'<span style="color:#2e7d32;font-weight:600">✅ All departments have submitted.</span>';
+}
+
+function exportComplianceReport(){
+  const rows=window._crRows||getAdminRows();
+  if(typeof XLSX==='undefined'){alert('Excel export unavailable.');return;}
+  const data=DEPTS.map(d=>{
+    const subs=(rows||[]).filter(r=>r.dept===d.name);
+    const obj={Department:d.name,Type:d.type,TotalSubmissions:subs.length};
+    const MONTH_ORDER=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+    MONTH_ORDER.forEach(m=>{obj[m]=subs.find(s=>s.period===m)?'✅':'—';});
+    return obj;
+  });
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data),'Compliance Report');
+  XLSX.writeFile(wb,'FLAME_Compliance_Report_'+new Date().toISOString().split('T')[0]+'.xlsx');
+}
+
+// Trigger report tab data when admin data is available
+const _origRenderATable=window.renderATable;
+window.renderATable=function(rows){
+  if(typeof _origRenderATable==='function')_origRenderATable(rows);
+  window._anRows=rows;
+};
 
 // Load accreditation data when admin logs in
 const _origRenderAdmin=window.renderAdmin;
