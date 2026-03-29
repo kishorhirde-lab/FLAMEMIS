@@ -446,6 +446,27 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .naac-avoid-box{background:#fff3cd;border-left:3px solid #f59e0b;padding:6px 10px;border-radius:0 5px 5px 0;font-size:11px;color:#5d4037;margin-top:6px}
 .naac-sel{border:1px solid #ccc;border-radius:5px;padding:4px 8px;font-size:12px;background:#fff}
 .naac-notes-ta{width:100%;border:1px solid #ccc;border-radius:4px;padding:5px 8px;font-size:11.5px;resize:vertical;min-height:44px}
+/* Live dept data chip & box */
+.naac-live-chip{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;white-space:nowrap;cursor:default}
+.naac-live-chip.zero{background:#fafafa;color:#bbb;border-color:#ddd}
+.naac-live-box{background:#f0fdf4;border:1px solid #bbdefb;border-radius:6px;padding:8px 11px;margin-top:8px}
+.naac-live-box .naac-det-lbl{color:#1565c0}
+.naac-live-box .naac-det-lbl::before{background:#1565c0}
+.naac-live-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.naac-live-src{font-size:11px;color:#1565c0;background:#e3f2fd;padding:2px 8px;border-radius:10px;font-weight:600}
+.naac-live-val{font-size:16px;font-weight:800;color:#0d1f3c}
+.naac-live-zero{font-size:11px;color:#9e9e9e;font-style:italic;margin-top:4px}
+.nirf-live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.nirf-live-card{background:#e3f2fd;border:1px solid #90caf9;border-radius:8px;padding:10px 14px}
+.nirf-live-card .nlc-lbl{font-size:10px;font-weight:700;color:#1565c0;text-transform:uppercase;letter-spacing:.5px}
+.nirf-live-card .nlc-val{font-size:22px;font-weight:800;color:#0d1f3c;margin:2px 0}
+.nirf-live-card .nlc-src{font-size:10px;color:#666}
+.aishe-live-panel{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 18px;margin-bottom:16px}
+.aishe-live-panel h4{margin:0 0 10px;color:#c8922a;font-size:13px}
+.aishe-live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.aishe-live-stat{background:#fff;border:1px solid #ffe082;border-radius:6px;padding:8px 12px;text-align:center}
+.aishe-live-stat .als-val{font-size:20px;font-weight:800;color:#0d1f3c}
+.aishe-live-stat .als-lbl{font-size:10px;color:#888;margin-top:2px}
 /* ISO */
 .iso-clause{border:1px solid #e2e8f0;border-radius:7px;margin-bottom:9px}
 .iso-clause-hdr{padding:10px 14px;background:#f8f9fa;cursor:pointer;display:flex;align-items:center;gap:10px;border-radius:7px}
@@ -2881,13 +2902,32 @@ function buildNAAC(){
         const st=accState.naac[m.num]||{status:'ns',docs:{},notes:''};
         const sLbl={ns:'Not Started',ip:'In Progress',comp:'Complete',dvv:'DVV Ready'};
         const docsHtml=m.docs.map((d,i)=>`<li><input type="checkbox" ${st.docs&&st.docs[i]?'checked':''} onchange="naacToggleDoc('${m.num}',${i},this.checked)"><label>${d}</label></li>`).join('');
+        /* Live dept data for this metric */
+        const ld=_liveVal(m.num);
+        const ldValStr=ld?String(ld.v):'';
+        const ldIsZero=ld&&(ldValStr==='0'||ldValStr===''||ldValStr==='—');
+        const ldChip=ld
+          ?`<span class="naac-live-chip${ldIsZero?' zero':''}" title="Source: ${ld.src} | ${ld.lbl}">📊 ${ldValStr||'0'}</span>`
+          :'';
+        const ldBox=ld?`<div class="naac-live-box">
+          <div class="naac-det-lbl">📊 Live Data from Departments</div>
+          <div class="naac-live-row">
+            <span class="naac-live-src">${ld.src}</span>
+            <span class="naac-live-val">${ldValStr||'—'}</span>
+          </div>
+          <div style="font-size:11px;color:#555;margin-top:3px">${ld.lbl}</div>
+          ${ldIsZero?'<div class="naac-live-zero">No data submitted yet from this department</div>':''}
+        </div>`:'';
         return `<div class="naac-metric"><div class="naac-metric-top" onclick="naacToggleDetail('${m.num.replace(/\./g,'_')}')">
           <span class="naac-metric-num">${m.num}</span>
           <span class="naac-metric-desc">${m.desc}</span>
+          ${ldChip}
           <span class="naac-status-badge naac-st-${st.status}" onclick="event.stopPropagation();naacCycleStatus('${m.num}')">${sLbl[st.status]}</span>
         </div><div class="naac-metric-detail" id="nmd_${m.num.replace(/\./g,'_')}">
           <div class="naac-det-grid">
-            <div class="naac-det-sec"><div class="naac-det-lbl">Documents Required</div><ul class="naac-doc-list">${docsHtml}</ul></div>
+            <div class="naac-det-sec"><div class="naac-det-lbl">Documents Required</div><ul class="naac-doc-list">${docsHtml}</ul>
+              ${ldBox}
+            </div>
             <div class="naac-det-sec">
               ${m.sop?`<div class="naac-det-lbl">SOP Instructions</div><div class="naac-det-text">${m.sop}</div>`:''}
               ${m.avoid?`<div class="naac-avoid-box"><strong>⚠ Avoid:</strong> ${m.avoid}</div>`:''}
@@ -2977,16 +3017,141 @@ function buildQS(){
 
 // ═══ NIRF BUILDER ═════════════════════════════════════
 function buildNIRF(){
-  document.getElementById('nirf-params-container').innerHTML=NIRF_PARAMS_DATA.map(p=>{
-    const rows=p.metrics.map(m=>`<div class="rank-metric-row"><span class="rank-metric-name">${m.name}</span><span style="font-size:11px;color:#888;min-width:60px">${m.unit}</span><input class="rank-inp" type="number" placeholder="Value" value="${(accState.nirf||{})[m.key]||''}" onchange="if(!accState.nirf)accState.nirf={};accState.nirf['${m.key}']=this.value"><select class="afi-sel" style="width:90px"><option>Pending</option><option>Draft</option><option>Final</option></select></div>`).join('');
+  /* ── Live dept data for NIRF parameters ── */
+  const fs  = _facStats();
+  const sc  = _stuCount();
+  const fsr = sc && fs.fullTime ? +(sc/fs.fullTime).toFixed(1) : 0;
+  const phdPct = fs.fullTime ? Math.round(fs.phd/fs.fullTime*100) : 0;
+  const ps  = _placementStats();
+  const higherEd = _cnt('HECS','s1') + _cnt('Student Affairs (Academic)','s1');
+  const pubs = _cnt('R&D Cell','s7');
+  const patents = _cnt('R&D Cell','s6') + _cnt('IPR Cell','s1');
+  const phdsAwd = _cnt('Doctoral Programs Office','s1');
+  const extFund = _cnt('R&D Cell','s3');
+  const mous    = _cnt('R&D Cell','s10') + _cnt('International Relations Office','s1');
+  const schol   = _cnt('Admissions & Financial Aid','s1');
+  const fin     = _secForm('Finance & Accounts','s1') || {};
+
+  const nirfLive = {
+    /* TLR */
+    tlr_ss:   {v: fsr+':1',     src:'HR + Registrar',  lbl:'Student-Teacher Ratio (FSR)'},
+    tlr_fqe:  {v: fs.phd+' ('+phdPct+'%)', src:'HR Office', lbl:'Faculty with PhD'},
+    tlr_fqe2: {v: fs.avgExp+' yrs', src:'HR Office',   lbl:'Avg teaching experience'},
+    tlr_fq:   {v: fs.withFDP,   src:'HR Office',       lbl:'Faculty attended FDP (last 24 mo)'},
+    tlr_stu:  {v: sc,           src:'Registrar',       lbl:'Total enrolled students'},
+    /* RPC */
+    rpc_pub:  {v: pubs,         src:'R&D Cell',        lbl:'Research publications'},
+    rpc_pat:  {v: patents,      src:'R&D Cell + IPR',  lbl:'Patents filed/awarded'},
+    rpc_phd:  {v: phdsAwd,      src:'Doctoral Programs',lbl:'PhDs awarded'},
+    rpc_proj: {v: extFund,      src:'R&D Cell',        lbl:'External funded projects'},
+    rpc_amt:  {v: fin.i_research||'—', src:'Finance',  lbl:'Research income (₹ Lakhs)'},
+    /* GO */
+    go_place: {v: ps.placed,    src:'Career Services', lbl:'Students placed'},
+    go_pkg:   {v: ps.avgPkg ? '₹'+ps.avgPkg+' LPA' : '—', src:'Career Services', lbl:'Avg package'},
+    go_he:    {v: higherEd,     src:'HECS + SAA',      lbl:'Progressed to higher education'},
+    go_ph:    {v: phdsAwd,      src:'Doctoral Programs',lbl:'PhD graduates'},
+    /* OI */
+    oi_schol: {v: schol,        src:'Admissions & FA', lbl:'Scholarship beneficiaries'},
+    oi_mou:   {v: mous,         src:'R&D + IRO',       lbl:'MoUs / collaborations'},
+    oi_stu:   {v: sc,           src:'Registrar',       lbl:'Total enrollment'},
+    oi_fin:   {v: fin.i_tuition||'—', src:'Finance',   lbl:'Fee income (₹ Lakhs)'},
+  };
+
+  /* Live panel at top of NIRF tab */
+  const livePanelMetrics = [
+    {key:'tlr_ss',  label:'Student : Teacher Ratio'},
+    {key:'tlr_fqe', label:'PhD Faculty'},
+    {key:'rpc_pub', label:'Publications'},
+    {key:'rpc_pat', label:'Patents'},
+    {key:'rpc_phd', label:'PhDs Awarded'},
+    {key:'go_place',label:'Placements'},
+    {key:'go_pkg',  label:'Avg Package'},
+    {key:'go_he',   label:'Higher Ed Progressions'},
+    {key:'oi_schol',label:'Scholarships'},
+    {key:'oi_mou',  label:'MoUs / Collaborations'},
+  ];
+  const livePanel = `<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:14px 18px;margin-bottom:16px">
+    <div style="font-weight:700;color:#2e7d32;font-size:12px;margin-bottom:10px">📊 Live Data from Departments (auto-computed)</div>
+    <div class="nirf-live-grid">${livePanelMetrics.map(lm=>{
+      const d=nirfLive[lm.key];
+      return `<div class="nirf-live-card">
+        <div class="nlc-lbl">${lm.label}</div>
+        <div class="nlc-val">${d?d.v:'—'}</div>
+        <div class="nlc-src">${d?d.src:'—'}</div>
+      </div>`;
+    }).join('')}</div>
+  </div>`;
+
+  document.getElementById('nirf-params-container').innerHTML = livePanel + NIRF_PARAMS_DATA.map(p=>{
+    const rows=p.metrics.map(m=>{
+      const ld = nirfLive[m.key];
+      const ldBadge = ld ? `<span style="background:#e3f2fd;color:#1565c0;border-radius:10px;padding:1px 8px;font-size:10px;font-weight:700;white-space:nowrap" title="${ld.src}">📊 ${ld.v}</span>` : '';
+      return `<div class="rank-metric-row">
+        <span class="rank-metric-name">${m.name}</span>
+        <span style="font-size:11px;color:#888;min-width:60px">${m.unit}</span>
+        ${ldBadge}
+        <input class="rank-inp" type="number" placeholder="Override" value="${(accState.nirf||{})[m.key]||''}" onchange="if(!accState.nirf)accState.nirf={};accState.nirf['${m.key}']=this.value">
+        <select class="afi-sel" style="width:90px"><option>Pending</option><option>Draft</option><option>Final</option></select>
+      </div>`;
+    }).join('');
     return `<div class="rank-param"><div class="rank-param-hdr" style="background:${p.color}"><span class="rank-param-name">${p.name}</span><span class="rank-param-wt">Weightage: ${p.weight}%</span></div><div class="rank-param-body">${rows}</div></div>`;
   }).join('');
 }
 
 // ═══ AISHE BUILDER ════════════════════════════════════
 function buildAISHE(){
-  document.getElementById('aishe-container').innerHTML=AISHE_SECTIONS_DATA.map(sec=>{
-    const fields=sec.fields.map(f=>{const v=(accState.aishe||{})[f.key]||'';if(f.type==='select'){const opts=(f.opts||[]).map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('');return `<div class="form-field-2"><label>${f.label}</label><select onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value">${opts}</select></div>`;}return `<div class="form-field-2"><label>${f.label}</label><input type="text" value="${v}" placeholder="Enter value" onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value"></div>`;}).join('');
+  /* ── Live dept data for AISHE ── */
+  const enrollRows = _secRows('Additional Registrar Office','s1');
+  const progRows   = _secRows('Program Office','s1');
+  const estRows    = _secRows('Estate Office','s2');          // AISHE hostel section
+  const fin        = _secForm('Finance & Accounts','s1') || {};
+  const housingF   = _secForm('Housing & Residential Counselling','s1') || {};
+
+  /* Compute enrollment breakdown from Registrar rows */
+  const genderCnt={male:0,female:0,other:0};
+  const levelCnt={ug:0,pg:0,phd:0};
+  enrollRows.forEach(r=>{
+    const g=(r.gender||'').toLowerCase();
+    if(g==='male'||g==='m') genderCnt.male++;
+    else if(g==='female'||g==='f') genderCnt.female++;
+    else genderCnt.other++;
+    const p=(r.program||r['program_(ug/pg/phd)']||'').toLowerCase();
+    if(p==='ug') levelCnt.ug++;
+    else if(p==='pg') levelCnt.pg++;
+    else if(p==='phd') levelCnt.phd++;
+  });
+
+  const totalEnroll = enrollRows.length || progRows.length;
+
+  const livePanel = `<div class="aishe-live-panel">
+    <h4>📊 Live Data from Departments (auto-computed)</h4>
+    <div class="aishe-live-grid">
+      <div class="aishe-live-stat"><div class="als-val">${totalEnroll}</div><div class="als-lbl">Total Enrolled Students</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${genderCnt.male}</div><div class="als-lbl">Male Students</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${genderCnt.female}</div><div class="als-lbl">Female Students</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${levelCnt.ug}</div><div class="als-lbl">UG Enrolled</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${levelCnt.pg}</div><div class="als-lbl">PG Enrolled</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${levelCnt.phd}</div><div class="als-lbl">PhD Enrolled</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${housingF.beds_a||estRows.length||'—'}</div><div class="als-lbl">Hostel Beds (All)</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${fin.i_tuition||'—'}</div><div class="als-lbl">Tuition Income (₹ L)</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${fin.i_govt||'—'}</div><div class="als-lbl">Govt Grants (₹ L)</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${fin.e_tl||'—'}</div><div class="als-lbl">T&L Expenditure (₹ L)</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${fin.e_res||'—'}</div><div class="als-lbl">Research Exp (₹ L)</div></div>
+      <div class="aishe-live-stat"><div class="als-val">${fin.e_lib||'—'}</div><div class="als-lbl">Library Exp (₹ L)</div></div>
+    </div>
+    <div style="font-size:10px;color:#888;margin-top:8px">Source: Additional Registrar (enrollment) · Finance (income/expenditure) · Housing (hostels). Use values below to fill AISHE portal fields.</div>
+  </div>`;
+
+  const container = document.getElementById('aishe-container');
+  container.innerHTML = livePanel + AISHE_SECTIONS_DATA.map(sec=>{
+    const fields=sec.fields.map(f=>{
+      const v=(accState.aishe||{})[f.key]||'';
+      if(f.type==='select'){
+        const opts=(f.opts||[]).map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('');
+        return `<div class="form-field-2"><label>${f.label}</label><select onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value">${opts}</select></div>`;
+      }
+      return `<div class="form-field-2"><label>${f.label}</label><input type="text" value="${v}" placeholder="Enter value" onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value"></div>`;
+    }).join('');
     return `<div class="acc-card"><div class="aishe-sec-title">${sec.title}</div><div class="form-grid-2">${fields}</div></div>`;
   }).join('');
 }
@@ -3073,9 +3238,9 @@ function exportNAACSsrPDF(){
               <th style="width:30px">Type</th>
               <th>Metric Description</th>
               <th style="width:45px">Wt.</th>
-              <th style="width:90px">Institution Response</th>
+              <th style="width:110px">Live Data (Depts)</th>
               <th style="width:80px">Status</th>
-              <th style="width:130px">Notes / Link</th>
+              <th style="width:110px">Notes / Link</th>
             </tr>
           </thead>
           <tbody>`;
@@ -3088,8 +3253,11 @@ function exportNAACSsrPDF(){
         const docsTotal = NAAC_CRITERIA.flatMap(cr=>cr.kis.flatMap(ki=>ki.metrics))
           .find(x=>x.num===m.num)?.docs?.length || 0;
 
-        // Response value from naac state
-        const respVal = mState.value || mState.data || '';
+        // Live dept data
+        const ld = _liveVal(m.num);
+        const ldCell = ld
+          ? `<span style="font-weight:700;color:#1565c0">${ld.v}</span><br><span style="font-size:8px;color:#888">${ld.src}</span>`
+          : '<span style="color:#bbb;font-size:9px">—</span>';
 
         cHtml += `
             <tr>
@@ -3097,7 +3265,7 @@ function exportNAACSsrPDF(){
               <td class="type-cell ${m.type==='QlM'?'qlm':'qnm'}">${m.type}</td>
               <td class="desc-cell">${m.desc}</td>
               <td class="weight-cell">${m.weight}</td>
-              <td class="resp-cell">${respVal||'—'}</td>
+              <td class="resp-cell">${ldCell}</td>
               <td class="status-cell">
                 <span class="status-pill" style="background:${stBg[s]};color:${stColor[s]}">${stLbl[s]}</span>
                 ${docsTotal?`<div style="font-size:8px;color:#777;margin-top:2px">Docs: ${docsChecked}/${docsTotal}</div>`:''}
@@ -3414,6 +3582,184 @@ function accAisheExport(){
 
 // ── Shared helper: get all submission rows from Firebase cache ──
 function getAdminRows(){ return window._arows || []; }
+
+/* ════════════════════════════════════════════════════════════════
+   DEPT-DATA HELPERS — extract live values from Firebase submissions
+   Used by NAAC, NIRF, AISHE tab builders
+════════════════════════════════════════════════════════════════ */
+function _secRows(deptName, secId){
+  /* Returns all table rows for a given dept+section across all submissions */
+  const out=[];
+  (window._arows||[]).filter(r=>r.dept===deptName).forEach(r=>{
+    const raw=(r.raw.rows||{})[secId];
+    if(!raw) return;
+    (Array.isArray(raw)?raw:Object.values(raw)).forEach(function(row){
+      if(row&&typeof row==='object') out.push(row);
+    });
+  });
+  return out;
+}
+function _secForm(deptName, secId){
+  /* Returns the first form submission object for a dept+section */
+  for(const r of (window._arows||[])){
+    if(r.dept===deptName){
+      const f=(r.raw.form||{})[secId];
+      if(f&&typeof f==='object') return f;
+    }
+  }
+  return null;
+}
+function _cnt(d,s){ return _secRows(d,s).length; }
+function _sum(d,s,k){ return _secRows(d,s).reduce((a,r)=>a+(parseFloat(r[k])||0),0); }
+
+function _facStats(){
+  /* Aggregate HR Office faculty master sheet data */
+  const facs=_secRows('HR Office','s1');
+  if(!facs.length) return {total:0,phd:0,fullTime:0,visiting:0,avgExp:0,withFDP:0};
+  const ft=facs.filter(f=>{
+    const t=(f.empType||f.emp_type||'').toLowerCase();
+    return t!=='visiting' && t!=='contract' && t!=='';
+  });
+  const phd=ft.filter(f=>(f.hasPHD||f.has_p_h_d||'No')==='Yes');
+  const visiting=facs.filter(f=>{const t=(f.empType||f.emp_type||'').toLowerCase();return t==='visiting';});
+  const exps=ft.map(f=>parseFloat(f.teachExp||f.teach_exp||0)).filter(v=>v>0);
+  const fdp=ft.filter(f=>f.fdpLast24||f.fdp_last_24);
+  return {
+    total:facs.length, phd:phd.length, fullTime:ft.length, visiting:visiting.length,
+    avgExp:exps.length?+(exps.reduce((a,b)=>a+b,0)/exps.length).toFixed(1):0,
+    withFDP:fdp.length
+  };
+}
+function _stuCount(){
+  /* Total enrolled students: Additional Registrar first, fall back to Program Office */
+  const ar=_secRows('Additional Registrar Office','s1');
+  if(ar.length) return ar.length;
+  return _secRows('Program Office','s1').length;
+}
+function _placementStats(){
+  const rows=_secRows('Career Services (Placement)','s2');
+  const placed=rows.length;
+  const pkgs=rows.map(r=>parseFloat(r.package_lpa||r['package_(₹_lpa)']||0)).filter(v=>v>0);
+  const avgPkg=pkgs.length?+(pkgs.reduce((a,b)=>a+b,0)/pkgs.length).toFixed(2):0;
+  const maxPkg=pkgs.length?Math.max(...pkgs):0;
+  return {placed, avgPkg, maxPkg};
+}
+
+function _liveVal(mNum){
+  /* Returns {v, src, lbl} for a NAAC metric number, or null if not mappable */
+  const fs=_facStats(), sc=_stuCount();
+  const fsr=sc&&fs.fullTime?Math.round(sc/fs.fullTime):0;
+  const phdPct=fs.fullTime?Math.round(fs.phd/fs.fullTime*100):0;
+  const map={
+    /* C1 — Curricular Aspects */
+    '1.1.1':{v:_cnt("Deans' Office",'s1'),  src:"Deans' Office",  lbl:'Courses aligned w/ national needs'},
+    '1.1.2':{v:_cnt("Deans' Office",'s3'),  src:"Deans' Office",  lbl:'New courses (last 5 yrs)'},
+    '1.1.3':{v:_cnt("Deans' Office",'s2'),  src:"Deans' Office",  lbl:'Employability/skill courses'},
+    '1.2.1':{v:_cnt("Deans' Office",'s3'),  src:"Deans' Office",  lbl:'New courses introduced'},
+    '1.2.2':{v:_cnt('Program Office','s3'), src:'Program Office', lbl:'Elective courses offered'},
+    '1.3.1':{v:_cnt("Deans' Office",'s4'),  src:"Deans' Office",  lbl:'Ethics integration entries'},
+    '1.3.2':{v:_cnt("Deans' Office",'s5')+' courses | '+_cnt("Deans' Office",'s6')+' students',
+             src:"Deans' Office", lbl:'VA courses & enrolled students'},
+    '1.3.3':{v:_cnt('Experiential Learning','s1'), src:'Experiential Learning', lbl:'DIP / DAP / SIP records'},
+    '1.4.1':{v:_cnt("Deans' Office",'s7'),  src:"Deans' Office",  lbl:'Structured feedback records'},
+    /* C2 — Teaching-Learning & Evaluation */
+    '2.1.1':{v:sc,                           src:'Addl. Registrar / Prog Office', lbl:'Total enrolled students'},
+    '2.1.2':{v:_cnt('Additional Registrar Office','s1'), src:'Additional Registrar', lbl:'Enrollment records w/ category'},
+    '2.2.1':{v:sc+' students',               src:'Additional Registrar', lbl:'Student learning levels'},
+    '2.2.2':{v:fs.fullTime+'F / '+sc+'S = '+fsr+':1', src:'HR + Registrar', lbl:'Student-Teacher Ratio'},
+    '2.3.1':{v:_cnt('Centre for Digital Learning','s1')+' e-content | '+_cnt('Centre for Digital Learning','s2')+' training',
+             src:'CDL', lbl:'E-content developed & training programs'},
+    '2.3.2':{v:_cnt('Aditi Trivedi Centre for Student Wellbeing','s1'), src:'ATCSW', lbl:'Mentor-mentee / wellbeing activities'},
+    '2.4.1':{v:fs.fullTime,                  src:'HR Office', lbl:'Full-time faculty'},
+    '2.4.2':{v:fs.phd+' / '+fs.fullTime+' ('+phdPct+'%)', src:'HR Office', lbl:'Faculty with PhD'},
+    '2.4.3':{v:fs.avgExp+' yrs',             src:'HR Office', lbl:'Avg teaching experience'},
+    '2.5.1':{v:_cnt('Examinations Office','s1'), src:'Examinations Office', lbl:'Result timeline records'},
+    '2.5.2':{v:_cnt('Examinations Office','s2'), src:'Examinations Office', lbl:'Grievance records'},
+    '2.5.3':{v:((_secForm('Information System (ERP)','s1')||{}).ems)||'—', src:'ERP/IS', lbl:'EMS automation status'},
+    '2.6.1':{v:_cnt("Deans' Office",'s8'),   src:"Deans' Office", lbl:'CO-PO attainment records'},
+    '2.6.2':{v:_cnt('Examinations Office','s4'), src:'Examinations Office', lbl:'Graduation result records'},
+    '2.7.1':{v:'Via NAAC portal',            src:'NAAC portal', lbl:'Online SSS (NAAC-collected)'},
+    /* C3 — Research, Innovations & Extension */
+    '3.1.1':{v:_cnt('R&D Cell','s14'),       src:'R&D Cell', lbl:'Research Centres / CoE'},
+    '3.1.2':{v:_cnt('R&D Cell','s1'),        src:'R&D Cell', lbl:'Seed money grants'},
+    '3.1.3':{v:_cnt('R&D Cell','s2'),        src:'R&D Cell', lbl:'Fellowship / financial support'},
+    '3.1.4':{v:_cnt('Doctoral Programs Office','s2'), src:'Doctoral Programs', lbl:'PhD scholars enrolled'},
+    '3.2.1':{v:_cnt('R&D Cell','s3'),        src:'R&D Cell', lbl:'External funded research projects'},
+    '3.2.2':{v:fs.fullTime?(_cnt('R&D Cell','s3')+'/'+fs.fullTime):_cnt('R&D Cell','s3'),
+             src:'R&D Cell + HR', lbl:'Funded projects per teacher'},
+    '3.3.1':{v:_cnt('IPR Cell','s1')+' patents | '+_cnt('Centre for Entrepreneurship','s1')+' incubation',
+             src:'IPR Cell + Entrep.', lbl:'IPR / innovation ecosystem'},
+    '3.3.2':{v:_cnt('R&D Cell','s4'),        src:'R&D Cell', lbl:'Research awards / recognitions'},
+    '3.4.1':{v:_cnt('R&D Cell','s5'),        src:'R&D Cell', lbl:'Ethics code implementation records'},
+    '3.4.2':{v:_cnt('R&D Cell','s6')+_cnt('IPR Cell','s1'), src:'R&D Cell + IPR', lbl:'Patents awarded'},
+    '3.4.3':{v:_cnt('Doctoral Programs Office','s1'), src:'Doctoral Programs', lbl:'PhDs awarded'},
+    '3.4.4':{v:_cnt('R&D Cell','s7'),        src:'R&D Cell', lbl:'Research papers in UGC-CARE journals'},
+    '3.4.5':{v:_cnt('R&D Cell','s8'),        src:'R&D Cell', lbl:'Books / chapters published'},
+    '3.4.6':{v:_cnt('Centre for Digital Learning','s1'), src:'CDL', lbl:'E-content developed by teachers'},
+    '3.4.7':{v:_cnt('R&D Cell','s9'),        src:'R&D Cell', lbl:'Scopus / WoS / Scholar entries'},
+    '3.4.8':{v:_cnt('R&D Cell','s9'),        src:'R&D Cell', lbl:'h-Index data entries'},
+    '3.5.1':{v:_cnt('Chair MDP / Consultancy Committee','s1'), src:'MDP / Consultancy', lbl:'Consultancy / MDP engagements'},
+    '3.6.1':{v:_cnt('Student Affairs (Extra Curricular)','s2'), src:'SAEC', lbl:'Community outreach programs'},
+    '3.6.2':{v:_cnt('Student Affairs (Extra Curricular)','s1'), src:'SAEC', lbl:'Extension programs (NSS/NCC-type)'},
+    '3.7.1':{v:_cnt('R&D Cell','s10')+_cnt('International Relations Office','s1'),
+             src:'R&D + IRO', lbl:'Functional MoUs / collaborations'},
+    /* C4 — Infrastructure */
+    '4.1.1':{v:_cnt('Estate Office','s3'),   src:'Estate Office', lbl:'Built-up area / facility records'},
+    '4.1.2':{v:((_secForm('Finance & Accounts','s1')||{}).e_infra)||'—', src:'Finance', lbl:'Infra expenditure (₹ Lakhs)'},
+    '4.2.1':{v:_cnt('Library','s2'),         src:'Library', lbl:'International repo subscriptions'},
+    '4.2.2':{v:((_secForm('Finance & Accounts','s1')||{}).e_lib)||'—', src:'Finance', lbl:'Library expenditure (₹ Lakhs)'},
+    '4.3.1':{v:((_secForm('IT Infrastructure','s1')||{}).sc)||'—', src:'IT Infrastructure', lbl:'Smart / ICT classrooms'},
+    '4.3.2':{v:((_secForm('IT Infrastructure','s1')||{}).comp)||'—', src:'IT Infrastructure', lbl:'Computer terminals'},
+    '4.3.3':{v:_cnt('Classroom Technology','s1'), src:'Classroom Technology', lbl:'ICT events / tech deployments'},
+    '4.4.1':{v:((_secForm('Finance & Accounts','s1')||{}).e_admin)||'—', src:'Finance', lbl:'Maintenance expenditure (₹ Lakhs)'},
+    '4.4.2':{v:_cnt('Estate Office','s1'),   src:'Estate Office', lbl:'Maintenance checklist submissions'},
+    /* C5 — Student Support & Progression */
+    '5.1.1':{v:_cnt('Admissions & Financial Aid','s1'), src:'Admissions & FA', lbl:'Scholarship records'},
+    '5.1.2':{v:_cnt('Career Services (Placement)','s1'), src:'Career Services', lbl:'Career counselling programs'},
+    '5.1.3':{v:_cnt('Career Services (Placement)','s1')+_cnt('Student Affairs (Academic)','s2'),
+             src:'Career + SAA', lbl:'Capacity development initiatives'},
+    '5.1.4':{v:_cnt('Chair Anti-Ragging','s2')+_cnt('Chair ICC (Internal Complaints Committee)','s2'),
+             src:'Anti-Ragging + ICC', lbl:'Grievance / redressal records'},
+    '5.2.1':{v:_cnt('Career Services (Placement)','s2'), src:'Career Services', lbl:'Placement records'},
+    '5.2.2':{v:_cnt('HECS','s1')+_cnt('Student Affairs (Academic)','s1'), src:'HECS + SAA', lbl:'Higher education progressions'},
+    '5.2.3':{v:_cnt('HECS','s3')+_cnt('Student Affairs (Academic)','s3'), src:'HECS + SAA', lbl:'Competitive exam qualifiers'},
+    '5.3.1':{v:_cnt('Sports','s1')+_cnt('Student Affairs (Extra Curricular)','s6'), src:'Sports + SAEC', lbl:'Awards / medals won'},
+    '5.3.2':{v:_cnt('Student Affairs (Extra Curricular)','s8'), src:'SAEC', lbl:'Clubs / student societies'},
+    '5.3.3':{v:_cnt('Sports','s2')+_cnt('Student Affairs (Extra Curricular)','s7'), src:'Sports + SAEC', lbl:'Events / activities conducted'},
+    '5.4.1':{v:_cnt('Alumni Relations Office','s1'), src:'Alumni Relations', lbl:'Alumni contribution records'},
+    '5.4.2':{v:_cnt('Alumni Relations Office','s4'), src:'Alumni Relations', lbl:'Alumni portal registrations'},
+    /* C6 — Governance */
+    '6.1.1':{v:_cnt('IQAC','s1'),            src:'IQAC', lbl:'IQAC quality initiatives'},
+    '6.2.1':{v:_cnt('IQAC','s1'),            src:'IQAC', lbl:'Governance initiative records'},
+    '6.2.2':{v:((_secForm('Information System (ERP)','s1')||{}).ems)||'—', src:'ERP/IS', lbl:'E-governance / ERP status'},
+    '6.3.1':{v:_cnt('HR Office','s3'),        src:'HR Office', lbl:'Staff welfare / training records'},
+    '6.3.2':{v:_cnt('R&D Cell','s11'),        src:'R&D Cell', lbl:'Conference financial support records'},
+    '6.3.3':{v:_cnt('R&D Cell','s12'),        src:'R&D Cell', lbl:'FDP / MDP programs'},
+    '6.4.1':{v:((_secForm('Finance & Accounts','s1')||{}).i_govt)||'—', src:'Finance', lbl:'Govt grants received (₹)'},
+    '6.4.2':{v:((_secForm('Finance & Accounts','s1')||{}).i_govt)||'—', src:'Finance', lbl:'Govt / non-govt grants (₹)'},
+    '6.4.3':{v:'Internal & External Audits', src:'Finance', lbl:'Financial audit status'},
+    '6.5.1':{v:_cnt('IQAC','s1'),            src:'IQAC', lbl:'IQAC quality assurance records'},
+    '6.5.2':{v:_cnt('IQAC','s1'),            src:'IQAC', lbl:'Quality assurance adoptions'},
+    '6.5.3':{v:_cnt('IQAC','s1'),            src:'IQAC', lbl:'Incremental quality improvements'},
+    /* C7 — Institutional Values */
+    '7.1.1':{v:_cnt('Chair Women Cell','s1')+_cnt('Chair ICC (Internal Complaints Committee)','s1'),
+             src:'Women Cell + ICC', lbl:'Gender equity / audit programs'},
+    '7.1.2':{v:'Green campus data',          src:'Estate Office', lbl:'Energy conservation measures'},
+    '7.1.3':{v:'Waste mgmt report',          src:'Estate Office', lbl:'Waste management facilities'},
+    '7.1.4':{v:'Water conservation data',    src:'Estate Office', lbl:'Water conservation facilities'},
+    '7.1.5':{v:'Green campus',               src:'Estate Office', lbl:'Green campus initiatives'},
+    '7.1.6':{v:_cnt('Security','s1'),        src:'Security', lbl:'Fire drills / environment audits'},
+    '7.1.7':{v:_cnt('Library','s1'),         src:'Library', lbl:'Assistive tech / barrier-free records'},
+    '7.1.8':{v:_cnt('Student Affairs (Extra Curricular)','s4'), src:'SAEC', lbl:'Inclusive social clubs / programs'},
+    '7.1.9':{v:_cnt('Chair Monitoring Committee \u2013 Code of Conduct','s1'),
+             src:'CoC Committee', lbl:'Constitutional values programs'},
+    '7.1.10':{v:_cnt('Chair Monitoring Committee \u2013 Code of Conduct','s1'),
+              src:'CoC Committee', lbl:'Code of conduct programs'},
+    '7.2.1':{v:_cnt('IQAC','s1'),            src:'IQAC', lbl:'Best practices documented'},
+    '7.3.1':{v:_cnt('Branding & Communication','s1'), src:'Branding', lbl:'Institutional distinctiveness records'},
+  };
+  return map[mNum]||null;
+}
 
 // ── Populate year selectors in report tabs ──────────────────────
 function populateReportSelectors(){
