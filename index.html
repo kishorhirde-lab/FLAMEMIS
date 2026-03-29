@@ -907,10 +907,12 @@ function getDB(){
 function getST(){
   if(_st)return _st;
   try{
-    if(typeof firebase==='undefined')return null;
+    if(typeof firebase==='undefined'){console.error('Firebase SDK not loaded');return null;}
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
-    _st=firebase.storage();
-  }catch(e){console.warn('ST:',e.message);}
+    /* Pass bucket URL explicitly — required for the newer .firebasestorage.app format */
+    _st=firebase.storage('gs://'+FB_CFG.storageBucket);
+    console.log('Firebase Storage initialised — bucket:',FB_CFG.storageBucket);
+  }catch(e){console.error('Storage init error:',e.code||'',e.message);_st=null;}
   return _st;
 }
 const ROOT='flame_unified_mis_v2';
@@ -1802,33 +1804,60 @@ function uploadFiles(secId){
   }
   const st=getST();
   const stEl=document.getElementById('up-st-'+secId);
-  if(!st){if(stEl)stEl.textContent='Storage unavailable — check internet.';return;}
-  if(stEl)stEl.textContent='Uploading…';
+  if(!st){
+    const msg='❌ Firebase Storage unavailable. Check: 1) Internet connection, 2) Firebase Storage Rules allow public writes (see console for details).';
+    if(stEl)stEl.innerHTML='<span style="color:#dc2626">'+msg+'</span>';
+    console.error('getST() returned null — Storage not initialised');
+    return;
+  }
+  if(stEl)stEl.innerHTML='<span style="color:#1565c0">⏳ Uploading…</span>';
   if(!S.uploads[secId])S.uploads[secId]=[];
   const d=S.dept;
   const period=d.type==='monthly'?S.month:'Annual';
-  let done=0;
+  let done=0,failed=0;
   const total=inp.files.length;
   Array.from(inp.files).forEach(function(file){
     const path='flame_mis_files/'+d.id+'/'+S.year+'/'+period+'/'+secId+'/'+Date.now()+'_'+file.name;
     const ref=st.ref(path);
     const task=ref.put(file);
-    task.on('state_changed',null,
-      function(err){if(stEl)stEl.textContent='Upload error: '+err.message;},
+    task.on('state_changed',
+      function(snap){
+        /* optional progress — show % for large files */
+        if(file.size>500*1024){
+          const pct=Math.round(snap.bytesTransferred/snap.totalBytes*100);
+          if(stEl)stEl.innerHTML='<span style="color:#1565c0">⏳ Uploading '+file.name+'… '+pct+'%</span>';
+        }
+      },
+      function(err){
+        failed++;
+        console.error('Upload failed:',err.code,err.message);
+        var hint='';
+        if(err.code==='storage/unauthorized')
+          hint=' → Go to Firebase Console → Storage → Rules and set: <code>allow read, write: if true;</code>';
+        else if(err.code==='storage/canceled')
+          hint=' → Upload was cancelled.';
+        else if(err.code==='storage/unknown')
+          hint=' → Check internet connection and try again.';
+        if(stEl)stEl.innerHTML='<span style="color:#dc2626">❌ Upload failed ('+err.code+'): '+err.message+hint+'</span>';
+      },
       function(){
         ref.getDownloadURL().then(function(url){
           S.uploads[secId].push({name:file.name,url:url});
           done++;
           if(stEl){
-            if(done<total){stEl.textContent='Uploaded '+done+'/'+total+'…';}
-            else{
+            if(done+failed<total){
+              stEl.innerHTML='<span style="color:#1565c0">⏳ Uploaded '+done+'/'+total+'…</span>';
+            } else {
               var chips='';
               S.uploads[secId].forEach(function(f){
                 chips+='<span class="up-chip">📄 '+esc(f.name)+' <a href="'+f.url+'" target="_blank">↗</a></span>';
               });
-              stEl.innerHTML=chips;
+              stEl.innerHTML=chips||'<span style="color:#2e7d32">✅ '+done+' file(s) uploaded.</span>';
             }
           }
+        }).catch(function(e){
+          console.error('getDownloadURL failed:',e);
+          if(stEl)stEl.innerHTML='<span style="color:#dc2626">❌ Uploaded but could not get link: '+e.message+'</span>';
         });
       }
     );
@@ -2358,23 +2387,37 @@ function uploadFacFile(fid, fileKey, secId){
   const err=validateFacFile(file,false);
   if(err){alert('❌ File Validation Failed:\n'+err);return;}
   const st=getST();
-  if(!st){if(statusEl)statusEl.innerHTML='<span style="color:#dc2626">Storage unavailable — check internet</span>';return;}
-  if(statusEl)statusEl.innerHTML='⏳ Uploading…';
-  const d=S.dept;
-  const period=d?d.type==='monthly'?S.month:'Annual':'General';
+  if(!st){
+    if(statusEl)statusEl.innerHTML='<span style="color:#dc2626">❌ Storage unavailable — check internet or Firebase Storage Rules.</span>';
+    console.error('getST() null in uploadFacFile');
+    return;
+  }
+  if(statusEl)statusEl.innerHTML='<span style="color:#1565c0">⏳ Uploading…</span>';
   const path='flame_mis_files/hr/faculty/'+fid+'/'+fileKey+'/'+Date.now()+'_'+file.name;
   const ref=st.ref(path);
   const task=ref.put(file);
-  task.on('state_changed',null,
-    function(err2){if(statusEl)statusEl.innerHTML='<span style="color:#dc2626">Upload error: '+err2.message+'</span>';},
+  task.on('state_changed',
+    function(snap){
+      const pct=Math.round(snap.bytesTransferred/snap.totalBytes*100);
+      if(statusEl)statusEl.innerHTML='<span style="color:#1565c0">⏳ '+pct+'%…</span>';
+    },
+    function(err2){
+      console.error('Faculty upload error:',err2.code,err2.message);
+      var hint='';
+      if(err2.code==='storage/unauthorized')
+        hint=' → Firebase Storage Rules need: allow read, write: if true;';
+      if(statusEl)statusEl.innerHTML='<span style="color:#dc2626">❌ '+err2.code+': '+err2.message+hint+'</span>';
+    },
     function(){
       ref.getDownloadURL().then(function(url){
-        /* Store URL back into faculty record */
         const list=window.FAC[secId]||[];
         const f=list.find(function(x){return x._id===fid;});
         if(f){f[fileKey+'Url']=url;f[fileKey+'Name']=file.name;f._updatedAt=new Date().toLocaleString('en-IN');}
         if(statusEl)statusEl.innerHTML='<a href="'+url+'" target="_blank" class="fac-file-link">✅ '+esc(file.name)+'</a>';
         inp.value='';
+      }).catch(function(e){
+        console.error('getDownloadURL failed:',e);
+        if(statusEl)statusEl.innerHTML='<span style="color:#dc2626">❌ Uploaded but URL fetch failed: '+e.message+'</span>';
       });
     }
   );
