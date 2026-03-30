@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1629,6 +1630,7 @@ async function doLogin(){
     return;
   }
   S={dept:dept,admin:false,year:yr,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
+  sessionStorage.setItem('flame_session',JSON.stringify({type:'dept',deptId:dept.id,year:yr}));
   showScreen('sc-form');
   renderForm();
 }
@@ -1653,6 +1655,7 @@ function submitAdmLogin(){
   if(p.trim()===ADMIN_PIN){
     closeAdmLogin();
     S.admin=true;
+    sessionStorage.setItem('flame_session',JSON.stringify({type:'admin'}));
     showScreen('sc-admin');
     renderAdmin();
   }else{
@@ -1690,6 +1693,7 @@ function renderForm(){
   renderSec(0);
   checkDupe();
   $('btn-logout').onclick=function(){
+    sessionStorage.removeItem('flame_session');
     showScreen('sc-login');
     $('l-pin').value='';
     $('l-pin').type='password';
@@ -2327,8 +2331,28 @@ function showPrMsg(txt,type){
 /* ═══════════════ BOOT ═══════════════ */
 initLogin();
 $('mod-close').onclick=function(){$('modal').hidden=true;};
-$('btn-adm-out').onclick=function(){S.admin=false;showScreen('sc-login');};
+$('btn-adm-out').onclick=function(){S.admin=false;sessionStorage.removeItem('flame_session');showScreen('sc-login');};
 window.onclick=function(e){if(e.target===$('modal'))$('modal').hidden=true;};
+
+// Restore session after page refresh
+(function restoreSession(){
+  try{
+    const saved=sessionStorage.getItem('flame_session');
+    if(!saved)return;
+    const sess=JSON.parse(saved);
+    if(sess.type==='admin'){
+      S.admin=true;
+      showScreen('sc-admin');
+      renderAdmin();
+    } else if(sess.type==='dept'){
+      const dept=DEPTS.find(d=>d.id===sess.deptId);
+      if(!dept){sessionStorage.removeItem('flame_session');return;}
+      S={dept:dept,admin:false,year:sess.year,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
+      showScreen('sc-form');
+      renderForm();
+    }
+  }catch(e){sessionStorage.removeItem('flame_session');}
+})();
 
 
 /* ════════════════════════════════════════════════════════════════
