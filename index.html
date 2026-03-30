@@ -103,6 +103,10 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
   box-shadow:0 4px 16px rgba(200,146,42,.35)}
 .btn-go:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(200,146,42,.45)}
 .btn-go:active{transform:translateY(0)}
+.flash{padding:9px 13px;border-radius:8px;font-size:12.5px;margin-top:10px;display:block}
+.flash.error{background:#fee2e2;color:#991b1b}
+.flash.success{background:#dcfce7;color:#166534}
+.flash.hidden,[hidden]{display:none!important}
 .adm-link{
   display:block;text-align:center;margin-top:16px;
   font-size:12px;color:#9ca3bf;cursor:pointer;
@@ -174,7 +178,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 .pin-reset-section h3{font-size:15px;font-weight:700;color:#0d1f3c;margin-bottom:14px}
 
 /* ── TOP NAV BAR ── */
-#sc-form{display:none;flex-direction:column;min-height:100vh}
+#sc-form{display:flex;flex-direction:column;min-height:100vh}
 .topbar{
   height:56px;background:#0d1f3c;display:flex;align-items:center;
   padding:0 20px;gap:16px;flex-shrink:0;position:sticky;top:0;z-index:500}
@@ -330,7 +334,7 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 #fmsg{font-size:12.5px;color:#166534;flex:1;text-align:right;min-height:18px}
 
 /* ── ADMIN PANEL ── */
-#sc-admin{display:none;flex-direction:column;min-height:100vh}
+#sc-admin{display:flex;flex-direction:column;min-height:100vh}
 .admin-topbar{
   height:56px;background:#0d1f3c;display:flex;align-items:center;
   padding:0 24px;gap:16px}
@@ -615,7 +619,11 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
   <div class="login-left">
     <div class="login-left-inner">
       <div class="ll-logo">
-        <img src="https://www.flame.edu.in/wp-content/uploads/2022/04/flame-university-logo-white.png" alt="FLAME University" onerror="this.style.display='none'">
+        <img src="https://www.flame.edu.in/images/white-Logo-FLAME.svg" alt="FLAME University" style="width:180px;height:auto;display:block;margin-bottom:12px" onerror="this.style.display='none';document.getElementById('ll-logo-fb').style.display='flex'">
+        <div id="ll-logo-fb" style="display:none;align-items:center;gap:12px;margin-bottom:12px">
+          <svg width="44" height="44" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#c8922a"/><text x="18" y="24" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="16" font-weight="900" fill="#fff">F</text></svg>
+          <div style="display:flex;flex-direction:column;line-height:1.25"><span style="font-size:22px;font-weight:900;color:#fff;letter-spacing:3px">FLAME</span><span style="font-size:10px;color:rgba(255,255,255,.6);letter-spacing:1px;font-weight:600">UNIVERSITY</span></div>
+        </div>
         <div class="ll-logo-title">FLAME University</div>
         <div class="ll-logo-sub">Pune, India &mdash; Ranked &amp; Accredited Institution</div>
       </div>
@@ -652,40 +660,55 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
         </div>
       </div>
       <div class="ll-bottom">
-        <p>Powered by Firebase &middot; Secured by PIN &middot; Data encrypted in transit</p>
+        <p>Powered by FLAME University, Pune</p>
       </div>
     </div>
   </div>
   <div class="login-right">
     <div class="lcard">
+      <div style="text-align:center;margin-bottom:22px">
+        <img src="https://www.flame.edu.in/images/FLAME-Logo.png" alt="FLAME University" style="width:160px;height:auto;display:block;margin:0 auto 8px" onerror="this.style.display='none';document.getElementById('lcard-logo-fb').style.display='flex'">
+        <div id="lcard-logo-fb" style="display:none;align-items:center;justify-content:center;gap:10px;margin-bottom:8px">
+          <svg width="38" height="38" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#c8922a"/><text x="18" y="24" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="16" font-weight="900" fill="#fff">F</text></svg>
+          <div style="display:flex;flex-direction:column;line-height:1.25"><span style="font-size:20px;font-weight:900;color:#0d1f3c;letter-spacing:3px">FLAME</span><span style="font-size:9px;color:#6b7a99;letter-spacing:1px;font-weight:600">UNIVERSITY</span></div>
+        </div>
+      </div>
       <div class="lcard-header">
         <h2>Department Login</h2>
         <p>Select your department and enter your PIN to continue</p>
       </div>
       <label for="l-dept">Department</label>
-      <select id="l-dept"></select>
+      <select id="l-dept"><option value="">— Select Department —</option></select>
+
+      <label for="l-ay">Academic Year</label>
+      <select id="l-ay"></select>
+
       <div class="pin-row">
-        <label for="l-pin">PIN</label>
+        <label for="l-pin">Department PIN</label>
         <div class="pin-row-actions">
-          <button class="pin-toggle" onclick="togglePin('l-pin',this)">Show</button>
-          <button class="forgot-link" onclick="showForgotPin()">Forgot PIN?</button>
+          <button type="button" class="pin-toggle" onclick="togglePin()"><span id="pin-lbl">Show</span></button>
+          <button type="button" class="forgot-link" onclick="showForgotPin()">Forgot PIN?</button>
         </div>
       </div>
-      <input type="password" id="l-pin" placeholder="Enter your PIN" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
-      <div id="lmsg"></div>
-      <button class="btn-go" onclick="doLogin()">Access MIS &rarr;</button>
-      <button class="adm-link" onclick="showAdmLogin()">Admin Login</button>
+      <input type="password" id="l-pin" placeholder="Enter your PIN" autocomplete="new-password">
+      <div id="l-msg" class="flash hidden"></div>
+      <button type="button" class="btn-go" id="btn-login">Access MIS →</button>
+      <button type="button" class="adm-link" id="btn-adm">Admin Login</button>
     </div>
   </div>
 </section>
 
 <!-- FORM -->
-<section id="sc-form">
+<section id="sc-form" hidden>
   <div class="topbar">
     <div class="topbar-brand">
-      <img src="https://www.flame.edu.in/wp-content/uploads/2022/04/flame-university-logo-white.png" alt="FLAME" style="filter:brightness(10)" onerror="this.style.display='none'">
+      <img src="https://www.flame.edu.in/images/white-Logo-FLAME.svg" alt="FLAME University" style="height:32px;width:auto;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div style="display:none;align-items:center;gap:7px">
+        <svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#c8922a"/><text x="18" y="24" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="16" font-weight="900" fill="#fff">F</text></svg>
+        <span style="font-size:14px;font-weight:800;color:#e8c46a;letter-spacing:2px">FLAME</span>
+      </div>
       <div>
-        <div class="topbar-brand-text">FLAME MIS</div>
+        <div class="topbar-brand-text">FLAME University MIS</div>
         <div class="topbar-brand-sub">Unified Reporting</div>
       </div>
     </div>
@@ -702,6 +725,13 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
   <div class="form-layout">
     <nav class="sidebar" id="form-sidebar">
       <div class="sidebar-header">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.12)">
+          <img src="https://www.flame.edu.in/images/white-Logo-FLAME.svg" alt="FLAME University" style="height:26px;width:auto" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div style="display:none;align-items:center;gap:6px">
+            <svg width="22" height="22" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#c8922a"/><text x="18" y="24" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="16" font-weight="900" fill="#fff">F</text></svg>
+            <span style="font-size:12px;font-weight:800;color:#e8c46a;letter-spacing:2px">FLAME</span>
+          </div>
+        </div>
         <div class="sidebar-header-title">Sections</div>
       </div>
       <div class="sidebar-nav" id="sidebar-nav-items"></div>
@@ -714,10 +744,14 @@ html,body{height:100%;font-family:'Inter',system-ui,sans-serif;font-size:14px;co
 </section>
 
 <!-- ADMIN -->
-<section id="sc-admin">
+<section id="sc-admin" hidden>
   <div class="admin-topbar">
     <div class="admin-topbar-brand">
-      <img src="https://www.flame.edu.in/wp-content/uploads/2022/04/flame-university-logo-white.png" alt="FLAME" style="filter:brightness(10)" onerror="this.style.display='none'">
+      <img src="https://www.flame.edu.in/images/white-Logo-FLAME.svg" alt="FLAME University" style="height:32px;width:auto;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div style="display:none;align-items:center;gap:7px">
+        <svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#c8922a"/><text x="18" y="24" text-anchor="middle" font-family="Segoe UI,sans-serif" font-size="16" font-weight="900" fill="#fff">F</text></svg>
+        <span style="font-size:14px;font-weight:800;color:#e8c46a;letter-spacing:2px">FLAME</span>
+      </div>
       <div>
         <div class="admin-topbar-title">FLAME University MIS</div>
         <div class="admin-topbar-sub">Administration &amp; Accreditation Dashboard</div>
@@ -4423,13 +4457,7 @@ function hideSpinner(){
   if(ov) ov.classList.remove('active');
 }
 
-// PIN toggle helper
-function togglePin(inputId, btn){
-  var inp = document.getElementById(inputId);
-  if(!inp) return;
-  if(inp.type === 'password'){ inp.type = 'text'; btn.textContent = 'Hide'; }
-  else { inp.type = 'password'; btn.textContent = 'Show'; }
-}
+// PIN toggle helper — handled by togglePin() above
 
 // Override showMsg to also fire toast
 var _v13_origShowMsg = window.showMsg;
