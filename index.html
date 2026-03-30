@@ -909,8 +909,13 @@ function getST(){
   try{
     if(typeof firebase==='undefined'){console.error('Firebase SDK not loaded');return null;}
     if(!firebase.apps.length)firebase.initializeApp(FB_CFG);
-    /* Pass bucket URL explicitly — required for the newer .firebasestorage.app format */
-    _st=firebase.storage('gs://'+FB_CFG.storageBucket);
+    /* Try with explicit bucket first, fall back to default */
+    try{
+      _st=firebase.storage('gs://'+FB_CFG.storageBucket);
+    }catch(e2){
+      console.warn('Explicit bucket failed, trying default:',e2.message);
+      _st=firebase.storage();
+    }
     console.log('Firebase Storage initialised — bucket:',FB_CFG.storageBucket);
   }catch(e){console.error('Storage init error:',e.code||'',e.message);_st=null;}
   return _st;
