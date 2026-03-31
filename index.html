@@ -55,8 +55,9 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   letter-spacing:.12em;font-weight:600}
 /* ── LOGIN FOOTER ───────────────────────────────── */
 .lcard-foot{text-align:center;margin-top:20px;padding-top:14px;
-  border-top:1px solid #f0f3fa}
-.lcard-foot span{font-size:10.5px;color:#9ca3b5;font-weight:500;letter-spacing:.04em}
+  border-top:1px solid #f0f3fa;display:flex;align-items:center;justify-content:center;gap:10px}
+.lcard-foot img{height:26px;width:auto;object-fit:contain;opacity:.72}
+.lcard-foot span{font-size:10px;color:#b0b8cc;font-weight:500;letter-spacing:.04em}
 .lcard label{
   display:block;font-size:11px;font-weight:700;color:#6b7a99;
   text-transform:uppercase;letter-spacing:.07em;margin:14px 0 5px}
@@ -669,7 +670,11 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
     <button type="button" class="adm-link" id="btn-adm">Admin Login</button>
     </div><!-- /lcard-body -->
     <div class="lcard-foot">
-      <span>Powered by FLAME University &nbsp;·&nbsp; Pune, Maharashtra</span>
+      <img src="https://www.flame.edu.in/wp-content/uploads/2022/04/flame-university-logo.png"
+           alt="FLAME University"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+      <span style="display:none">FLAME University</span>
+      <span>Unified MIS Portal</span>
     </div>
   </div>
 </div>
