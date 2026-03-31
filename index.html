@@ -946,6 +946,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
           <div class="acc-stat-card"><div class="acc-stat-num" id="nirf-rank">38–42</div><div class="acc-stat-lbl">Est. Rank (Mgmt)</div></div>
           <div class="acc-stat-card"><div class="acc-stat-num" style="color:#2e7d32" id="nirf-ready">0</div><div class="acc-stat-lbl">Params Ready</div></div>
           <div class="acc-stat-card"><div class="acc-stat-num">2026</div><div class="acc-stat-lbl">Submission Year</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#F58220">289</div><div class="acc-stat-lbl">PG Students (2024-25)</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#0C3F6A">260</div><div class="acc-stat-lbl">Placed (AISHE 2024-25)</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#2e7d32">19</div><div class="acc-stat-lbl">Sponsored Res. Projects</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#6a1b9a">₹8.5L</div><div class="acc-stat-lbl">Median Salary 2024-25</div></div>
         </div>
       </div>
       <div id="nirf-params-container"></div>
@@ -961,7 +965,15 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
     <div class="acc-body">
       <div class="acc-card">
         <div class="acc-card-title">📁 AISHE — All India Survey on Higher Education</div>
-        <div class="acc-note">Annual mandatory survey by Ministry of Education. Reference Year: <strong>2024-25</strong>. Ensure consistency with NIRF and NAAC SSR.</div>
+        <div class="acc-note">Annual mandatory survey by Ministry of Education. AISHE Code: <strong>U-1181</strong> | Reference Year: <strong>2024-25</strong>. Data pre-filled from AISHE DCF &amp; Teaching Staff DCF. Fields marked <span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:1px 6px;font-size:10px;font-weight:700">&#128203; Report</span> are confirmed from submitted reports — verify and save to Firebase.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#0C3F6A">769</div><div class="acc-stat-lbl">Total Students</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#F58220">183</div><div class="acc-stat-lbl">Regular Faculty</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#2e7d32">164</div><div class="acc-stat-lbl">Faculty with PhD</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#6a1b9a">260</div><div class="acc-stat-lbl">Placed (2024-25)</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#c62828">24</div><div class="acc-stat-lbl">Hostels</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" style="color:#0C3F6A">₹178.47Cr</div><div class="acc-stat-lbl">Total Income</div></div>
+        </div>
       </div>
       <div id="aishe-container"></div>
     </div>
@@ -3363,21 +3375,318 @@ const QS_PILLARS_DATA = [
 
 // ── NIRF DATA ─────────────────────────────────────────
 const NIRF_PARAMS_DATA = [
-  {name:'Teaching, Learning & Resources (TLR)',weight:'30',color:'#1a3c5e',metrics:[{name:'SS – Student Strength including PhD',key:'ss',unit:''},{name:'FSR – Faculty-Student Ratio with PhD',key:'fsr',unit:'ratio'},{name:'FQE – Faculty with experience and qualifications',key:'fqe',unit:'score'},{name:'FRU – Financial Resources and Utilisation',key:'fru',unit:'INR lakhs'}]},
-  {name:'Research and Professional Practice (RP)',weight:'30',color:'#2e7d32',metrics:[{name:'PU – Combined metric for Publications',key:'pu',unit:'count'},{name:'QP – Quality of Publications',key:'qp',unit:'score'},{name:'IPR – IPR and Patents: Published and Granted',key:'ipr',unit:'count'},{name:'FPPP – Footprint of Projects and Professional Practice',key:'fppp',unit:'score'}]},
-  {name:'Graduation Outcomes (GO)',weight:'20',color:'#6a1b9a',metrics:[{name:'GPH – PhD Students Graduated',key:'gph',unit:'count'},{name:'GUE – University Examinations metric',key:'gue',unit:'%'},{name:'MS – Median Salary',key:'ms',unit:'INR LPA'},{name:'GPHD – Students Admitted to PhD',key:'gphd',unit:'count'}]},
-  {name:'Outreach and Inclusivity (OI)',weight:'10',color:'#e65100',metrics:[{name:'RD – Regions of Diversity',key:'rd',unit:'score'},{name:'WD – Women Diversity',key:'wd',unit:'%'},{name:'ESCS – Economically and Socially Challenged Students',key:'escs',unit:'%'},{name:'PCS – Facilities for Physically Challenged Students',key:'pcs',unit:'score'}]},
-  {name:'Perception (PR)',weight:'10',color:'#bf360c',metrics:[{name:'PR – Peer Perception (Academic)',key:'pr',unit:'score'},{name:'CC – Corporate/Employer Perception',key:'cc',unit:'score'}]}
+  {
+    name:'Teaching, Learning & Resources (TLR)', weight:'30', color:'#1a3c5e',
+    desc:'Covers student strength, faculty quality, financial resources and utilisation',
+    metrics:[
+      {name:'SS – Student Strength (PG + PhD)', key:'ss', unit:'count',
+       confirmed:'294', confirmed_note:'PG=289 (M:141, F:148) + PhD FT=5 | AY 2024-25',
+       dept:'Additional Registrar / Examinations Office'},
+      {name:'FSR – Faculty : Student Ratio', key:'fsr', unit:'ratio',
+       confirmed:'12.25', confirmed_note:'294 students / 24 NIRF-reported faculty | AY 2024-25',
+       dept:'HR Office + Additional Registrar'},
+      {name:'FQE – Faculty Qualification & Experience', key:'fqe', unit:'%',
+       confirmed:'89.6', confirmed_note:'164 of 183 faculty hold PhD (AISHE 2024-25)',
+       dept:'HR Office'},
+      {name:'FRU – Financial Resources & Utilisation', key:'fru', unit:'INR Cr',
+       confirmed:'178.47', confirmed_note:'Total income FY 2024-25 per AISHE DCF',
+       dept:'Finance & Accounts'},
+      {name:'PG Sanctioned Intake (2024-25)', key:'pg_intake', unit:'seats',
+       confirmed:'155', confirmed_note:'PG intake 2024-25 per NIRF submission',
+       dept:'Additional Registrar'},
+      {name:'PG Enrolled – Male', key:'pg_m', unit:'count',
+       confirmed:'141', confirmed_note:'PG male students AY 2024-25',
+       dept:'Additional Registrar'},
+      {name:'PG Enrolled – Female', key:'pg_f', unit:'count',
+       confirmed:'148', confirmed_note:'PG female students AY 2024-25',
+       dept:'Additional Registrar'}
+    ]
+  },
+  {
+    name:'Research & Professional Practice (RP)', weight:'30', color:'#2e7d32',
+    desc:'Sponsored research, consultancy, EDP/MDP programs and professional practice',
+    metrics:[
+      {name:'Sponsored Research – No. of Projects (2024-25)', key:'spr_proj', unit:'count',
+       confirmed:'19', confirmed_note:'19 sponsored research projects AY 2024-25',
+       dept:'R&D Cell'},
+      {name:'Sponsored Research – Amount (2024-25)', key:'spr_amt', unit:'INR Cr',
+       confirmed:'2.66', confirmed_note:'Rs. 2.66 Cr from sponsored research AY 2024-25',
+       dept:'R&D Cell'},
+      {name:'Consultancy – No. of Projects (2024-25)', key:'con_proj', unit:'count',
+       confirmed:'31', confirmed_note:'31 consultancy projects AY 2024-25',
+       dept:'R&D Cell / Industry Interface'},
+      {name:'Consultancy – Amount (2024-25)', key:'con_amt', unit:'INR Cr',
+       confirmed:'1.58', confirmed_note:'Rs. 1.58 Cr from consultancy AY 2024-25',
+       dept:'Finance & Accounts'},
+      {name:'EDP/MDP – No. of Programs (2024-25)', key:'mdp_prog', unit:'count',
+       confirmed:'11', confirmed_note:'11 EDP/MDP programs AY 2024-25',
+       dept:'Management Development Centre'},
+      {name:'EDP/MDP – Participants (2024-25)', key:'mdp_part', unit:'count',
+       confirmed:'582', confirmed_note:'582 participants across EDP/MDP AY 2024-25',
+       dept:'Management Development Centre'},
+      {name:'EDP/MDP – Revenue (2024-25)', key:'mdp_rev', unit:'INR Cr',
+       confirmed:'4.18', confirmed_note:'Rs. 4.18 Cr EDP/MDP revenue AY 2024-25',
+       dept:'Finance & Accounts'},
+      {name:'IPR – Patents Filed / Awarded', key:'ipr', unit:'count',
+       confirmed:'', confirmed_note:'Data from R&D Cell / IPR Cell',
+       dept:'R&D Cell / IPR Cell'},
+      {name:'PU – Research Publications (Scopus/WoS)', key:'pu', unit:'count',
+       confirmed:'', confirmed_note:'Source: R&D Cell submission',
+       dept:'R&D Cell'}
+    ]
+  },
+  {
+    name:'Graduation Outcomes (GO)', weight:'20', color:'#6a1b9a',
+    desc:'Placement, higher education, PhD graduation and salary outcomes',
+    metrics:[
+      {name:'Placement – Total Placed (2024-25)', key:'go_placed', unit:'count',
+       confirmed:'260', confirmed_note:'Total 260 placed (M:103, F:157) per AISHE 2024-25',
+       dept:'Career Development Center'},
+      {name:'Median Salary – 2022-23 Batch', key:'ms_2223', unit:'INR LPA',
+       confirmed:'8.25', confirmed_note:'Median salary Rs. 8.25 LPA for 2022-23 batch',
+       dept:'Career Development Center'},
+      {name:'Median Salary – 2023-24 Batch', key:'ms_2324', unit:'INR LPA',
+       confirmed:'10.00', confirmed_note:'Median salary Rs. 10.00 LPA for 2023-24 batch',
+       dept:'Career Development Center'},
+      {name:'Median Salary – 2024-25 Batch', key:'ms_2425', unit:'INR LPA',
+       confirmed:'8.50', confirmed_note:'Median salary Rs. 8.50 LPA for 2024-25 batch',
+       dept:'Career Development Center'},
+      {name:'PhD Students – Full Time (2024-25)', key:'phd_ft', unit:'count',
+       confirmed:'5', confirmed_note:'5 full-time PhD students AY 2024-25',
+       dept:'Doctoral Programs Office / R&D Cell'},
+      {name:'Higher Education Progression', key:'go_he', unit:'count',
+       confirmed:'', confirmed_note:'Students progressing to higher education',
+       dept:'HECS / Student Affairs'},
+      {name:'Capital Exp – Library (3-yr avg)', key:'cap_lib', unit:'INR Lakhs',
+       confirmed:'', confirmed_note:'3-year average capital expenditure on library',
+       dept:'Finance & Accounts'},
+      {name:'Capital Exp – Labs/Equipment (3-yr avg)', key:'cap_lab', unit:'INR Lakhs',
+       confirmed:'', confirmed_note:'3-year average capital expenditure on labs',
+       dept:'Finance & Accounts'},
+      {name:'Operational Exp – Salaries', key:'op_sal', unit:'INR Lakhs',
+       confirmed:'', confirmed_note:'Annual salary expenditure',
+       dept:'Finance & Accounts'},
+      {name:'Operational Exp – Maintenance', key:'op_maint', unit:'INR Lakhs',
+       confirmed:'', confirmed_note:'Annual maintenance expenditure',
+       dept:'Finance & Accounts'},
+      {name:'Operational Exp – Seminars/FDP', key:'op_sem', unit:'INR Lakhs',
+       confirmed:'', confirmed_note:'Annual seminars/FDP expenditure',
+       dept:'Finance & Accounts'}
+    ]
+  },
+  {
+    name:'Outreach and Inclusivity (OI)', weight:'10', color:'#e65100',
+    desc:'Diversity, scholarships, physically challenged facilities and inclusivity',
+    metrics:[
+      {name:'WD – Women Diversity (% female students)', key:'wd', unit:'%',
+       confirmed:'51.2', confirmed_note:'F=148 of 289 PG students = 51.2% | 2024-25',
+       dept:'Additional Registrar'},
+      {name:'ESCS – SC/ST/OBC/Economically Challenged', key:'escs', unit:'%',
+       confirmed:'', confirmed_note:'Source: Admissions & Financial Aid',
+       dept:'Admissions & Financial Aid'},
+      {name:'Scholarships & Freeships Beneficiaries', key:'schol', unit:'count',
+       confirmed:'', confirmed_note:'Students receiving scholarships/freeships',
+       dept:'Admissions & Financial Aid'},
+      {name:'PCS – Lifts & Ramps (% of buildings)', key:'pcs_ramp', unit:'%',
+       confirmed:'>80', confirmed_note:'Lifts/Ramps available in >80% buildings per NIRF',
+       dept:'Facilities / Estate Office'},
+      {name:'PCS – Walking Aids Available', key:'pcs_walk', unit:'Y/N',
+       confirmed:'Yes', confirmed_note:'Walking aids provided per NIRF submission',
+       dept:'Facilities / Student Affairs'},
+      {name:'RD – Regions of Diversity (States)', key:'rd', unit:'count',
+       confirmed:'', confirmed_note:'Number of states/UTs represented in student body',
+       dept:'Admissions & Financial Aid'},
+      {name:'MoUs / Collaborations', key:'mou', unit:'count',
+       confirmed:'', confirmed_note:'Active MoUs with industry/institutions',
+       dept:'R&D Cell / International Relations Office'}
+    ]
+  },
+  {
+    name:'Perception (PR)', weight:'10', color:'#bf360c',
+    desc:'Academic peer perception and employer/corporate perception scores',
+    metrics:[
+      {name:'PR – Academic Peer Perception Score', key:'pr', unit:'score',
+       confirmed:'', confirmed_note:'Filled by NIRF portal via survey',
+       dept:'Office of the Vice Chancellor / IQAC'},
+      {name:'CC – Corporate / Employer Perception Score', key:'cc', unit:'score',
+       confirmed:'', confirmed_note:'Filled by NIRF portal via employer survey',
+       dept:'Career Development Center / Admin'},
+      {name:'NIRF Faculty Entries Count', key:'nirf_fac', unit:'count',
+       confirmed:'24', confirmed_note:'24 faculty entered in NIRF portal',
+       dept:'HR Office'}
+    ]
+  }
 ];
 
 // ── AISHE DATA ────────────────────────────────────────
 const AISHE_SECTIONS_DATA = [
-  {title:'A – Basic Information',fields:[{label:'AISHE Code',key:'aishe_code',type:'text'},{label:'University Type',key:'univ_type',type:'select',opts:['Private','Deemed to be University','State Public','Central']},{label:'Year of Establishment',key:'year_est',type:'text'},{label:'Academic Year',key:'acad_year',type:'text'},{label:'Total Campus Area (Acres)',key:'campus_area',type:'text'}]},
-  {title:'B – Student Enrolment',fields:[{label:'Total Students (UG)',key:'stu_ug',type:'text'},{label:'Total Students (PG)',key:'stu_pg',type:'text'},{label:'Total Students (PhD)',key:'stu_phd',type:'text'},{label:'Total Female Students',key:'stu_female',type:'text'},{label:'Total SC Students',key:'stu_sc',type:'text'},{label:'Total ST Students',key:'stu_st',type:'text'},{label:'Total OBC Students',key:'stu_obc',type:'text'},{label:'Total Foreign Students',key:'stu_foreign',type:'text'}]},
-  {title:'C – Faculty Details',fields:[{label:'Total Regular Faculty (Male)',key:'fac_male',type:'text'},{label:'Total Regular Faculty (Female)',key:'fac_female',type:'text'},{label:'Faculty with PhD',key:'fac_phd',type:'text'},{label:'Faculty with PG',key:'fac_pg',type:'text'},{label:'Guest/Contractual Faculty',key:'fac_guest',type:'text'}]},
-  {title:'D – Programmes Offered',fields:[{label:'Total Programmes (UG)',key:'prog_ug',type:'text'},{label:'Total Programmes (PG)',key:'prog_pg',type:'text'},{label:'Total Programmes (PhD)',key:'prog_phd',type:'text'},{label:'Online/Distance Programmes',key:'prog_online',type:'text'}]},
-  {title:'E – Infrastructure',fields:[{label:'Total Classrooms',key:'infra_classrooms',type:'text'},{label:'Seminar Halls',key:'infra_seminar',type:'text'},{label:'Laboratories',key:'infra_labs',type:'text'},{label:'Library (Books)',key:'infra_books',type:'text'},{label:'Computer Terminals (Student)',key:'infra_computers',type:'text'},{label:'Hostel Capacity (Boys)',key:'infra_hostel_boys',type:'text'},{label:'Hostel Capacity (Girls)',key:'infra_hostel_girls',type:'text'}]},
-  {title:'F – Financial Details',fields:[{label:'Total Expenditure (₹ Lakhs)',key:'fin_total',type:'text'},{label:'Salary Expenditure (₹ Lakhs)',key:'fin_salary',type:'text'},{label:'Capital Expenditure (₹ Lakhs)',key:'fin_capital',type:'text'},{label:'Income from Fees (₹ Lakhs)',key:'fin_fees',type:'text'},{label:'Grants from Govt (₹ Lakhs)',key:'fin_grants',type:'text'}]}
+  {
+    title:'A – Basic Information',
+    dept:'ARC Office / Additional Registrar',
+    fields:[
+      {label:'AISHE Code',          key:'aishe_code',   type:'text',    confirmed:'U-1181'},
+      {label:'University Name',     key:'univ_name',    type:'text',    confirmed:'FLAME University'},
+      {label:'University Type',     key:'univ_type',    type:'select',  confirmed:'Deemed to be University',
+       opts:['Private','Deemed to be University','State Public','Central']},
+      {label:'State / UT',          key:'univ_state',   type:'text',    confirmed:'Maharashtra'},
+      {label:'District',            key:'univ_dist',    type:'text',    confirmed:'Pune'},
+      {label:'Year of Establishment',key:'year_est',    type:'text',    confirmed:'2015'},
+      {label:'Survey Year (AISHE)', key:'acad_year',    type:'text',    confirmed:'2024-25'},
+      {label:'Total Campus Area (Sq.m)', key:'campus_area', type:'text', confirmed:'132252.87',
+       note:'Source: AISHE DCF 2024-25 (Estate Office)'},
+      {label:'No. of Buildings',    key:'buildings',    type:'text',    confirmed:''},
+      {label:'Nodal Officer Name',  key:'nodal_name',   type:'text',    confirmed:''},
+      {label:'Nodal Officer Email', key:'nodal_email',  type:'text',    confirmed:''},
+      {label:'Vice-Chancellor Name',key:'vc_name',      type:'text',    confirmed:''}
+    ]
+  },
+  {
+    title:'B – Student Enrolment',
+    dept:'Additional Registrar / Examinations Office',
+    fields:[
+      {label:'UG Enrolled – Total', key:'stu_ug',       type:'text',    confirmed:'654',
+       note:'UG=654 per AISHE DCF 2024-25'},
+      {label:'UG Enrolled – Male',  key:'stu_ug_m',     type:'text',    confirmed:''},
+      {label:'UG Enrolled – Female',key:'stu_ug_f',     type:'text',    confirmed:''},
+      {label:'PG Enrolled – Total', key:'stu_pg',       type:'text',    confirmed:'107',
+       note:'PG=107 per AISHE DCF 2024-25 (NIRF: 289 MBA)'},
+      {label:'PG Enrolled – Male',  key:'stu_pg_m',     type:'text',    confirmed:'141',
+       note:'MBA male=141 per NIRF 2025'},
+      {label:'PG Enrolled – Female',key:'stu_pg_f',     type:'text',    confirmed:'148',
+       note:'MBA female=148 per NIRF 2025'},
+      {label:'PhD Enrolled – Total',key:'stu_phd',      type:'text',    confirmed:'8',
+       note:'PhD=8 per AISHE DCF; NIRF full-time=5'},
+      {label:'Total Enrolled Students',key:'stu_total', type:'text',    confirmed:'769',
+       note:'UG(654)+PG(107)+PhD(8)=769 per AISHE 2024-25'},
+      {label:'Total Female Students',key:'stu_female',  type:'text',    confirmed:''},
+      {label:'Total SC Students',   key:'stu_sc',       type:'text',    confirmed:''},
+      {label:'Total ST Students',   key:'stu_st',       type:'text',    confirmed:''},
+      {label:'Total OBC Students',  key:'stu_obc',      type:'text',    confirmed:''},
+      {label:'Total EWS Students',  key:'stu_ews',      type:'text',    confirmed:''},
+      {label:'Foreign/NRI Students',key:'stu_foreign',  type:'text',    confirmed:''},
+      {label:'PG Intake (2024-25)', key:'pg_intake',    type:'text',    confirmed:'155',
+       note:'PG sanctioned intake 2024-25 per NIRF'}
+    ]
+  },
+  {
+    title:'C – Faculty & Staff Details',
+    dept:'HR Office',
+    fields:[
+      {label:'Regular Faculty – Male', key:'fac_male',  type:'text',    confirmed:'109',
+       note:'M=109 per AISHE Teaching Staff DCF 2024-25'},
+      {label:'Regular Faculty – Female',key:'fac_female',type:'text',   confirmed:'74',
+       note:'F=74 per AISHE Teaching Staff DCF 2024-25'},
+      {label:'Regular Faculty – Total', key:'fac_total', type:'text',   confirmed:'183',
+       note:'Total 183 regular faculty per AISHE DCF'},
+      {label:'Faculty with PhD',     key:'fac_phd',     type:'text',    confirmed:'164',
+       note:'164 of 183 faculty hold PhD (89.6%)'},
+      {label:'Faculty with PG only', key:'fac_pg',      type:'text',    confirmed:'19'},
+      {label:'Guest/Contractual Faculty',key:'fac_guest',type:'text',   confirmed:''},
+      {label:'NIRF-Entered Faculty Count',key:'fac_nirf',type:'text',   confirmed:'24',
+       note:'24 faculty entered in NIRF portal 2025'},
+      {label:'Faculty – Business School',  key:'fac_biz',  type:'text', confirmed:'51',
+       note:'Business: 51 per Teaching Staff DCF'},
+      {label:'Faculty – Communication',    key:'fac_comm', type:'text', confirmed:'14',
+       note:'Communication: 14 per Teaching Staff DCF'},
+      {label:'Faculty – Computing',        key:'fac_comp', type:'text', confirmed:'16',
+       note:'Computing: 16 per Teaching Staff DCF'},
+      {label:'Faculty – Design',           key:'fac_des',  type:'text', confirmed:'9',
+       note:'Design: 9 per Teaching Staff DCF'},
+      {label:'Faculty – Liberal Arts',     key:'fac_lib',  type:'text', confirmed:'93',
+       note:'Liberal Arts: 93 per Teaching Staff DCF'},
+      {label:'Designation – Professor',    key:'desig_prof',    type:'text', confirmed:'2'},
+      {label:'Designation – Assoc. Professor',key:'desig_assoc',type:'text', confirmed:'39'},
+      {label:'Designation – Asst. Professor', key:'desig_asst', type:'text', confirmed:'117'},
+      {label:'Designation – Vice-Chancellor', key:'desig_vc',   type:'text', confirmed:'1'}
+    ]
+  },
+  {
+    title:'D – Programmes Offered',
+    dept:'Academic Departments / Program Office',
+    fields:[
+      {label:'UG Programmes',        key:'prog_ug',     type:'text',    confirmed:''},
+      {label:'PG Programmes',        key:'prog_pg',     type:'text',    confirmed:''},
+      {label:'PhD/Research Programmes',key:'prog_phd',  type:'text',    confirmed:''},
+      {label:'Online/Distance Programmes',key:'prog_online',type:'text',confirmed:'0'},
+      {label:'Certificate/Diploma Programmes',key:'prog_cert',type:'text',confirmed:''},
+      {label:'Integrated Programmes',key:'prog_int',    type:'text',    confirmed:''}
+    ]
+  },
+  {
+    title:'E – Infrastructure',
+    dept:'Facilities / Estate Office',
+    fields:[
+      {label:'Classrooms',          key:'infra_class',  type:'text',    confirmed:'20',
+       note:'20 classrooms per AISHE DCF 2024-25'},
+      {label:'Tutorial Rooms',      key:'infra_tut',    type:'text',    confirmed:''},
+      {label:'Seminar Halls',       key:'infra_sem',    type:'text',    confirmed:''},
+      {label:'Auditorium (Seats)',  key:'infra_aud',    type:'text',    confirmed:'519',
+       note:'Auditorium capacity 519 per AISHE DCF'},
+      {label:'Laboratories',        key:'infra_labs',   type:'text',    confirmed:''},
+      {label:'Computer Terminals (Student)',key:'infra_comp',type:'text',confirmed:'21',
+       note:'21 student computers per AISHE DCF'},
+      {label:'Library Area (Sq.m)', key:'infra_lib_area',type:'text',   confirmed:'2555',
+       note:'Library=2555 sq.m per AISHE DCF'},
+      {label:'Library Books',       key:'infra_books',  type:'text',    confirmed:''},
+      {label:'e-Journals Subscribed',key:'infra_ejrnl', type:'text',    confirmed:''},
+      {label:'Total Campus Area (Sq.m)',key:'campus_sqm',type:'text',   confirmed:'132252.87'}
+    ]
+  },
+  {
+    title:'F – Hostel & Residential Facilities',
+    dept:'Student Affairs / Housing & Residential Counselling',
+    fields:[
+      {label:'No. of Hostels',       key:'host_count',  type:'text',    confirmed:'24',
+       note:'24 hostel buildings per AISHE DCF'},
+      {label:'Hostel Capacity – Boys', key:'host_boys', type:'text',    confirmed:'1162',
+       note:'Boys capacity=1162 per AISHE DCF'},
+      {label:'Hostel Capacity – Girls',key:'host_girls',type:'text',    confirmed:'1628',
+       note:'Girls capacity=1628 per AISHE DCF'},
+      {label:'Total Hostel Capacity', key:'host_total', type:'text',    confirmed:'2790',
+       note:'Total ~2790 (Boys+Girls) per AISHE DCF'},
+      {label:'Residents – Boys (Actual)',key:'host_res_boys',type:'text',confirmed:''},
+      {label:'Residents – Girls (Actual)',key:'host_res_girls',type:'text',confirmed:''}
+    ]
+  },
+  {
+    title:'G – Placement & Careers',
+    dept:'Career Development Center',
+    fields:[
+      {label:'Total Students Placed (2024-25)',key:'plac_total',type:'text',confirmed:'260',
+       note:'Total placed=260 per AISHE DCF 2024-25'},
+      {label:'Placed – Male',        key:'plac_male',   type:'text',    confirmed:'103',
+       note:'Male placed=103 per AISHE DCF'},
+      {label:'Placed – Female',      key:'plac_female', type:'text',    confirmed:'157',
+       note:'Female placed=157 per AISHE DCF'},
+      {label:'Median Salary 2022-23 (₹ LPA)',key:'sal_2223',type:'text',confirmed:'8.25'},
+      {label:'Median Salary 2023-24 (₹ LPA)',key:'sal_2324',type:'text',confirmed:'10.00'},
+      {label:'Median Salary 2024-25 (₹ LPA)',key:'sal_2425',type:'text',confirmed:'8.50'},
+      {label:'Campus Recruiters Count',key:'plac_recr', type:'text',    confirmed:''}
+    ]
+  },
+  {
+    title:'H – Financial Details',
+    dept:'Finance & Accounts',
+    fields:[
+      {label:'Total Income (₹ Crores)',key:'fin_income_cr',type:'text', confirmed:'178.47',
+       note:'Total income=Rs.178.47 Cr per AISHE DCF FY 2024-25'},
+      {label:'Total Income (₹ Lakhs)', key:'fin_income_l', type:'text', confirmed:'17847',
+       note:'Rs.17847 Lakhs = Rs.178.47 Cr'},
+      {label:'Income from Fees (₹ L)', key:'fin_fees',     type:'text', confirmed:''},
+      {label:'Grants from Govt (₹ L)', key:'fin_grants',   type:'text', confirmed:''},
+      {label:'Income from Research (₹ L)',key:'fin_research',type:'text',confirmed:'266',
+       note:'Sponsored research Rs.2.66 Cr per NIRF'},
+      {label:'Income from Consultancy (₹ L)',key:'fin_consult',type:'text',confirmed:'158',
+       note:'Consultancy Rs.1.58 Cr per NIRF'},
+      {label:'Income from EDP/MDP (₹ L)',key:'fin_mdp',    type:'text', confirmed:'418',
+       note:'EDP/MDP Rs.4.18 Cr per NIRF'},
+      {label:'Salary Expenditure (₹ L)',key:'fin_salary',  type:'text', confirmed:''},
+      {label:'Capital Expenditure (₹ L)',key:'fin_capital',type:'text', confirmed:''},
+      {label:'Library Expenditure (₹ L)',key:'fin_lib',    type:'text', confirmed:''},
+      {label:'Lab Expenditure (₹ L)',   key:'fin_lab',     type:'text', confirmed:''},
+      {label:'Total Expenditure (₹ L)', key:'fin_total',   type:'text', confirmed:''}
+    ]
+  }
 ];
 
 // ═══ NAAC BUILDER ═════════════════════════════════════
@@ -3668,18 +3977,28 @@ function buildNIRF(){
   </div>`;
 
   document.getElementById('nirf-params-container').innerHTML = livePanel + NIRF_PARAMS_DATA.map(p=>{
+    const deptDesc = p.desc ? `<div style="font-size:11px;color:#aac;padding:4px 14px 8px">${p.desc}</div>` : '';
     const rows=p.metrics.map(m=>{
       const ld = nirfLive[m.key];
       const ldBadge = ld ? `<span style="background:#e3f2fd;color:#1565c0;border-radius:10px;padding:1px 8px;font-size:10px;font-weight:700;white-space:nowrap" title="${ld.src}">📊 ${ld.v}</span>` : '';
-      return `<div class="rank-metric-row">
-        <span class="rank-metric-name">${m.name}</span>
-        <span style="font-size:11px;color:#888;min-width:60px">${m.unit}</span>
+      const saved = (accState.nirf||{})[m.key];
+      const useVal = saved !== undefined ? saved : (m.confirmed||'');
+      const isConfirmed = !saved && m.confirmed;
+      const confBadge = isConfirmed
+        ? `<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:1px 6px;font-size:9px;font-weight:700;white-space:nowrap" title="${m.confirmed_note||''}">📋 ${m.confirmed}</span>`
+        : '';
+      const deptTag = m.dept ? `<span style="background:#f0f4ff;color:#0C3F6A;border-radius:8px;padding:1px 7px;font-size:9px;font-weight:600;white-space:nowrap">🏢 ${m.dept}</span>` : '';
+      return `<div class="rank-metric-row" style="flex-wrap:wrap;gap:4px">
+        <span class="rank-metric-name" style="min-width:220px">${m.name}</span>
+        <span style="font-size:11px;color:#888;min-width:55px">${m.unit}</span>
+        ${confBadge}
         ${ldBadge}
-        <input class="rank-inp" type="number" placeholder="Override" value="${(accState.nirf||{})[m.key]||''}" onchange="if(!accState.nirf)accState.nirf={};accState.nirf['${m.key}']=this.value">
+        ${deptTag}
+        <input class="rank-inp" type="text" placeholder="${m.confirmed?'Confirmed: '+m.confirmed:'Enter value'}" value="${useVal}" style="${isConfirmed?'border-left:3px solid #F58220;background:#fffaf5':''}" onchange="if(!accState.nirf)accState.nirf={};accState.nirf['${m.key}']=this.value">
         <select class="afi-sel" style="width:90px"><option>Pending</option><option>Draft</option><option>Final</option></select>
       </div>`;
     }).join('');
-    return `<div class="rank-param"><div class="rank-param-hdr" style="background:${p.color}"><span class="rank-param-name">${p.name}</span><span class="rank-param-wt">Weightage: ${p.weight}%</span></div><div class="rank-param-body">${rows}</div></div>`;
+    return `<div class="rank-param"><div class="rank-param-hdr" style="background:${p.color}"><span class="rank-param-name">${p.name}</span><span class="rank-param-wt">Weightage: ${p.weight}%</span></div>${deptDesc}<div class="rank-param-body">${rows}</div></div>`;
   }).join('');
 }
 
@@ -3729,15 +4048,23 @@ function buildAISHE(){
 
   const container = document.getElementById('aishe-container');
   container.innerHTML = livePanel + AISHE_SECTIONS_DATA.map(sec=>{
+    const deptTag = sec.dept ? `<span style="background:#e3f0ff;color:#0C3F6A;border-radius:10px;padding:2px 10px;font-size:10px;font-weight:700;margin-left:10px">&#127970; ${sec.dept}</span>` : '';
     const fields=sec.fields.map(f=>{
-      const v=(accState.aishe||{})[f.key]||'';
+      const saved=(accState.aishe||{})[f.key];
+      const v = saved !== undefined ? saved : (f.confirmed||'');
+      const isConfirmed = !saved && f.confirmed;
+      const confirmBadge = isConfirmed
+        ? `<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:1px 6px;font-size:9px;font-weight:700;margin-left:4px" title="${f.note||'From AISHE/NIRF report'}">&#128203; Report</span>`
+        : '';
+      const noteHtml = f.note ? `<div style="font-size:9px;color:#888;margin-top:2px">${f.note}</div>` : '';
       if(f.type==='select'){
-        const opts=(f.opts||[]).map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('');
-        return `<div class="form-field-2"><label>${f.label}</label><select onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value">${opts}</select></div>`;
+        const opts=(f.opts||[]).map(o=>`<option ${(o===v)?'selected':''}>${o}</option>`).join('');
+        return `<div class="form-field-2"><label>${f.label}${confirmBadge}</label><select onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value">${opts}</select>${noteHtml}</div>`;
       }
-      return `<div class="form-field-2"><label>${f.label}</label><input type="text" value="${v}" placeholder="Enter value" onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value"></div>`;
+      const borderStyle = isConfirmed ? 'border-left:3px solid #F58220;background:#fffaf5' : '';
+      return `<div class="form-field-2"><label>${f.label}${confirmBadge}</label><input type="text" value="${v}" placeholder="${f.confirmed?'Confirmed: '+f.confirmed:'Enter value'}" style="${borderStyle}" onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value">${noteHtml}</div>`;
     }).join('');
-    return `<div class="acc-card"><div class="aishe-sec-title">${sec.title}</div><div class="form-grid-2">${fields}</div></div>`;
+    return `<div class="acc-card"><div class="aishe-sec-title">${sec.title}${deptTag}</div><div class="form-grid-2">${fields}</div></div>`;
   }).join('');
 }
 
@@ -4163,9 +4490,18 @@ function accExport_DEPRECATED(){
   const blob=new Blob([lines.join('\n')],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='FLAME_NAAC_Progress_'+new Date().toISOString().split('T')[0]+'.txt';a.click();
 }
 function accAisheExport(){
-  const rows=AISHE_SECTIONS_DATA.flatMap(s=>s.fields.map(f=>({Section:s.title,Field:f.label,Value:(accState.aishe||{})[f.key]||''})));
+  const rows=AISHE_SECTIONS_DATA.flatMap(s=>s.fields.map(f=>{
+    const saved=(accState.aishe||{})[f.key];
+    const val = saved !== undefined ? saved : (f.confirmed||'');
+    return {Section:s.title, Dept:s.dept||'', Field:f.label, Value:val, Confirmed_From_Report:f.confirmed||'', Note:f.note||''};
+  }));
   if(typeof XLSX!=='undefined'){const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'AISHE Data');XLSX.writeFile(wb,'FLAME_AISHE_'+new Date().toISOString().split('T')[0]+'.xlsx');}
-  else{alert('Export not available.');}
+  else{
+    /* CSV fallback */
+    const hdr='Section,Dept,Field,Value,Confirmed_From_Report,Note\n';
+    const csv=hdr+rows.map(r=>[r.Section,r.Dept,r.Field,r.Value,r.Confirmed_From_Report,r.Note].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+    const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='FLAME_AISHE_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+  }
 }
 
 
