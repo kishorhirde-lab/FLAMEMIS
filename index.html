@@ -19,7 +19,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 /* ── BRAND HEADER (Login) ──────────────────────── */
 .lcard-brand{
   background:linear-gradient(135deg,#06101f 0%,#0d1f3c 45%,#1a3a6b 100%);
-  padding:34px 38px 28px;text-align:center;position:relative;overflow:hidden;
+  padding:30px 38px 24px;text-align:center;position:relative;overflow:hidden;
   border-bottom:3px solid #c8922a}
 .lcard-brand::before{
   content:'';position:absolute;top:-60px;right:-60px;
@@ -27,51 +27,32 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .lcard-brand::after{
   content:'';position:absolute;bottom:-60px;left:-60px;
   width:160px;height:160px;background:rgba(255,255,255,.03);border-radius:50%}
-.l-flame-ring{
-  width:68px;height:68px;margin:0 auto 16px;
-  background:rgba(200,146,42,.12);
-  border:2px solid rgba(200,146,42,.45);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;z-index:1;
-  box-shadow:0 0 24px rgba(200,146,42,.2)}
-.l-brand-name{
-  font-size:32px;font-weight:900;color:#ffffff;
-  letter-spacing:8px;line-height:1;margin-bottom:5px;
-  position:relative;z-index:1;
+/* ── Logo image wrapper ── */
+.l-logo-wrap{margin:0 auto 14px;position:relative;z-index:1}
+.l-logo-img{height:64px;width:auto;object-fit:contain;display:block;margin:0 auto;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.l-logo-fallback{display:none;flex-direction:column;align-items:center;gap:3px;position:relative;z-index:1}
+.l-brand-name{font-size:32px;font-weight:900;color:#ffffff;letter-spacing:8px;line-height:1;
   text-shadow:0 2px 12px rgba(0,0,0,.4)}
-.l-brand-type{
-  font-size:11.5px;font-weight:700;color:#c8922a;
-  letter-spacing:5px;text-transform:uppercase;
-  position:relative;z-index:1}
-.l-brand-city{
-  font-size:10px;color:rgba(255,255,255,.38);
-  letter-spacing:2px;margin-top:3px;
-  position:relative;z-index:1}
+.l-brand-type{font-size:11.5px;font-weight:700;color:#c8922a;letter-spacing:5px;text-transform:uppercase}
 .l-brand-tagline{
-  margin-top:14px;padding-top:12px;
-  border-top:1px solid rgba(255,255,255,.12);
-  font-size:12px;color:rgba(255,255,255,.55);
+  padding-top:12px;border-top:1px solid rgba(255,255,255,.12);
+  font-size:11.5px;color:rgba(255,255,255,.5);
   letter-spacing:.08em;position:relative;z-index:1}
 .lcard-body{padding:28px 38px 0}
 /* ── SIDEBAR BRAND ──────────────────────────────── */
 .s-logo-wrap{
-  padding:20px 18px 16px;
+  padding:18px 16px 14px;
   background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,transparent 100%);
-  border-bottom:1px solid rgba(255,255,255,.12)}
-.s-brand-row{display:flex;align-items:center;gap:11px}
-.s-flame-ring{
-  width:42px;height:42px;flex-shrink:0;
-  background:rgba(200,146,42,.15);
-  border:1.5px solid rgba(200,146,42,.4);
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 14px rgba(200,146,42,.15)}
-.s-brand-text{line-height:1.3}
+  border-bottom:1px solid rgba(255,255,255,.12);
+  text-align:center}
+.s-logo-img{width:140px;height:auto;object-fit:contain;display:block;margin:0 auto 8px;
+  filter:drop-shadow(0 1px 4px rgba(0,0,0,.35))}
+.s-logo-fallback{display:none;align-items:center;gap:9px;justify-content:center;margin-bottom:8px}
 .s-brand-name{font-size:18px;font-weight:900;color:#e8c46a;letter-spacing:4px}
 .s-brand-sub{font-size:9px;font-weight:600;color:#7a8db5;letter-spacing:2px;text-transform:uppercase}
 .s-brand-mis{font-size:9px;color:rgba(255,255,255,.28);text-transform:uppercase;
-  letter-spacing:.12em;font-weight:600;margin-top:9px}
+  letter-spacing:.12em;font-weight:600}
 /* ── LOGIN FOOTER ───────────────────────────────── */
 .lcard-foot{text-align:center;margin-top:20px;padding-top:14px;
   border-top:1px solid #f0f3fa}
@@ -653,16 +634,15 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   <div class="lcard">
     <!-- ── Brand Header ── -->
     <div class="lcard-brand">
-      <div class="l-flame-ring">
-        <svg width="28" height="34" viewBox="0 0 28 34" xmlns="http://www.w3.org/2000/svg">
-          <path d="M14 1C14 1 24 10 24 18C24 24.6 19.8 30 14 30C8.2 30 4 24.6 4 18C4 12.5 6.8 9.5 6.8 9.5C6.8 9.5 8.5 16 12.5 17.5C11 13 9.5 7 14 1Z" fill="#e8c46a"/>
-          <path d="M14 16C14 16 19 21 19 25.5C19 28.5 16.8 31 14 31C11.2 31 9 28.5 9 25.5C9 21 14 16 14 16Z" fill="#c8922a"/>
-          <rect x="10.5" y="31" width="7" height="2" rx="1" fill="#c8922a" opacity=".6"/>
-        </svg>
+      <div class="l-logo-wrap">
+        <img src="https://www.flame.edu.in/wp-content/uploads/2022/04/flame-university-logo-white.png"
+             alt="FLAME University" class="l-logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="l-logo-fallback">
+          <div class="l-brand-name">FLAME</div>
+          <div class="l-brand-type">University · Pune</div>
+        </div>
       </div>
-      <div class="l-brand-name">FLAME</div>
-      <div class="l-brand-type">University</div>
-      <div class="l-brand-city">Pune · Maharashtra</div>
       <div class="l-brand-tagline">Unified Management Information System</div>
     </div>
     <!-- ── Form Body ── -->
@@ -689,7 +669,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
     <button type="button" class="adm-link" id="btn-adm">Admin Login</button>
     </div><!-- /lcard-body -->
     <div class="lcard-foot">
-      <span>🏛 Powered by FLAME University, Pune</span>
+      <span>Powered by FLAME University &nbsp;·&nbsp; Pune, Maharashtra</span>
     </div>
   </div>
 </div>
@@ -752,17 +732,12 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 <div id="sc-form" hidden>
   <aside class="sidebar">
     <div class="s-logo-wrap">
-      <div class="s-brand-row">
-        <div class="s-flame-ring">
-          <svg width="20" height="25" viewBox="0 0 28 34" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 1C14 1 24 10 24 18C24 24.6 19.8 30 14 30C8.2 30 4 24.6 4 18C4 12.5 6.8 9.5 6.8 9.5C6.8 9.5 8.5 16 12.5 17.5C11 13 9.5 7 14 1Z" fill="#e8c46a"/>
-            <path d="M14 16C14 16 19 21 19 25.5C19 28.5 16.8 31 14 31C11.2 31 9 28.5 9 25.5C9 21 14 16 14 16Z" fill="#c8922a"/>
-          </svg>
-        </div>
-        <div class="s-brand-text">
-          <div class="s-brand-name">FLAME</div>
-          <div class="s-brand-sub">University · Pune</div>
-        </div>
+      <img src="https://www.flame.edu.in/wp-content/uploads/2022/04/flame-university-logo-white.png"
+           alt="FLAME University" class="s-logo-img"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="s-logo-fallback">
+        <div class="s-brand-name">FLAME</div>
+        <div class="s-brand-sub">University · Pune</div>
       </div>
       <div class="s-brand-mis">Unified MIS Portal</div>
     </div>
@@ -791,14 +766,12 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 <div id="sc-admin" hidden>
   <div class="adm-bar">
     <div class="adm-left">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div style="width:40px;height:40px;background:rgba(200,146,42,.14);border:1.5px solid rgba(200,146,42,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(200,146,42,.18);flex-shrink:0">
-          <svg width="18" height="22" viewBox="0 0 28 34" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 1C14 1 24 10 24 18C24 24.6 19.8 30 14 30C8.2 30 4 24.6 4 18C4 12.5 6.8 9.5 6.8 9.5C6.8 9.5 8.5 16 12.5 17.5C11 13 9.5 7 14 1Z" fill="#e8c46a"/>
-            <path d="M14 16C14 16 19 21 19 25.5C19 28.5 16.8 31 14 31C11.2 31 9 28.5 9 25.5C9 21 14 16 14 16Z" fill="#c8922a"/>
-          </svg>
-        </div>
-        <div style="line-height:1.25">
+      <div style="display:flex;align-items:center;gap:14px">
+        <img src="https://www.flame.edu.in/wp-content/uploads/2022/04/flame-university-logo-white.png"
+             alt="FLAME University"
+             style="height:40px;width:auto;object-fit:contain;display:block;filter:drop-shadow(0 1px 4px rgba(0,0,0,.4))"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;align-items:center;gap:8px">
           <div style="font-size:18px;font-weight:900;color:#e8c46a;letter-spacing:4px">FLAME</div>
           <div style="font-size:9px;color:#a0b0cc;font-weight:600;letter-spacing:2.5px;text-transform:uppercase">University · Pune</div>
         </div>
