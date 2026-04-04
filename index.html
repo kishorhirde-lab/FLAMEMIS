@@ -889,42 +889,47 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
       <div class="acc-card">
         <div class="acc-card-title">❌ Minor Non-Conformity Tracker — ISO 41001:2018</div>
         <table class="afi-tbl">
-          <thead><tr><th>#</th><th>Clause</th><th>Department</th><th>Non-Conformity</th><th>Audit Status (Mar 2025)</th><th>Target Date (Sept 2025)</th><th>Internal Status</th></tr></thead>
+          <thead><tr><th>#</th><th>Clause</th><th>Department</th><th>Non-Conformity</th><th>Audit Status (Mar 2025)</th><th>Target Date (Sept 2025)</th><th>Internal Status</th><th style="width:50px"></th></tr></thead>
           <tbody id="afi41-tbody">
             <tr>
               <td>1</td><td>9.1</td><td>GRAT</td>
               <td>Feedback of student & faculty stakeholders — analysis of satisfaction index not done.</td>
               <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
               <td><input type="date" class="afi-inp" style="width:130px"></td>
-              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td>
+              <td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td>
             </tr>
             <tr>
               <td>2</td><td>4.4</td><td>GRAT</td>
               <td>ISO 41001:2018 FMS manual found inadequately prepared; to be revised and resubmitted.</td>
               <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
               <td><input type="date" class="afi-inp" style="width:130px"></td>
-              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td>
+              <td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td>
             </tr>
             <tr>
               <td>3</td><td>9.1</td><td>GRAT</td>
               <td>Feedback of students & visitors after usage of transportation services not collected and analyzed.</td>
               <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
               <td><input type="date" class="afi-inp" style="width:130px"></td>
-              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td>
+              <td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td>
             </tr>
             <tr>
               <td>4</td><td>7.2</td><td>Infirmary</td>
               <td>No evidence found that skill upgradation of doctors and paramedical staff through training is conducted and recorded.</td>
               <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
               <td><input type="date" class="afi-inp" style="width:130px"></td>
-              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td>
+              <td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td>
             </tr>
             <tr>
               <td>5</td><td>4.4</td><td>Infirmary</td>
               <td>ISO 41001:2018 FMS manual found inadequately prepared; to be revised and resubmitted.</td>
               <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
               <td><input type="date" class="afi-inp" style="width:130px"></td>
-              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td>
+              <td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td>
             </tr>
           </tbody>
         </table>
@@ -935,25 +940,111 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
       <div class="acc-card">
         <div class="acc-card-title">📌 Areas For Improvement (AFI) Tracker — ISO 41001</div>
         <table class="afi-tbl">
-          <thead><tr><th>#</th><th>Clause</th><th>Department</th><th>AFI Item</th><th>Target Date</th><th>Status</th></tr></thead>
+          <thead><tr><th>#</th><th>Clause</th><th>Department</th><th>AFI Item</th><th>Target Date</th><th>Status</th><th style="width:50px"></th></tr></thead>
           <tbody id="afi41-afi-tbody">
-            <tr><td>1</td><td>4.2</td><td>ICT</td><td>Parents Teacher association to be formed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
-            <tr><td>2</td><td>4.2</td><td>ICT</td><td>Parent's feedback — annual feedback to be taken.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
-            <tr><td>3</td><td>8.5</td><td>IT Department</td><td>Wi-Fi network found throughout campus around 90% — to be improved to 100%.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>1</td><td>4.2</td><td>ICT</td><td>Parents Teacher association to be formed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td><td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td></tr>
+            <tr><td>2</td><td>4.2</td><td>ICT</td><td>Parent's feedback — annual feedback to be taken.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td><td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td></tr>
+            <tr><td>3</td><td>8.5</td><td>IT Department</td><td>Wi-Fi network found throughout campus around 90% — to be improved to 100%.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td><td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td></tr>
             <tr><td>4</td><td>7.2</td><td>Infirmary</td><td>Survival technique training can be introduced for staff.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
             <tr><td>5</td><td>10.2</td><td>Infirmary</td><td>For bio-waste management, microwave-based system can be installed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
             <tr><td>6</td><td>8.1</td><td>Infirmary</td><td>Total disinfection of medical-related equipment can be done.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
             <tr><td>7</td><td>10.2</td><td>Infirmary</td><td>Doctor course in microbiology can be introduced.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
-            <tr><td>8</td><td>7.1</td><td>Library</td><td>Visitor gallery for internet usage to be developed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>8</td><td>7.1</td><td>Library</td><td>Visitor gallery for internet usage to be developed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td><td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td></tr>
             <tr><td>9</td><td>9.1</td><td>Library</td><td>Best user of the month to be displayed on LCD.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
-            <tr><td>10</td><td>10.2</td><td>Library</td><td>AI Library with chat box & 3D library of augmented reality can be developed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
-            <tr><td>11</td><td>8.1</td><td>Security</td><td>AI tech baggage scanner procurement is under process.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
-            <tr><td>12</td><td>6.1</td><td>Security</td><td>Security block & war room for emergency preparedness under development.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>10</td><td>10.2</td><td>Library</td><td>AI Library with chat box & 3D library of augmented reality can be developed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td><td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td></tr>
+            <tr><td>11</td><td>8.1</td><td>Security</td><td>AI tech baggage scanner procurement is under process.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td><td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td></tr>
+            <tr><td>12</td><td>6.1</td><td>Security</td><td>Security block & war room for emergency preparedness under development.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option></select></td><td><button onclick="this.closest('tr').remove()" title="Delete row" style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td></tr>
           </tbody>
         </table>
         <div style="margin-top:10px"><button class="acc-btn acc-btn-gold" onclick="isoAddAFI('afi41-afi-tbody')">+ Add AFI Item</button></div>
       </div>
     </div>
+    <!-- ── ISO 41001 Add / Edit Item Modal ── -->
+    <div id="iso41-item-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:16px">
+      <div style="background:#fff;border-radius:12px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.3)">
+        <div style="background:#0C3F6A;color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between">
+          <span id="iso41m-title" style="font-size:16px;font-weight:600">Add Audit Item</span>
+          <button onclick="document.getElementById('iso41-item-modal').style.display='none'"
+            style="background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1">&times;</button>
+        </div>
+        <div style="padding:20px;display:grid;gap:14px">
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Facility Unit / Department</label>
+              <select id="iso41m-dept" class="afi-sel" style="width:100%"></select>
+            </div>
+            <div>
+              <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Observation Type</label>
+              <select id="iso41m-type" class="afi-sel" style="width:100%">
+                <option>Observation</option><option>Minor NC</option><option>Areas For Improvement</option><option>Ok</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Observation / Description <span style="color:#c62828">*</span></label>
+            <textarea id="iso41m-obs" rows="3" style="width:100%;border:1px solid #dde3ee;border-radius:6px;padding:8px;font-size:13px;resize:vertical;box-sizing:border-box" placeholder="Describe the observation in detail..."></textarea>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">ISO 41001 Clause</label>
+              <select id="iso41m-clause" class="afi-sel" style="width:100%">
+                <option>4.1</option><option>4.2</option><option>4.3</option><option>4.4</option>
+                <option>5.1</option><option>5.2</option><option>5.3</option>
+                <option>6.1</option><option>6.2</option>
+                <option>7.1</option><option>7.2</option><option>7.3</option><option>7.4</option><option>7.5</option>
+                <option>8.1</option><option>8.2</option><option>8.3</option><option>8.4</option><option selected>8.5</option>
+                <option>9.1</option><option>9.2</option><option>9.3</option>
+                <option>10.1</option><option>10.2</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Status</label>
+              <select id="iso41m-status" class="afi-sel" style="width:100%">
+                <option>Open</option><option>In Progress</option><option>Closed</option>
+                <option>Need Management Approval</option><option>Escalated</option><option>NA</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Root Cause <span style="color:#888;font-weight:400">(mandatory for Minor NC)</span></label>
+            <textarea id="iso41m-root" rows="2" style="width:100%;border:1px solid #dde3ee;border-radius:6px;padding:8px;font-size:13px;resize:vertical;box-sizing:border-box" placeholder="Why did this observation arise?"></textarea>
+          </div>
+
+          <div>
+            <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Corrective / Preventive Action Taken</label>
+            <textarea id="iso41m-action" rows="2" style="width:100%;border:1px solid #dde3ee;border-radius:6px;padding:8px;font-size:13px;resize:vertical;box-sizing:border-box" placeholder="Describe action taken or proposed..."></textarea>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div>
+              <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Target Completion Date</label>
+              <input type="date" id="iso41m-date" class="afi-inp" style="width:100%">
+            </div>
+            <div>
+              <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Responsible Person / Dept</label>
+              <input type="text" id="iso41m-person" class="afi-inp" style="width:100%" placeholder="Name or department">
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:12px;color:#555;font-weight:600;display:block;margin-bottom:4px">Remarks / Evidence</label>
+            <textarea id="iso41m-remarks" rows="2" style="width:100%;border:1px solid #dde3ee;border-radius:6px;padding:8px;font-size:13px;resize:vertical;box-sizing:border-box" placeholder="Evidence link, document reference, or remarks..."></textarea>
+          </div>
+
+          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:4px">
+            <button onclick="document.getElementById('iso41-item-modal').style.display='none'"
+              style="background:#f5f5f5;color:#555;border:1px solid #ddd;border-radius:6px;padding:9px 22px;cursor:pointer;font-size:14px">Cancel</button>
+            <button onclick="_iso41SaveModal()"
+              style="background:#F58220;color:#fff;border:none;border-radius:6px;padding:9px 24px;cursor:pointer;font-size:14px;font-weight:600">💾 Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="acc-save-bar">
       <button class="acc-btn acc-btn-gold" onclick="accSaveAll()">💾 Save to Firebase</button>
       <span class="acc-save-msg">Last saved: —</span>
@@ -3646,7 +3737,7 @@ const ISO_CLAUSES_DATA = ISO41_CLAUSES_DATA;
 
 
 // ── ISO 41001:2018 Audit Report 2025 — Facility-wise Observations ─────────
-const ISO41_AUDIT_DATA = [
+let ISO41_AUDIT_DATA = [
   {
     dept: 'ICT',
     icon: '💻',
@@ -4440,61 +4531,219 @@ function _iso41UpdateSummary(){
   if(el_ok) el_ok.textContent=closed;
   if(el_afi)el_afi.textContent=open;
 }
+// ── ISO 41001 CRUD state ──────────────────────────────────────────────────
+let _iso41Filter = null;
+let _iso41ModalDeptIdx = -1;
+let _iso41ModalItemIdx = -1;
+
+const ISO41_STATUS_OPTS = [
+  'Open','In Progress','Closed','Need Management Approval','Escalated','NA'
+];
+const ISO41_STATUS_COLOR = {
+  'open':'#c62828','in progress':'#e65100','closed':'#2e7d32',
+  'need management approval':'#6a1b9a','escalated':'#0277bd','na':'#757575'
+};
+const ISO41_STATUS_BG = {
+  'open':'#ffebee','in progress':'#fff3e0','closed':'#e8f5e9',
+  'need management approval':'#f3e5f5','escalated':'#e1f5fe','na':'#f5f5f5'
+};
+const ISO41_CLAUSES_LIST = [
+  '4.1','4.2','4.3','4.4',
+  '5.1','5.2','5.3',
+  '6.1','6.2',
+  '7.1','7.2','7.3','7.4','7.5',
+  '8.1','8.2','8.3','8.4','8.5',
+  '9.1','9.2','9.3',
+  '10.1','10.2'
+];
+const ISO41_TYPE_OPTS = ['Observation','Minor NC','Areas For Improvement','Ok'];
+
+function _iso41StatusOpts(current){
+  return ISO41_STATUS_OPTS.map(s=>`<option value="${s}" ${s===current?'selected':''}>${s}</option>`).join('');
+}
+function _iso41ClauseOpts(current){
+  return ISO41_CLAUSES_LIST.map(c=>`<option value="${c}" ${c===current?'selected':''}>${c}</option>`).join('');
+}
+function _iso41TypeOpts(current){
+  return ISO41_TYPE_OPTS.map(t=>`<option value="${t}" ${t===current?'selected':''}>${t}</option>`).join('');
+}
+
 function _buildISO41AuditObs(filter){
+  if(filter!==undefined) _iso41Filter=filter;
   const acc=document.getElementById('iso41-audit-accordion'); if(!acc) return;
   const typeColor={'Minor NC':'#c62828','Observation':'#e65100','Areas For Improvement':'#1565c0','Ok':'#2e7d32'};
   const typeBg   ={'Minor NC':'#ffebee','Observation':'#fff3e0','Areas For Improvement':'#e3f2fd','Ok':'#e8f5e9'};
-  const statusColor={'open':'#c62828','close':'#2e7d32','closed':'#2e7d32','na':'#757575'};
-  acc.innerHTML=ISO41_AUDIT_DATA.map(dept=>{
+  acc.innerHTML=ISO41_AUDIT_DATA.map((dept,di)=>{
     let items=dept.items;
-    if(filter&&filter!=='all'){
-      if(filter==='Open'||filter==='Close')
-        items=items.filter(it=>(it.status||'').toLowerCase().startsWith(filter.toLowerCase()));
+    let filtered=items;
+    const f=_iso41Filter;
+    if(f&&f!=='all'){
+      if(f==='Open'||f==='Closed'||f==='In Progress'||f==='Need Management Approval'||f==='Escalated'||f==='NA')
+        filtered=items.filter(it=>(it.status||'Open')===f);
       else
-        items=items.filter(it=>it.type===filter);
+        filtered=items.filter(it=>it.type===f);
     }
-    if(!items.length) return '';
-    const rows=items.map(it=>{
+    const rows=filtered.map((it,ii)=>{
+      // find real index in unfiltered items array
+      const realIdx=items.indexOf(it);
       const tc=typeColor[it.type]||'#555';
       const tb=typeBg[it.type]||'#f5f5f5';
-      const sc=statusColor[(it.status||'open').toLowerCase()]||'#555';
-      return `<tr>
-        <td style="color:#888;font-size:12px;width:36px">${it.sr}</td>
-        <td><span style="background:${tb};color:${tc};font-size:11px;padding:2px 7px;border-radius:4px;white-space:nowrap">${it.type}</span></td>
-        <td style="font-size:13px">${it.obs}</td>
-        <td style="white-space:nowrap"><span style="background:#eef4ff;color:#1a3c5e;font-size:11px;padding:2px 6px;border-radius:4px">${it.clause}</span></td>
-        <td style="white-space:nowrap"><span style="color:${sc};font-size:12px;font-weight:600">${it.status||'Open'}</span></td>
+      const stKey=(it.status||'Open').toLowerCase();
+      const sc=ISO41_STATUS_COLOR[stKey]||'#555';
+      const sb=ISO41_STATUS_BG[stKey]||'#f5f5f5';
+      return `<tr style="border-bottom:1px solid #f0f4fa">
+        <td style="color:#aaa;font-size:11px;width:32px;text-align:center;padding:8px 4px">${it.sr}</td>
+        <td style="padding:8px 6px;width:130px">
+          <span style="background:${tb};color:${tc};font-size:11px;padding:2px 7px;border-radius:4px;white-space:nowrap">${it.type}</span>
+        </td>
+        <td style="font-size:13px;padding:8px 6px">${it.obs}</td>
+        <td style="white-space:nowrap;padding:8px 6px;width:70px;text-align:center">
+          <span style="background:#eef4ff;color:#1a3c5e;font-size:11px;padding:2px 7px;border-radius:4px">${it.clause}</span>
+        </td>
+        <td style="padding:6px;width:180px">
+          <select class="afi-sel" style="font-size:11px;background:${sb};color:${sc};border:1px solid ${sc}40;padding:3px 6px;border-radius:4px;width:100%"
+            onchange="ISO41_AUDIT_DATA[${di}].items[${realIdx}].status=this.value;_iso41UpdateSummary()">
+            ${_iso41StatusOpts(it.status||'Open')}
+          </select>
+        </td>
+        <td style="padding:6px;white-space:nowrap;width:70px">
+          <button title="Edit" onclick="_iso41OpenModal(${di},${realIdx})"
+            style="background:#e3f0ff;color:#1a3c5e;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;margin-right:4px;font-size:13px">✏️</button>
+          <button title="Delete" onclick="_iso41DeleteItem(${di},${realIdx})"
+            style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:13px">🗑️</button>
+        </td>
       </tr>`;
     }).join('');
+    const openCnt=items.filter(it=>!['Closed','NA'].includes(it.status||'Open')).length;
     return `<div style="margin-bottom:8px;border:1px solid #e0e8f0;border-radius:8px;overflow:hidden">
-      <div style="background:#1a3c5e;color:#fff;padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:8px"
-           onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
-        <span style="font-size:18px">${dept.icon}</span>
-        <strong>${dept.dept}</strong>
-        <span style="margin-left:auto;background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:10px;font-size:12px">${items.length} items</span>
-        <span style="font-size:12px;opacity:0.7">▼</span>
+      <div style="background:#1a3c5e;color:#fff;padding:10px 14px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:18px;cursor:pointer" onclick="this.parentElement.nextElementSibling.style.display=this.parentElement.nextElementSibling.style.display==='none'?'block':'none'">${dept.icon}</span>
+        <strong style="cursor:pointer;flex:1" onclick="this.parentElement.nextElementSibling.style.display=this.parentElement.nextElementSibling.style.display==='none'?'block':'none'">${dept.dept}</strong>
+        <span style="background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:10px;font-size:12px">${filtered.length}/${items.length} items</span>
+        ${openCnt>0?`<span style="background:#F58220;padding:2px 8px;border-radius:10px;font-size:11px">${openCnt} open</span>`:'<span style="background:#2e7d32;padding:2px 8px;border-radius:10px;font-size:11px">All closed</span>'}
+        <button onclick="_iso41OpenModal(${di},-1)" title="Add item to this department"
+          style="background:#F58220;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:12px;white-space:nowrap">+ Add</button>
+        <button onclick="_iso41DeleteDept(${di})" title="Remove this department"
+          style="background:rgba(255,255,255,0.1);color:#ffcdd2;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:4px 8px;cursor:pointer;font-size:12px">🗑️</button>
+        <span style="font-size:12px;opacity:0.6;cursor:pointer" onclick="this.parentElement.nextElementSibling.style.display=this.parentElement.nextElementSibling.style.display==='none'?'block':'none'">▼</span>
       </div>
-      <div style="display:none">
-        <table style="width:100%;border-collapse:collapse">
+      <div>
+        ${filtered.length===0?'<div style="padding:16px;text-align:center;color:#aaa;font-size:13px">No items match the current filter.</div>':
+        `<table style="width:100%;border-collapse:collapse">
           <thead><tr style="background:#f0f4fa">
-            <th style="width:36px;padding:6px 8px;font-size:11px;color:#555">#</th>
-            <th style="width:120px;padding:6px 8px;font-size:11px;color:#555;text-align:left">Type</th>
-            <th style="padding:6px 8px;font-size:11px;color:#555;text-align:left">Observation</th>
-            <th style="width:70px;padding:6px 8px;font-size:11px;color:#555">Clause</th>
-            <th style="width:80px;padding:6px 8px;font-size:11px;color:#555">Status</th>
+            <th style="width:32px;padding:6px 8px;font-size:11px;color:#666;text-align:center">#</th>
+            <th style="width:130px;padding:6px 8px;font-size:11px;color:#666;text-align:left">Type</th>
+            <th style="padding:6px 8px;font-size:11px;color:#666;text-align:left">Observation</th>
+            <th style="width:70px;padding:6px 8px;font-size:11px;color:#666;text-align:center">Clause</th>
+            <th style="width:180px;padding:6px 8px;font-size:11px;color:#666">Status</th>
+            <th style="width:70px;padding:6px 8px;font-size:11px;color:#666;text-align:center">Actions</th>
           </tr></thead>
           <tbody>${rows}</tbody>
-        </table>
+        </table>`}
       </div>
     </div>`;
-  }).join('');
+  }).join('')
+  + `<div style="margin-top:8px">
+      <button onclick="_iso41AddDept()"
+        style="background:#0C3F6A;color:#fff;border:none;border-radius:6px;padding:8px 18px;cursor:pointer;font-size:13px">
+        + Add Facility Unit
+      </button>
+    </div>`;
 }
+
 function iso41FilterAudit(f,btn){
   document.querySelectorAll('#iso41-audit-filter-bar .acc-btn').forEach(b=>{
     b.style.background=''; b.style.color='';
   });
   if(btn){btn.style.background='#1a3c5e';btn.style.color='#fff';}
   _buildISO41AuditObs(f==='all'?null:f);
+}
+
+// ── CRUD functions ──────────────────────────────────────────────────────────
+function _iso41OpenModal(deptIdx, itemIdx){
+  _iso41ModalDeptIdx=deptIdx;
+  _iso41ModalItemIdx=itemIdx;
+  const isEdit = itemIdx>=0;
+  document.getElementById('iso41m-title').textContent = isEdit?'Edit Audit Item':'Add Audit Item';
+  const deptSel = document.getElementById('iso41m-dept');
+  deptSel.innerHTML = ISO41_AUDIT_DATA.map((d,i)=>`<option value="${i}" ${i===deptIdx?'selected':''}>${d.icon} ${d.dept}</option>`).join('');
+  deptSel.disabled = isEdit;
+  if(isEdit){
+    const it=ISO41_AUDIT_DATA[deptIdx].items[itemIdx];
+    document.getElementById('iso41m-type').value   = it.type||'Observation';
+    document.getElementById('iso41m-obs').value    = it.obs||'';
+    document.getElementById('iso41m-clause').value = it.clause||'8.1';
+    document.getElementById('iso41m-status').value = it.status||'Open';
+    document.getElementById('iso41m-root').value   = it.root||'';
+    document.getElementById('iso41m-action').value = it.action||'';
+    document.getElementById('iso41m-date').value   = it.date||'';
+    document.getElementById('iso41m-person').value = it.person||'';
+    document.getElementById('iso41m-remarks').value= it.remarks||'';
+  } else {
+    document.getElementById('iso41m-type').value   = 'Observation';
+    document.getElementById('iso41m-obs').value    = '';
+    document.getElementById('iso41m-clause').value = '8.1';
+    document.getElementById('iso41m-status').value = 'Open';
+    document.getElementById('iso41m-root').value   = '';
+    document.getElementById('iso41m-action').value = '';
+    document.getElementById('iso41m-date').value   = '';
+    document.getElementById('iso41m-person').value = '';
+    document.getElementById('iso41m-remarks').value= '';
+  }
+  document.getElementById('iso41-item-modal').style.display='flex';
+}
+
+function _iso41SaveModal(){
+  const obs=document.getElementById('iso41m-obs').value.trim();
+  if(!obs){alert('Observation / description is required.');return;}
+  const deptIdx=parseInt(document.getElementById('iso41m-dept').value);
+  const item={
+    obs,
+    type:   document.getElementById('iso41m-type').value,
+    clause: document.getElementById('iso41m-clause').value,
+    status: document.getElementById('iso41m-status').value,
+    root:   document.getElementById('iso41m-root').value.trim(),
+    action: document.getElementById('iso41m-action').value.trim(),
+    date:   document.getElementById('iso41m-date').value,
+    person: document.getElementById('iso41m-person').value.trim(),
+    remarks:document.getElementById('iso41m-remarks').value.trim(),
+  };
+  if(_iso41ModalItemIdx>=0){
+    const existing=ISO41_AUDIT_DATA[deptIdx].items[_iso41ModalItemIdx];
+    item.sr=existing.sr;
+    ISO41_AUDIT_DATA[deptIdx].items[_iso41ModalItemIdx]=item;
+  } else {
+    item.sr=ISO41_AUDIT_DATA[deptIdx].items.length+1;
+    ISO41_AUDIT_DATA[deptIdx].items.push(item);
+  }
+  document.getElementById('iso41-item-modal').style.display='none';
+  _buildISO41AuditObs();
+  _iso41UpdateSummary();
+}
+
+function _iso41DeleteItem(deptIdx,itemIdx){
+  const it=ISO41_AUDIT_DATA[deptIdx].items[itemIdx];
+  if(!confirm('Delete this observation?\n\n'+it.obs))return;
+  ISO41_AUDIT_DATA[deptIdx].items.splice(itemIdx,1);
+  _buildISO41AuditObs();
+  _iso41UpdateSummary();
+}
+
+function _iso41AddDept(){
+  const name=prompt('Enter facility unit / department name:','');
+  if(!name||!name.trim())return;
+  const icon=prompt('Enter an emoji icon for this unit (optional):','🏢')||'🏢';
+  ISO41_AUDIT_DATA.push({dept:name.trim(),icon:icon.trim(),items:[]});
+  _buildISO41AuditObs();
+  _iso41UpdateSummary();
+}
+
+function _iso41DeleteDept(deptIdx){
+  const d=ISO41_AUDIT_DATA[deptIdx];
+  if(!confirm('Remove facility unit "'+d.dept+'" and all its '+d.items.length+' items?'))return;
+  ISO41_AUDIT_DATA.splice(deptIdx,1);
+  _buildISO41AuditObs();
+  _iso41UpdateSummary();
 }
 function buildISO21(){_buildISOPanel(ISO21_CLAUSES_DATA,'iso21-clauses-container','iso21','iso21');}
 // Backward compat
@@ -4504,7 +4753,15 @@ function isoAddAFI(tbodyId){
   const tbody=document.getElementById(id); if(!tbody)return;
   const n=tbody.rows.length+1;
   const row=tbody.insertRow();
-  row.innerHTML=`<td>${n}</td><td><input class="afi-inp" style="width:60px"></td><td><input class="afi-inp" style="width:130px"></td><td><input class="afi-inp" style="width:220px"></td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td>`;
+  const statusOpts=`<option>Open</option><option>In Progress</option><option>Closed</option><option>Need Management Approval</option><option>Escalated</option><option>NA</option>`;
+  row.innerHTML=`<td style="text-align:center">${n}</td>
+    <td><input class="afi-inp" style="width:60px" placeholder="e.g. 7.2"></td>
+    <td><input class="afi-inp" style="width:120px" placeholder="Department"></td>
+    <td><input class="afi-inp" style="width:200px" placeholder="Description"></td>
+    <td><input type="date" class="afi-inp" style="width:130px"></td>
+    <td><select class="afi-sel">${statusOpts}</select></td>
+    <td><button onclick="this.closest('tr').remove()" title="Delete row"
+      style="background:#ffebee;color:#c62828;border:none;border-radius:4px;padding:4px 8px;cursor:pointer">🗑️</button></td>`;
 }
 
 // ═══ QS BUILDER ═══════════════════════════════════════
