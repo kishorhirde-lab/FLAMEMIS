@@ -797,8 +797,8 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   </div>
   <!-- ═══ ADMIN TAB BAR ═══ -->
   <div class="adm-tab-bar">
-    <div class="adm-tab active" onclick="switchAdmTab('dashboard',this)">📊 Dashboard</div>
-    <div class="adm-tab" onclick="switchAdmTab('dept',this)">📋 Department Reports</div>
+    <div class="adm-tab active" onclick="switchAdmTab('dept',this)">📋 Department Reports</div>
+    <div class="adm-tab" onclick="switchAdmTab('dashboard',this)">📊 Dashboard</div>
     <div class="adm-tab" onclick="switchAdmTab('naac',this)">📋 NAAC – SSR</div>
     <div class="adm-tab" onclick="switchAdmTab('iso41',this)">🏅 ISO 41001</div>
     <div class="adm-tab" onclick="switchAdmTab('iso21',this)">🎓 ISO 21001</div>
@@ -814,7 +814,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 
 
   <!-- ═══ TAB: DASHBOARD ═══ -->
-  <div class="adm-tab-content active" id="adm-tab-dashboard">
+  <div class="adm-tab-content" id="adm-tab-dashboard">
     <div class="acc-body" style="padding:0">
 
       <!-- ── Header controls ── -->
@@ -822,7 +822,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
           <div>
             <div style="color:#fff;font-size:20px;font-weight:700">📊 FLAME MIS — Monthly Dashboard</div>
-            <div style="color:#FDB515;font-size:13px;margin-top:2px">Unified view across all tabs · FLAME University Pune</div>
+            <div style="color:#FDB515;font-size:13px;margin-top:2px">Monthly unified view · All tabs · FLAME University Pune</div>
           </div>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
             <select id="db-month" class="afi-sel" style="padding:7px 12px;font-size:13px;min-width:100px" onchange="buildDashboard()">
@@ -935,7 +935,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   </div>
 
   <!-- ═══ TAB: DEPARTMENT REPORTS (original) ═══ -->
-  <div class="adm-tab-content" id="adm-tab-dept">
+  <div class="adm-tab-content active" id="adm-tab-dept">
     <div class="adm-filters">
       <label>Dept:</label><select id="af-dept"></select>
       <label>Year:</label><select id="af-yr"></select>
@@ -2742,7 +2742,9 @@ async function renderAdmin(){
     $('af-dept').innerHTML=dOpts;
     $('af-yr').innerHTML=yOpts;
     window._arows=rows;
-    if(document.getElementById('adm-tab-dashboard')&&document.getElementById('adm-tab-dashboard').classList.contains('active')){buildDashboard();}
+    try{
+      if(document.getElementById('adm-tab-dashboard')&&document.getElementById('adm-tab-dashboard').classList.contains('active')){buildDashboard();}
+    }catch(e){console.warn('Dashboard build error:',e);}
     $('adm-body').innerHTML=statsHtml+'<div id="adm-tbl"></div>';
     renderATable(rows);
     ['af-dept','af-yr','af-type'].forEach(function(id){
@@ -3958,7 +3960,39 @@ function switchAdmTab(id, el){
   document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('adm-tab-'+id).classList.add('active');
   if(el) el.classList.add('active');
-  if(id==='dashboard'){buildDashboard();}
+  if(id==='dashboard'){try{buildDashboard();}catch(e){console.warn(e);}}
+  if(id==='dept'){
+    const rows=getAdminRows();
+    if(rows.length&&!document.getElementById('adm-tbl')){
+      const mon=rows.filter(r=>r.type==='monthly').length;
+      const ann=rows.filter(r=>r.type==='annual').length;
+      const depts=[...new Set(rows.map(r=>r.dept))].sort();
+      const years=[...new Set(rows.map(r=>r.year))].sort();
+      let sh='<div class="stats-row">';
+      [{v:rows.length,l:'Total'},{v:mon,l:'Monthly'},{v:ann,l:'Annual'},{v:depts.length,l:'Depts'}].forEach(s=>{
+        sh+='<div class="stat"><span>'+s.v+'</span><small>'+s.l+'</small></div>';
+      });
+      sh+='</div>';
+      let dO='<option value="">All Departments</option>';
+      depts.forEach(d=>dO+='<option>'+d+'</option>');
+      let yO='<option value="">All Years</option>';
+      years.forEach(y=>yO+='<option>'+y+'</option>');
+      $('af-dept').innerHTML=dO;
+      $('af-yr').innerHTML=yO;
+      $('adm-body').innerHTML=sh+'<div id="adm-tbl"></div>';
+      renderATable(rows);
+      ['af-dept','af-yr','af-type'].forEach(function(id2){
+        $(id2).onchange=function(){
+          const fd=$('af-dept').value,fy=$('af-yr').value,ft=$('af-type').value;
+          let f=window._arows||[];
+          if(fd)f=f.filter(r=>r.dept===fd);
+          if(fy)f=f.filter(r=>r.year===fy);
+          if(ft)f=f.filter(r=>r.type===ft);
+          renderATable(f);
+        };
+      });
+    }
+  }
   if(id==='naac'&&!window._naacBuilt){buildNAAC();window._naacBuilt=true;}
   if(id==='iso41'&&!window._iso41Built){buildISO41();window._iso41Built=true;}
   if(id==='iso21'&&!window._iso21Built){buildISO21();window._iso21Built=true;}
