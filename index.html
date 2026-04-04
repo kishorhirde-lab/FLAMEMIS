@@ -860,24 +860,98 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
         <div class="acc-card-title">🏅 ISO 41001:2018 — Facility Management System</div>
         <div class="acc-note" style="margin-bottom:12px">Covers all facility management clauses for FLAME University campus infrastructure, services, and operations. Surveillance audit findings tracked below.</div>
         <div class="acc-summary-grid" style="margin-bottom:0">
-          <div class="acc-stat-card"><div class="acc-stat-num" id="iso41-nc" style="color:#c62828">0</div><div class="acc-stat-lbl">Non-Conformities</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" id="iso41-nc" style="color:#c62828">5</div><div class="acc-stat-lbl">Minor NCs (All Closed)</div></div>
           <div class="acc-stat-card"><div class="acc-stat-num" id="iso41-obs" style="color:#e65100">0</div><div class="acc-stat-lbl">Observations</div></div>
-          <div class="acc-stat-card"><div class="acc-stat-num" id="iso41-ok" style="color:#2e7d32">0</div><div class="acc-stat-lbl">Compliant</div></div>
-          <div class="acc-stat-card"><div class="acc-stat-num" id="iso41-afi">3</div><div class="acc-stat-lbl">AFI Items Open</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" id="iso41-ok" style="color:#2e7d32">0</div><div class="acc-stat-lbl">Items Closed</div></div>
+          <div class="acc-stat-card"><div class="acc-stat-num" id="iso41-afi" style="color:#e65100">0</div><div class="acc-stat-lbl">Items Open</div></div>
+          <div class="acc-stat-card" style="border-left:3px solid #0C3F6A"><div class="acc-stat-num" style="color:#0C3F6A">132</div><div class="acc-stat-lbl">Total Audit Items</div></div>
+          <div class="acc-stat-card" style="border-left:3px solid #0C3F6A"><div class="acc-stat-num" style="color:#0C3F6A">10</div><div class="acc-stat-lbl">Facility Units Audited</div></div>
         </div>
       </div>
       <div id="iso41-clauses-container"></div>
+      <!-- Audit Observations Department Accordion -->
       <div class="acc-card">
-        <div class="acc-card-title">📌 AFI Tracker — ISO 41001</div>
+        <div class="acc-card-title">📋 Audit Report 2025 — Facility-wise Observations
+          <span style="float:right;font-size:12px;font-weight:400;color:#7a8db5">ISO 41001:2018 · Internal Audit Mar 2025</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" id="iso41-audit-filter-bar">
+          <button class="acc-btn" style="font-size:11px;padding:3px 10px;background:#1a3c5e;color:#fff" onclick="iso41FilterAudit('all',this)">All</button>
+          <button class="acc-btn" style="font-size:11px;padding:3px 10px" onclick="iso41FilterAudit('Minor NC',this)">❌ Minor NC</button>
+          <button class="acc-btn" style="font-size:11px;padding:3px 10px" onclick="iso41FilterAudit('Observation',this)">⚠️ Observations</button>
+          <button class="acc-btn" style="font-size:11px;padding:3px 10px" onclick="iso41FilterAudit('Areas For Improvement',this)">💡 AFI</button>
+          <button class="acc-btn" style="font-size:11px;padding:3px 10px" onclick="iso41FilterAudit('Open',this)">🔴 Open</button>
+          <button class="acc-btn" style="font-size:11px;padding:3px 10px" onclick="iso41FilterAudit('Close',this)">🟢 Closed</button>
+        </div>
+        <div id="iso41-audit-accordion"></div>
+      </div>
+
+      <!-- Minor NC Tracker -->
+      <div class="acc-card">
+        <div class="acc-card-title">❌ Minor Non-Conformity Tracker — ISO 41001:2018</div>
         <table class="afi-tbl">
-          <thead><tr><th>#</th><th>Clause</th><th>Department</th><th>Observation</th><th>Target Date</th><th>Status</th></tr></thead>
+          <thead><tr><th>#</th><th>Clause</th><th>Department</th><th>Non-Conformity</th><th>Audit Status (Mar 2025)</th><th>Target Date (Sept 2025)</th><th>Internal Status</th></tr></thead>
           <tbody id="afi41-tbody">
-            <tr><td>1</td><td>8.1</td><td>ICT</td><td>Asset register not updated for current FY</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
-            <tr><td>2</td><td>9.1</td><td>Infirmary</td><td>Performance monitoring KPIs not documented</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
-            <tr><td>3</td><td>7.2</td><td>Security</td><td>Staff competency records incomplete</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr>
+              <td>1</td><td>9.1</td><td>GRAT</td>
+              <td>Feedback of student & faculty stakeholders — analysis of satisfaction index not done.</td>
+              <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
+              <td><input type="date" class="afi-inp" style="width:130px"></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+            </tr>
+            <tr>
+              <td>2</td><td>4.4</td><td>GRAT</td>
+              <td>ISO 41001:2018 FMS manual found inadequately prepared; to be revised and resubmitted.</td>
+              <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
+              <td><input type="date" class="afi-inp" style="width:130px"></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+            </tr>
+            <tr>
+              <td>3</td><td>9.1</td><td>GRAT</td>
+              <td>Feedback of students & visitors after usage of transportation services not collected and analyzed.</td>
+              <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
+              <td><input type="date" class="afi-inp" style="width:130px"></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+            </tr>
+            <tr>
+              <td>4</td><td>7.2</td><td>Infirmary</td>
+              <td>No evidence found that skill upgradation of doctors and paramedical staff through training is conducted and recorded.</td>
+              <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
+              <td><input type="date" class="afi-inp" style="width:130px"></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+            </tr>
+            <tr>
+              <td>5</td><td>4.4</td><td>Infirmary</td>
+              <td>ISO 41001:2018 FMS manual found inadequately prepared; to be revised and resubmitted.</td>
+              <td><span style="background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:4px;font-size:12px">Closed Mar 2025</span></td>
+              <td><input type="date" class="afi-inp" style="width:130px"></td>
+              <td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td>
+            </tr>
           </tbody>
         </table>
-        <div style="margin-top:10px"><button class="acc-btn acc-btn-gold" onclick="isoAddAFI('afi41-tbody')">+ Add AFI Item</button></div>
+        <div style="margin-top:10px"><button class="acc-btn acc-btn-gold" onclick="isoAddAFI('afi41-tbody')">+ Add NC Item</button></div>
+      </div>
+
+      <!-- AFI Tracker -->
+      <div class="acc-card">
+        <div class="acc-card-title">📌 Areas For Improvement (AFI) Tracker — ISO 41001</div>
+        <table class="afi-tbl">
+          <thead><tr><th>#</th><th>Clause</th><th>Department</th><th>AFI Item</th><th>Target Date</th><th>Status</th></tr></thead>
+          <tbody id="afi41-afi-tbody">
+            <tr><td>1</td><td>4.2</td><td>ICT</td><td>Parents Teacher association to be formed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>2</td><td>4.2</td><td>ICT</td><td>Parent's feedback — annual feedback to be taken.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>3</td><td>8.5</td><td>IT Department</td><td>Wi-Fi network found throughout campus around 90% — to be improved to 100%.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>4</td><td>7.2</td><td>Infirmary</td><td>Survival technique training can be introduced for staff.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
+            <tr><td>5</td><td>10.2</td><td>Infirmary</td><td>For bio-waste management, microwave-based system can be installed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
+            <tr><td>6</td><td>8.1</td><td>Infirmary</td><td>Total disinfection of medical-related equipment can be done.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
+            <tr><td>7</td><td>10.2</td><td>Infirmary</td><td>Doctor course in microbiology can be introduced.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
+            <tr><td>8</td><td>7.1</td><td>Library</td><td>Visitor gallery for internet usage to be developed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>9</td><td>9.1</td><td>Library</td><td>Best user of the month to be displayed on LCD.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Closed</option><option>Open</option><option>In Progress</option></select></td></tr>
+            <tr><td>10</td><td>10.2</td><td>Library</td><td>AI Library with chat box & 3D library of augmented reality can be developed.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>11</td><td>8.1</td><td>Security</td><td>AI tech baggage scanner procurement is under process.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+            <tr><td>12</td><td>6.1</td><td>Security</td><td>Security block & war room for emergency preparedness under development.</td><td><input type="date" class="afi-inp" style="width:130px"></td><td><select class="afi-sel"><option>Open</option><option>In Progress</option><option>Closed</option></select></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:10px"><button class="acc-btn acc-btn-gold" onclick="isoAddAFI('afi41-afi-tbody')">+ Add AFI Item</button></div>
       </div>
     </div>
     <div class="acc-save-bar">
@@ -3535,40 +3609,237 @@ const NAAC_CRITERIA = [
 // ── ISO 41001:2018 DATA — Facility Management ─────────
 const ISO41_CLAUSES_DATA = [
   {num:'4',name:'Context of the Organisation',subs:[
-    {num:'4.1',name:'Understanding the organization and its context',def:'ok'},
-    {num:'4.2',name:'Understanding the needs and expectations of interested parties',def:'ok'},
+    {num:'4.1',name:'Understanding the organization and its context',def:'obs',note:'Aspect/Impact Analysis observations raised for ICT, Security, GRAT'},
+    {num:'4.2',name:'Understanding the needs and expectations of interested parties',def:'obs',note:'Parent, employer and stakeholder feedback gaps — ICT'},
     {num:'4.3',name:'Determining the scope of the FM system',def:'ok'},
-    {num:'4.4',name:'Facility Management System',def:'ok'}]},
+    {num:'4.4',name:'Facility Management System',def:'nc',note:'Minor NC: FMS manual found inadequate — GRAT & Infirmary'}]},
   {num:'5',name:'Leadership',subs:[
     {num:'5.1',name:'Leadership and commitment',def:'ok'},
     {num:'5.2',name:'Policy',def:'ok'},
-    {num:'5.3',name:'Organizational roles, responsibilities and authorities',def:'obs'}]},
+    {num:'5.3',name:'Organizational roles, responsibilities and authorities',def:'obs',note:'Zone-wise team formation not done — Estate'}]},
   {num:'6',name:'Planning',subs:[
-    {num:'6.1',name:'Actions to address risks and opportunities',def:'ok'},
-    {num:'6.2',name:'FM objectives and planning to achieve them',def:'obs'}]},
+    {num:'6.1',name:'Actions to address risks and opportunities',def:'nc',note:'HIRA incomplete across multiple depts (GRAT Minor NC, Library, Security, IT, Residential)'},
+    {num:'6.2',name:'FM objectives and planning to achieve them',def:'obs',note:'Short/long-term objectives not prepared — Estate, Infirmary, Residential'}]},
   {num:'7',name:'Support',subs:[
-    {num:'7.1',name:'Resources',def:'ok'},
-    {num:'7.2',name:'Competence',def:'nc'},
-    {num:'7.3',name:'Awareness',def:'ok'},
+    {num:'7.1',name:'Resources',def:'obs',note:'Infrastructure gaps in IT, Estate, Dining, Classroom Technology'},
+    {num:'7.2',name:'Competence',def:'nc',note:'Minor NC: Skill upgradation records missing — Infirmary; training gaps in Estate, GRAT, Security'},
+    {num:'7.3',name:'Awareness',def:'obs',note:'PPE statues, storyboards not displayed — Estate, Security, Dining, Infirmary'},
     {num:'7.4',name:'Communication',def:'ok'},
-    {num:'7.5',name:'Documented information',def:'obs'}]},
+    {num:'7.5',name:'Documented information',def:'nc',note:'Register indexing, records incomplete across ICT, IT, Library, Estate, Dining, Classroom'}]},
   {num:'8',name:'Operation',subs:[
-    {num:'8.1',name:'Operational planning and control',def:'nc'},
-    {num:'8.2',name:'Demand analysis',def:'ok'},
+    {num:'8.1',name:'Operational planning and control',def:'nc',note:'Server room, dining operations, classroom event management observations raised'},
+    {num:'8.2',name:'Demand analysis',def:'obs',note:'Mail automation and demand analysis improvements suggested — IT'},
     {num:'8.3',name:'Design of services',def:'ok'},
-    {num:'8.4',name:'Suppliers and partners',def:'ok'},
-    {num:'8.5',name:'Facility management services delivery',def:'ok'}]},
+    {num:'8.4',name:'Suppliers and partners',def:'obs',note:'Event management outsourcing documentation needed — Classroom'},
+    {num:'8.5',name:'Facility management services delivery',def:'obs',note:'Vehicle, library, dining service delivery improvements needed'}]},
   {num:'9',name:'Performance Evaluation',subs:[
-    {num:'9.1',name:'Monitoring, measurement, analysis and evaluation',def:'nc'},
+    {num:'9.1',name:'Monitoring, measurement, analysis and evaluation',def:'nc',note:'Minor NC: Satisfaction index analysis not done — GRAT, transport feedback missing; faculty & employer satisfaction gaps'},
     {num:'9.2',name:'Internal audit',def:'ok'},
     {num:'9.3',name:'Management review',def:'ok'}]},
   {num:'10',name:'Improvement',subs:[
     {num:'10.1',name:'Nonconformity and corrective action',def:'ok'},
-    {num:'10.2',name:'Continual improvement',def:'ok'}]}
+    {num:'10.2',name:'Continual improvement',def:'obs',note:'Multiple AFI items raised across IT, Library, Infirmary, Dining, Classroom'}]}
 ];
 
 // Backward-compat alias used in accrep ISO section
 const ISO_CLAUSES_DATA = ISO41_CLAUSES_DATA;
+
+
+// ── ISO 41001:2018 Audit Report 2025 — Facility-wise Observations ─────────
+const ISO41_AUDIT_DATA = [
+  {
+    dept: 'ICT',
+    icon: '💻',
+    items: [
+      {sr:1,  obs:'Aspect/Impact Analysis to be elaborated.',                                   type:'Observation',          clause:'4.1', status:'Open'},
+      {sr:2,  obs:'Ticket prioritization & MIS reporting to be improved.',                      type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:5,  obs:'Parents Teacher association can be formed.',                                 type:'Areas For Improvement',clause:'4.2', status:'Open'},
+      {sr:6,  obs:"Parent's feedback annual feedback to be taken.",                             type:'Areas For Improvement',clause:'4.2', status:'Open'},
+      {sr:7,  obs:'Employer satisfaction data to be given.',                                    type:'Observation',          clause:'9.1', status:'Open'},
+      {sr:8,  obs:'Environmental assessment to be elaborated.',                                 type:'Observation',          clause:'4.1', status:'Open'},
+      {sr:9,  obs:'Indexing of files.',                                                         type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:10, obs:'Changes in manual.',                                                         type:'Observation',          clause:'7.5', status:'Open'}
+    ]
+  },
+  {
+    dept: 'IT Department',
+    icon: '🖥️',
+    items: [
+      {sr:1,  obs:'IT enabled 3D classroom can be developed.',                                  type:'Observation',          clause:'7.1', status:'Open'},
+      {sr:2,  obs:'Multi language chat box to be developed.',                                   type:'Observation',          clause:'8.5', status:'Open'},
+      {sr:3,  obs:'Incubation center for startup can be done.',                                 type:'Observation',          clause:'7.1', status:'Open'},
+      {sr:4,  obs:'Robotics classroom as model classroom to be developed.',                     type:'Observation',          clause:'7.1', status:'Open'},
+      {sr:5,  obs:'CRT meeting for IT facility management during design, construction and occupation stage.',type:'Observation',clause:'8.1',status:'Open'},
+      {sr:6,  obs:'Wi-Fi network found throughout the campus around 90%.',                      type:'Areas For Improvement',clause:'8.5', status:'Open'},
+      {sr:7,  obs:'Automation of mail if students not in campus.',                              type:'Observation',          clause:'8.2', status:'Open'},
+      {sr:8,  obs:'AI based monitoring & 3D navigation facility can be developed.',             type:'Observation',          clause:'10.2',status:'Open'},
+      {sr:9,  obs:'GPS integration can be done for navigation.',                                type:'Observation',          clause:'8.5', status:'Open'},
+      {sr:10, obs:'Backup of internet provider to be developed for robust internet connection.',type:'Observation',          clause:'7.1', status:'Open'},
+      {sr:11, obs:'Printing facility to be improved.',                                          type:'Observation',          clause:'8.5', status:'Open'},
+      {sr:12, obs:'Disaster recovery center to be established.',                                type:'Observation',          clause:'6.1', status:'Open'},
+      {sr:13, obs:'No items to be kept in server room.',                                        type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:14, obs:'3 layer face recognition for server room access to be done.',                type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:15, obs:'New server room to be developed.',                                           type:'Observation',          clause:'7.1', status:'Open'},
+      {sr:16, obs:'Smoke detector inspection done on & due on dates to be displayed.',          type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:17, obs:'Super admin access control to be monitored.',                                type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:18, obs:'CCTV at server room main door to be provided for surveillance of server room access.', type:'Observation',clause:'8.1', status:'Open'},
+      {sr:19, obs:'Need to use futuristic technologies like AI, Machine Learning, and Quantum Computing.', type:'Observation',clause:'10.2',status:'Open'},
+      {sr:20, obs:'Health issue due to high electromagnetic effect to be checked.',             type:'Observation',          clause:'6.1', status:'Open'},
+      {sr:21, obs:'Log entries of server room various access control to be maintained for at least 6 months.', type:'Observation',clause:'7.5',status:'Open'}
+    ]
+  },
+  {
+    dept: 'Estate Department',
+    icon: '🏗️',
+    items: [
+      {sr:1,  obs:'Statue with PPE to be displayed in department.',                             type:'Observation',          clause:'7.3', status:'Open'},
+      {sr:2,  obs:'Tool kit for plumber, electrician, welder, car painter, housekeeping staff to be provided for prompt service.', type:'Observation',clause:'7.1',status:'Open'},
+      {sr:3,  obs:'Estate office infrastructure to be expanded as current office is very small.',type:'Observation',         clause:'7.1', status:'Open'},
+      {sr:4,  obs:'Health checkup of housekeeping staff & other staff once in a year to be done.',type:'Observation',        clause:'7.2', status:'Open'},
+      {sr:5,  obs:'Skill matrix to be maintained for all employees.',                           type:'Observation',          clause:'7.2', status:'Open'},
+      {sr:6,  obs:'Skill development training calendar for 2025-2026 to be prepared.',          type:'Observation',          clause:'7.2', status:'Open'},
+      {sr:7,  obs:'Workplace area to be divided into zones. Each zone team to be formed for at least 4 to 8 members.', type:'Observation',clause:'5.3',status:'Open'},
+      {sr:8,  obs:'Risk assessment for quality, environment and health & safety to be elaborated to cover estate related risks.', type:'Observation',clause:'6.1',status:'Open'},
+      {sr:9,  obs:'Induction training to be provided for new employees and record to be maintained.',type:'Observation',      clause:'7.2', status:'Open'},
+      {sr:10, obs:'List of registers and records to be maintained by the department.',          type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:11, obs:'Short term and long term objective for quality, environment and safety including new facility development to be planned for 2025-2026.', type:'Observation',clause:'6.2',status:'Open'}
+    ]
+  },
+  {
+    dept: 'Guest Relation, Accommodation & Transportation',
+    icon: '🚌',
+    items: [
+      {sr:1,  obs:'Risk assessment for Health and Safety (HIRA) to be modified and resubmitted for review.',type:'Observation',clause:'6.1',status:'Close'},
+      {sr:2,  obs:'Aspect/Impact analysis for environmental issue related risk also to be elaborated.',     type:'Observation',clause:'4.1',status:'Open'},
+      {sr:3,  obs:'Business risk assessment PEST/SWOT analysis to be done.',                    type:'Observation',          clause:'4.1', status:'Close'},
+      {sr:4,  obs:'Feedback of student & faculty stakeholders — analysis of satisfaction index to be done.', type:'Minor NC',clause:'9.1',status:'Close'},
+      {sr:5,  obs:'Vehicle washing point & washing pit to be developed.',                       type:'Observation',          clause:'8.5', status:'Close'},
+      {sr:6,  obs:'Interior of vehicles to be improved further.',                               type:'Observation',          clause:'8.5', status:'Open'},
+      {sr:7,  obs:'Driver changing room with grooming mirror, shoe shining machine, clothing iron facility to be provided.', type:'Observation',clause:'7.1',status:'Close'},
+      {sr:8,  obs:'GPS system in vehicles & drivers to be provided.',                           type:'Observation',          clause:'8.5', status:'Close'},
+      {sr:9,  obs:'Etiquettes and soft skill training to be given & annual training program to be developed.', type:'Observation',clause:'7.2',status:'Open'},
+      {sr:10, obs:'ISO 41001:2018 FMS manual is inadequately prepared; to be revised and resubmitted.',     type:'Minor NC', clause:'4.4',status:'Close'},
+      {sr:11, obs:'Health checkup of drivers needs to be done.',                                type:'Observation',          clause:'7.2', status:'Open'},
+      {sr:12, obs:'Guest feedback system to be established.',                                   type:'Observation',          clause:'9.1', status:'Open'},
+      {sr:13, obs:'Analysis of risk to be done.',                                               type:'Observation',          clause:'6.1', status:'Open'},
+      {sr:14, obs:'Feedback of students & visitors after usage of transportation services to be collected and analyzed.', type:'Minor NC',clause:'9.1',status:'Close'}
+    ]
+  },
+  {
+    dept: 'Infirmary',
+    icon: '🏥',
+    items: [
+      {sr:1,  obs:'Annual health checkup calendar to be made available.',                       type:'Observation',          clause:'8.1', status:'Close'},
+      {sr:2,  obs:'Infirmary manual not found adequate; to be revised.',                        type:'Observation',          clause:'4.4', status:'Close'},
+      {sr:3,  obs:'Fumigation record and frequency according to needs to be maintained.',       type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:4,  obs:'Medical camp annual calendar to be prepared.',                               type:'Observation',          clause:'6.2', status:'Open'},
+      {sr:5,  obs:'Survival technique training can be introduced.',                             type:'Areas For Improvement',clause:'7.2', status:'Close'},
+      {sr:6,  obs:'Expired medicine quantity to be reduced.',                                   type:'Observation',          clause:'8.1', status:'Close'},
+      {sr:7,  obs:'Storyboard to be updated.',                                                  type:'Observation',          clause:'7.3', status:'Close'},
+      {sr:8,  obs:'Digitalization of history & record to be paperless.',                        type:'Observation',          clause:'7.5', status:'Close'},
+      {sr:9,  obs:'In 360 course, medical subject can be introduced.',                          type:'Observation',          clause:'10.2',status:'Open'},
+      {sr:10, obs:'Ambulance check-ups to be scheduled regularly.',                             type:'Observation',          clause:'8.5', status:'Close'},
+      {sr:11, obs:'Continuous training to staff and doctors needed.',                           type:'Observation',          clause:'7.2', status:'Close'},
+      {sr:12, obs:'For bio-waste management, microwave-based system can be installed.',         type:'Areas For Improvement',clause:'10.2',status:'Close'},
+      {sr:13, obs:'Total disinfection of medical-related equipment can be done.',               type:'Areas For Improvement',clause:'8.1', status:'Close'},
+      {sr:14, obs:'Doctor course in microbiology can be introduced.',                           type:'Areas For Improvement',clause:'10.2',status:'Close'},
+      {sr:15, obs:'No evidence found that skill upgradation of doctors and paramedical staff through training is conducted and recorded.', type:'Minor NC',clause:'7.2',status:'Close'},
+      {sr:16, obs:'ISO 41001:2018 FMS manual is inadequately prepared; to be revised and resubmitted.',     type:'Minor NC', clause:'4.4',status:'Close'}
+    ]
+  },
+  {
+    dept: 'Library',
+    icon: '📚',
+    items: [
+      {sr:1,  obs:'Old articles to be converted into digital format for better accessibility and preservation.', type:'Observation',clause:'10.2',status:'Close'},
+      {sr:2,  obs:'Herbal pest control to be done; pest control certificate & MSDS required.',  type:'Observation',          clause:'8.1', status:'Close'},
+      {sr:3,  obs:'All registers, inspection log, page numbering, and authorization of registers by librarian to be done.', type:'Observation',clause:'7.5',status:'Open'},
+      {sr:4,  obs:'Banned books, rare books, secret books, manuscripts, and templates collection section to be developed.', type:'Observation',clause:'8.5',status:'Open'},
+      {sr:5,  obs:'Register board numbering to be done.',                                       type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:6,  obs:'For chair & furniture location fixing, L-type radium reflected marking to be done.',     type:'Observation',clause:'8.1',status:'Open'},
+      {sr:7,  obs:'Steps grip to be developed by rough lining.',                                type:'Observation',          clause:'6.1', status:'Open'},
+      {sr:8,  obs:'Arrow marking to be done to avoid stampede and slippery falling hazard.',    type:'Observation',          clause:'6.1', status:'Open'},
+      {sr:9,  obs:'Visitor gallery for internet usage to be developed.',                        type:'Areas For Improvement',clause:'7.1', status:'Open'},
+      {sr:10, obs:'Best user of the month to be displayed on LCD.',                             type:'Areas For Improvement',clause:'9.1', status:'Close'},
+      {sr:11, obs:'Safety of 2nd floor open gallery to be reviewed & risk to be included in HIRA.', type:'Observation',     clause:'6.1', status:'Open'},
+      {sr:12, obs:'Metal detector to be made available with security.',                         type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:13, obs:'Binding of useful old journals and important newspapers to be done and preserved.', type:'Observation',   clause:'8.5', status:'Close'},
+      {sr:14, obs:'New innovative subject recommendation option to be added in LMS software.',  type:'Observation',          clause:'10.2',status:'Open'},
+      {sr:15, obs:'AI Library with chat box & 3D library of augmented reality can be developed.',type:'Areas For Improvement',clause:'10.2',status:'Open'},
+      {sr:16, obs:'New arrival display section & email information is available.',              type:'Ok',                   clause:'8.5', status:'Close'},
+      {sr:17, obs:'5S, TQC, TQM, IIT, Poka-Yoke, TPM subject of Japanese production system can be introduced.', type:'Observation',clause:'10.2',status:'Open'},
+      {sr:18, obs:'Small painting, civil work with isolation of area/WIP to be done.',          type:'Observation',          clause:'8.1', status:'Close'},
+      {sr:19, obs:'Phone notice board/LCD to be developed.',                                    type:'Observation',          clause:'8.5', status:'Open'},
+      {sr:20, obs:'Smart lighting & minimum 120 lux level to be maintained.',                   type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:21, obs:'Green library integration with nature reading place can be given with different hall themes.', type:'Observation',clause:'10.2',status:'Open'},
+      {sr:22, obs:'Audio book collection to be increased.',                                     type:'Observation',          clause:'8.5', status:'Close'},
+      {sr:23, obs:'Video library for running subjects & innovative topics to be developed.',    type:'Observation',          clause:'8.5', status:'Open'},
+      {sr:24, obs:'Chat box at help desk can be developed.',                                    type:'Observation',          clause:'8.5', status:'Close'},
+      {sr:25, obs:'Robotics-based help desk can be done.',                                      type:'Observation',          clause:'10.2',status:'Open'}
+    ]
+  },
+  {
+    dept: 'Classroom Technology',
+    icon: '🎓',
+    items: [
+      {sr:1,  obs:'Faculty count: 256 total, 143 visiting — record to be maintained up to date.',type:'Observation',         clause:'7.2', status:'Closed'},
+      {sr:2,  obs:'Faculty satisfaction index to be calculated.',                               type:'Observation',          clause:'9.1', status:'Open'},
+      {sr:3,  obs:'Student satisfaction 2022-23: 97.21%; 2023-24: 98.41% — trend analysis to be maintained.', type:'Observation',clause:'9.1',status:'Closed'},
+      {sr:4,  obs:'Student feedback on AC dust cleaning, smell, etc. to be addressed.',         type:'Observation',          clause:'9.1', status:'Closed'},
+      {sr:5,  obs:'Live checklist filling with tab/mobile on real time can be done.',           type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:6,  obs:'Events management facility is outsourced & students also participate — to be documented.', type:'Observation',clause:'8.4',status:'Open'},
+      {sr:7,  obs:'Event management & emergency handling to be added in detail in FM manual.',  type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:8,  obs:'Local body permission to be taken and acknowledged for large event management.',type:'Observation',        clause:'8.1', status:'Open'},
+      {sr:9,  obs:'Escalation matrix revision number and effective date to be updated.',        type:'Observation',          clause:'7.5', status:'Close'},
+      {sr:10, obs:'Tangible value of classroom services to be calculated.',                     type:'Observation',          clause:'9.1', status:'Open'},
+      {sr:11, obs:'AI classroom, 3D classroom, augmented reality, science classroom, robotics classroom to be developed.', type:'Observation',clause:'7.1',status:'Open'},
+      {sr:12, obs:'Emergency assembly point outside building to be developed.',                 type:'Observation',          clause:'6.1', status:'Open'},
+      {sr:13, obs:'Sustainable classroom integrating with environment can be done by lux control lighting.', type:'Observation',clause:'10.2',status:'Open'},
+      {sr:14, obs:'Maker & 3D printing lab to be recognized.',                                  type:'Observation',          clause:'7.1', status:'Open'},
+      {sr:15, obs:'Maths, Bio, Physics, Chemistry lab to be upgraded.',                         type:'Observation',          clause:'7.1', status:'Open'}
+    ]
+  },
+  {
+    dept: 'Security',
+    icon: '🔒',
+    items: [
+      {sr:1,  obs:'AI tech baggage scanner procurement is under process.',                      type:'Areas For Improvement',clause:'8.1', status:'Open'},
+      {sr:2,  obs:'Security block & war room for emergency preparedness under development.',    type:'Areas For Improvement',clause:'6.1', status:'Open'},
+      {sr:3,  obs:'Backup of security to be developed.',                                        type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:4,  obs:'Background check of security personnel to be done.',                         type:'Observation',          clause:'7.2', status:'Open'},
+      {sr:5,  obs:'Construction worker deployed for new site — construction risk to be identified in HIRA.', type:'Observation',clause:'6.1',status:'Open'},
+      {sr:6,  obs:'Aspect/Impact & SWOT to be elaborated.',                                     type:'Observation',          clause:'4.1', status:'Open'},
+      {sr:7,  obs:'Statue with PPE to be displayed.',                                           type:'Observation',          clause:'7.3', status:'Open'},
+      {sr:8,  obs:'Presentation to be updated.',                                                type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:9,  obs:'Storyboard to be displayed.',                                                type:'Observation',          clause:'7.3', status:'Open'}
+    ]
+  },
+  {
+    dept: 'Dining',
+    icon: '🍽️',
+    items: [
+      {sr:1,  obs:'Food wastage to be minimized.',                                              type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:2,  obs:'Water leakage to be attended promptly.',                                     type:'Observation',          clause:'8.5', status:'Open'},
+      {sr:3,  obs:'Compressor inspection done-on & due-on date to be displayed at least once a year.', type:'Observation',  clause:'7.5', status:'Open'},
+      {sr:4,  obs:'Dust inspection done-on & due-on dates to be displayed.',                    type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:5,  obs:'Statue of PPE to be displayed.',                                             type:'Observation',          clause:'7.3', status:'Open'},
+      {sr:6,  obs:'Solar waste heater to be provided.',                                         type:'Observation',          clause:'10.2',status:'Open'},
+      {sr:7,  obs:'Machine guard to be checked — open & clean.',                                type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:8,  obs:'Gas pipeline arrow direction, inspection done & due-on dates to be done.',   type:'Observation',          clause:'7.5', status:'Open'},
+      {sr:9,  obs:'Herbal pest control certificate to be available.',                           type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:10, obs:'Fire extinguisher to be shifted & yellow with red zebra marking to be done.',type:'Observation',          clause:'8.1', status:'Open'},
+      {sr:11, obs:'AC backup in food store to be installed.',                                   type:'Observation',          clause:'7.1', status:'Open'}
+    ]
+  },
+  {
+    dept: 'Residential Counselling',
+    icon: '🏠',
+    items: [
+      {sr:1,  obs:'HIRA, Aspect/Impact and SWOT analysis to be elaborated.',                    type:'Observation',          clause:'6.1', status:'Open'},
+      {sr:2,  obs:'Future plan to be elaborated.',                                              type:'Observation',          clause:'6.2', status:'Open'}
+    ]
+  }
+];
 
 // ── ISO 21001:2018 DATA — MSEO (Educational Orgs) ────
 const ISO21_CLAUSES_DATA = [
@@ -4144,7 +4415,87 @@ function _isoUpdateBadges(stateKey, prefix){
   if(el_obs)el_obs.textContent=obs;
   if(el_nc)el_nc.textContent=nc;
 }
-function buildISO41(){_buildISOPanel(ISO41_CLAUSES_DATA,'iso41-clauses-container','iso41','iso41');}
+function buildISO41(){
+  _buildISOPanel(ISO41_CLAUSES_DATA,'iso41-clauses-container','iso41','iso41');
+  _buildISO41AuditObs();
+  _iso41UpdateSummary();
+}
+function _iso41UpdateSummary(){
+  let nc=0,obs=0,afi=0,closed=0,total=0;
+  ISO41_AUDIT_DATA.forEach(d=>d.items.forEach(it=>{
+    total++;
+    if(it.type==='Minor NC') nc++;
+    else if(it.type==='Areas For Improvement') afi++;
+    else if(it.type==='Observation') obs++;
+    const st=(it.status||'').toLowerCase();
+    if(st==='close'||st==='closed'||st==='na') closed++;
+  }));
+  const open=total-closed;
+  const el_nc =document.getElementById('iso41-nc');
+  const el_obs=document.getElementById('iso41-obs');
+  const el_ok =document.getElementById('iso41-ok');
+  const el_afi=document.getElementById('iso41-afi');
+  if(el_nc) el_nc.textContent=nc;
+  if(el_obs)el_obs.textContent=obs;
+  if(el_ok) el_ok.textContent=closed;
+  if(el_afi)el_afi.textContent=open;
+}
+function _buildISO41AuditObs(filter){
+  const acc=document.getElementById('iso41-audit-accordion'); if(!acc) return;
+  const typeColor={'Minor NC':'#c62828','Observation':'#e65100','Areas For Improvement':'#1565c0','Ok':'#2e7d32'};
+  const typeBg   ={'Minor NC':'#ffebee','Observation':'#fff3e0','Areas For Improvement':'#e3f2fd','Ok':'#e8f5e9'};
+  const statusColor={'open':'#c62828','close':'#2e7d32','closed':'#2e7d32','na':'#757575'};
+  acc.innerHTML=ISO41_AUDIT_DATA.map(dept=>{
+    let items=dept.items;
+    if(filter&&filter!=='all'){
+      if(filter==='Open'||filter==='Close')
+        items=items.filter(it=>(it.status||'').toLowerCase().startsWith(filter.toLowerCase()));
+      else
+        items=items.filter(it=>it.type===filter);
+    }
+    if(!items.length) return '';
+    const rows=items.map(it=>{
+      const tc=typeColor[it.type]||'#555';
+      const tb=typeBg[it.type]||'#f5f5f5';
+      const sc=statusColor[(it.status||'open').toLowerCase()]||'#555';
+      return `<tr>
+        <td style="color:#888;font-size:12px;width:36px">${it.sr}</td>
+        <td><span style="background:${tb};color:${tc};font-size:11px;padding:2px 7px;border-radius:4px;white-space:nowrap">${it.type}</span></td>
+        <td style="font-size:13px">${it.obs}</td>
+        <td style="white-space:nowrap"><span style="background:#eef4ff;color:#1a3c5e;font-size:11px;padding:2px 6px;border-radius:4px">${it.clause}</span></td>
+        <td style="white-space:nowrap"><span style="color:${sc};font-size:12px;font-weight:600">${it.status||'Open'}</span></td>
+      </tr>`;
+    }).join('');
+    return `<div style="margin-bottom:8px;border:1px solid #e0e8f0;border-radius:8px;overflow:hidden">
+      <div style="background:#1a3c5e;color:#fff;padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:8px"
+           onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+        <span style="font-size:18px">${dept.icon}</span>
+        <strong>${dept.dept}</strong>
+        <span style="margin-left:auto;background:rgba(255,255,255,0.15);padding:2px 8px;border-radius:10px;font-size:12px">${items.length} items</span>
+        <span style="font-size:12px;opacity:0.7">▼</span>
+      </div>
+      <div style="display:none">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:#f0f4fa">
+            <th style="width:36px;padding:6px 8px;font-size:11px;color:#555">#</th>
+            <th style="width:120px;padding:6px 8px;font-size:11px;color:#555;text-align:left">Type</th>
+            <th style="padding:6px 8px;font-size:11px;color:#555;text-align:left">Observation</th>
+            <th style="width:70px;padding:6px 8px;font-size:11px;color:#555">Clause</th>
+            <th style="width:80px;padding:6px 8px;font-size:11px;color:#555">Status</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+function iso41FilterAudit(f,btn){
+  document.querySelectorAll('#iso41-audit-filter-bar .acc-btn').forEach(b=>{
+    b.style.background=''; b.style.color='';
+  });
+  if(btn){btn.style.background='#1a3c5e';btn.style.color='#fff';}
+  _buildISO41AuditObs(f==='all'?null:f);
+}
 function buildISO21(){_buildISOPanel(ISO21_CLAUSES_DATA,'iso21-clauses-container','iso21','iso21');}
 // Backward compat
 function buildISO(){buildISO41();}
