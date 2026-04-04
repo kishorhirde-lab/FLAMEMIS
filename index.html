@@ -797,7 +797,8 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   </div>
   <!-- ═══ ADMIN TAB BAR ═══ -->
   <div class="adm-tab-bar">
-    <div class="adm-tab active" onclick="switchAdmTab('dept',this)">📋 Department Reports</div>
+    <div class="adm-tab active" onclick="switchAdmTab('dashboard',this)">📊 Dashboard</div>
+    <div class="adm-tab" onclick="switchAdmTab('dept',this)">📋 Department Reports</div>
     <div class="adm-tab" onclick="switchAdmTab('naac',this)">📋 NAAC – SSR</div>
     <div class="adm-tab" onclick="switchAdmTab('iso41',this)">🏅 ISO 41001</div>
     <div class="adm-tab" onclick="switchAdmTab('iso21',this)">🎓 ISO 21001</div>
@@ -811,8 +812,130 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
     <div class="adm-tab" onclick="switchAdmTab('pinreset',this)">🔄 Reset PINs</div>
   </div>
 
+
+  <!-- ═══ TAB: DASHBOARD ═══ -->
+  <div class="adm-tab-content active" id="adm-tab-dashboard">
+    <div class="acc-body" style="padding:0">
+
+      <!-- ── Header controls ── -->
+      <div style="background:linear-gradient(135deg,#0C3F6A 0%,#1a3c5e 100%);padding:20px 24px;border-radius:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="color:#fff;font-size:20px;font-weight:700">📊 FLAME MIS — Monthly Dashboard</div>
+            <div style="color:#FDB515;font-size:13px;margin-top:2px">Unified view across all tabs · FLAME University Pune</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <select id="db-month" class="afi-sel" style="padding:7px 12px;font-size:13px;min-width:100px" onchange="buildDashboard()">
+              <option value="Apr">April</option><option value="May">May</option><option value="Jun">June</option>
+              <option value="Jul">July</option><option value="Aug">August</option><option value="Sep">September</option>
+              <option value="Oct">October</option><option value="Nov">November</option><option value="Dec">December</option>
+              <option value="Jan">January</option><option value="Feb">February</option><option value="Mar">March</option>
+            </select>
+            <select id="db-year" class="afi-sel" style="padding:7px 12px;font-size:13px;min-width:110px" onchange="buildDashboard()"></select>
+            <button onclick="buildDashboard()" style="background:#F58220;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:13px;font-weight:600">🔄 Refresh</button>
+            <button onclick="window.print()" style="background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:8px 14px;cursor:pointer;font-size:13px">🖨️ Print</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:20px 24px;display:grid;gap:20px">
+
+        <!-- ── KPI Row ── -->
+        <div id="db-kpi-row" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px"></div>
+
+        <!-- ── Main 2-col grid ── -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+          <!-- LEFT: Department Submission Status -->
+          <div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+            <div style="background:#f0f4fa;padding:12px 16px;border-bottom:1px solid #e0e8f0;display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:14px;font-weight:700;color:#1a3c5e">📋 Department Submission Status</span>
+              <div style="display:flex;gap:6px">
+                <button onclick="dbSetDeptTab('monthly')" id="db-dept-monthly-btn"
+                  style="font-size:11px;padding:3px 10px;border:none;border-radius:4px;cursor:pointer;background:#0C3F6A;color:#fff">Monthly</button>
+                <button onclick="dbSetDeptTab('annual')" id="db-dept-annual-btn"
+                  style="font-size:11px;padding:3px 10px;border:none;border-radius:4px;cursor:pointer;background:#e8edf5;color:#555">Annual</button>
+              </div>
+            </div>
+            <div id="db-dept-list" style="max-height:380px;overflow-y:auto"></div>
+          </div>
+
+          <!-- RIGHT: Accreditation Status -->
+          <div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+            <div style="background:#f0f4fa;padding:12px 16px;border-bottom:1px solid #e0e8f0">
+              <span style="font-size:14px;font-weight:700;color:#1a3c5e">🏅 Accreditation & Compliance Status</span>
+            </div>
+            <div id="db-acc-status" style="padding:14px"></div>
+          </div>
+        </div>
+
+        <!-- ── ISO 41001 Open Items ── -->
+        <div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+          <div style="background:#f0f4fa;padding:12px 16px;border-bottom:1px solid #e0e8f0;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:14px;font-weight:700;color:#1a3c5e">🏅 ISO 41001 — Open Observations by Facility Unit</span>
+            <button onclick="switchAdmTab('iso41',document.querySelector('[onclick*=iso41]'))"
+              style="font-size:11px;padding:3px 10px;border:1px solid #0C3F6A;border-radius:4px;background:none;color:#0C3F6A;cursor:pointer">View Full →</button>
+          </div>
+          <div id="db-iso41-bars" style="padding:16px"></div>
+        </div>
+
+        <!-- ── NAAC Criterion Progress ── -->
+        <div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+          <div style="background:#f0f4fa;padding:12px 16px;border-bottom:1px solid #e0e8f0;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:14px;font-weight:700;color:#1a3c5e">📋 NAAC — Criterion-wise Completion</span>
+            <button onclick="switchAdmTab('naac',document.querySelector('[onclick*=\"naac\"]'))"
+              style="font-size:11px;padding:3px 10px;border:1px solid #0C3F6A;border-radius:4px;background:none;color:#0C3F6A;cursor:pointer">View Full →</button>
+          </div>
+          <div id="db-naac-progress" style="padding:16px"></div>
+        </div>
+
+        <!-- ── Monthly Submission Trend ── -->
+        <div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+          <div style="background:#f0f4fa;padding:12px 16px;border-bottom:1px solid #e0e8f0">
+            <span style="font-size:14px;font-weight:700;color:#1a3c5e">📈 Monthly Submission Trend (Current AY)</span>
+          </div>
+          <div id="db-trend-chart" style="padding:16px"></div>
+        </div>
+
+        <!-- ── Quick Actions ── -->
+        <div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+          <div style="background:#f0f4fa;padding:12px 16px;border-bottom:1px solid #e0e8f0">
+            <span style="font-size:14px;font-weight:700;color:#1a3c5e">⚡ Quick Actions — Jump to Tab</span>
+          </div>
+          <div style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px">
+            <button onclick="switchAdmTab('dept',document.querySelector('[onclick*=dept]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">📋 Department Reports</button>
+            <button onclick="switchAdmTab('naac',document.querySelector('[onclick*=naac]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">📋 NAAC – SSR</button>
+            <button onclick="switchAdmTab('iso41',document.querySelector('[onclick*=iso41]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">🏅 ISO 41001</button>
+            <button onclick="switchAdmTab('iso21',document.querySelector('[onclick*=iso21]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">🎓 ISO 21001</button>
+            <button onclick="switchAdmTab('qs',document.querySelector('[onclick*=\"qs\"]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">🌐 QS I-GAUGE</button>
+            <button onclick="switchAdmTab('nirf',document.querySelector('[onclick*=nirf]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">📊 NIRF</button>
+            <button onclick="switchAdmTab('aishe',document.querySelector('[onclick*=aishe]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">📁 AISHE</button>
+            <button onclick="switchAdmTab('analytics',document.querySelector('[onclick*=analytics]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">📈 Analytics</button>
+            <button onclick="switchAdmTab('accrep',document.querySelector('[onclick*=accrep]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">📄 Accreditation Report</button>
+            <button onclick="switchAdmTab('comprep',document.querySelector('[onclick*=comprep]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">📑 Compliance Report</button>
+            <button onclick="switchAdmTab('pindir',document.querySelector('[onclick*=pindir]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">🔑 PIN Directory</button>
+            <button onclick="switchAdmTab('pinreset',document.querySelector('[onclick*=pinreset]'))"
+              style="padding:10px 14px;border:1px solid #e0e8f0;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-size:13px;color:#0C3F6A;font-weight:500">🔄 Reset PINs</button>
+          </div>
+        </div>
+
+      </div><!-- end grid -->
+    </div>
+  </div>
+
   <!-- ═══ TAB: DEPARTMENT REPORTS (original) ═══ -->
-  <div class="adm-tab-content active" id="adm-tab-dept">
+  <div class="adm-tab-content" id="adm-tab-dept">
     <div class="adm-filters">
       <label>Dept:</label><select id="af-dept"></select>
       <label>Year:</label><select id="af-yr"></select>
@@ -2619,6 +2742,7 @@ async function renderAdmin(){
     $('af-dept').innerHTML=dOpts;
     $('af-yr').innerHTML=yOpts;
     window._arows=rows;
+    if(document.getElementById('adm-tab-dashboard')&&document.getElementById('adm-tab-dashboard').classList.contains('active')){buildDashboard();}
     $('adm-body').innerHTML=statsHtml+'<div id="adm-tbl"></div>';
     renderATable(rows);
     ['af-dept','af-yr','af-type'].forEach(function(id){
@@ -3545,11 +3669,296 @@ async function exportToExcel(){
 ══════════════════════════════════════════════════════════════ */
 
 // ── Tab switcher ───────────────────────────────────────────
+function buildDashboard(){
+  /* ── Populate year selector from AY array ── */
+  const dbYrSel=document.getElementById('db-year');
+  if(dbYrSel&&!dbYrSel.options.length){
+    AY.forEach(y=>dbYrSel.add(new Option(y,y)));
+    dbYrSel.value=AY[AY.length-1]||'';
+  }
+  /* ── Auto-set current month ── */
+  const dbMonSel=document.getElementById('db-month');
+  if(dbMonSel&&!window._dbMonthSet){
+    const nowM=new Date().getMonth(); // 0=Jan
+    const ayM=[3,4,5,6,7,8,9,10,11,0,1,2]; // Apr=3...Mar=2
+    const mNames=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+    const best=mNames[ayM.indexOf(nowM)]||mNames[0];
+    dbMonSel.value=best;
+    window._dbMonthSet=true;
+  }
+  const selMon=(dbMonSel&&dbMonSel.value)||'Apr';
+  const selYr =(dbYrSel&&dbYrSel.value)||'';
+
+  const allRows=getAdminRows();
+  const MNAMES=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+
+  /* ── KPI Row ── */
+  const monthRows=allRows.filter(r=>r.period===selMon&&(!selYr||r.year===selYr));
+  const yearRows =allRows.filter(r=>!selYr||r.year===selYr);
+  const totalDepts=DEPTS.length;
+  const monDepts=MONTHLY_DEPTS.length;
+  const annDepts=ANNUAL_DEPTS.length;
+  const submittedMonDepts=[...new Set(monthRows.filter(r=>r.type==='monthly').map(r=>r.dept))].length;
+  const submittedAnnDepts=[...new Set(yearRows.filter(r=>r.type==='annual').map(r=>r.dept))].length;
+  const pendingMon=monDepts-submittedMonDepts;
+  const pendingAnn=annDepts-submittedAnnDepts;
+
+  // ISO 41001 open count
+  let iso41Open=0,iso41Total=0;
+  if(typeof ISO41_AUDIT_DATA!=='undefined'){
+    ISO41_AUDIT_DATA.forEach(d=>d.items.forEach(it=>{
+      iso41Total++;
+      const st=(it.status||'Open').toLowerCase();
+      if(st!=='closed'&&st!=='close'&&st!=='na') iso41Open++;
+    }));
+  }
+
+  // NAAC filled metrics
+  let naacFilled=0,naacTotal=0;
+  if(typeof NAAC_CRITERIA!=='undefined'&&accState.naac){
+    NAAC_CRITERIA.forEach(cr=>(cr.kis||[]).forEach(ki=>(ki.metrics||[]).forEach(m=>{
+      naacTotal++;
+      if(accState.naac[m.num]&&accState.naac[m.num].status) naacFilled++;
+    })));
+  }
+
+  // NIRF confirmed metrics
+  let nirfConf=0,nirfTotal=0;
+  if(typeof NIRF_PARAMS_DATA!=='undefined'){
+    NIRF_PARAMS_DATA.forEach(cat=>(cat.metrics||[]).forEach(m=>{
+      nirfTotal++;
+      if(m.confirmed||(accState.nirf&&accState.nirf[m.key])) nirfConf++;
+    }));
+  }
+
+  const kpiEl=document.getElementById('db-kpi-row');
+  if(kpiEl){
+    const kpis=[
+      {val:monthRows.length,         lbl:'Submissions This Month', sub:selMon+' '+selYr, color:'#0C3F6A', bg:'#eef4ff'},
+      {val:submittedMonDepts+'/'+monDepts, lbl:'Monthly Depts Submitted', sub:pendingMon+' pending', color:pendingMon>5?'#c62828':'#2e7d32', bg:pendingMon>5?'#ffebee':'#e8f5e9'},
+      {val:submittedAnnDepts+'/'+annDepts, lbl:'Annual Depts Submitted', sub:pendingAnn+' pending', color:pendingAnn>3?'#e65100':'#2e7d32', bg:pendingAnn>3?'#fff3e0':'#e8f5e9'},
+      {val:naacTotal?Math.round(naacFilled/naacTotal*100)+'%':'—', lbl:'NAAC Metric Status', sub:naacFilled+'/'+naacTotal+' metrics filled', color:'#1565c0', bg:'#e3f2fd'},
+      {val:iso41Open,                lbl:'ISO 41001 Open Items', sub:iso41Total+' total observations', color:iso41Open>50?'#c62828':'#e65100', bg:iso41Open>50?'#ffebee':'#fff3e0'},
+      {val:nirfConf+'/'+nirfTotal,  lbl:'NIRF Metrics Confirmed', sub:'from submitted reports', color:'#2e7d32', bg:'#e8f5e9'},
+    ];
+    kpiEl.innerHTML=kpis.map(k=>`
+      <div style="background:${k.bg};border-radius:10px;padding:16px 14px;border:1px solid ${k.color}20">
+        <div style="font-size:26px;font-weight:800;color:${k.color};line-height:1">${k.val}</div>
+        <div style="font-size:12px;font-weight:600;color:#333;margin-top:4px">${k.lbl}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">${k.sub}</div>
+      </div>`).join('');
+  }
+
+  /* ── Department Submission Status (default: monthly) ── */
+  window._dbDeptTab=window._dbDeptTab||'monthly';
+  _dbRenderDeptList(selMon,selYr,allRows);
+
+  /* ── Accreditation status ── */
+  const accEl=document.getElementById('db-acc-status');
+  if(accEl){
+    const iso41Pct=iso41Total?Math.round((iso41Total-iso41Open)/iso41Total*100):0;
+    const naacPct=naacTotal?Math.round(naacFilled/naacTotal*100):0;
+    const nirfPct=nirfTotal?Math.round(nirfConf/nirfTotal*100):0;
+
+    // ISO 21001 clause count
+    let iso21Ok=0,iso21Total2=0;
+    if(typeof ISO21_CLAUSES_DATA!=='undefined'&&accState.iso21){
+      ISO21_CLAUSES_DATA.forEach(cl=>(cl.subs||[]).forEach(s=>{
+        iso21Total2++;
+        if((accState.iso21[s.num]||s.def)==='ok') iso21Ok++;
+      }));
+    }
+    const iso21Pct=iso21Total2?Math.round(iso21Ok/iso21Total2*100):0;
+
+    // QS filled
+    let qsFilled=0,qsTotal=0;
+    if(typeof QS_PILLARS_DATA!=='undefined'&&accState.qs){
+      QS_PILLARS_DATA.forEach(p=>(p.metrics||[]).forEach(m=>{
+        qsTotal++;
+        if(accState.qs[m.key]) qsFilled++;
+      }));
+    }
+    const qsPct=qsTotal?Math.round(qsFilled/qsTotal*100):0;
+
+    // AISHE filled
+    let aisheFilled=0,aisheTotal=0;
+    if(typeof AISHE_SECTIONS_DATA!=='undefined'&&accState.aishe){
+      AISHE_SECTIONS_DATA.forEach(sec=>(sec.fields||[]).forEach(f=>{
+        aisheTotal++;
+        if(accState.aishe[f.key]||f.confirmed) aisheFilled++;
+      }));
+    }
+    const aishePct=aisheTotal?Math.round(aisheFilled/aisheTotal*100):0;
+
+    const accItems=[
+      {icon:'📋',lbl:'NAAC SSR',pct:naacPct,  color:'#1565c0',sub:naacFilled+'/'+naacTotal+' metrics',  tab:'naac'},
+      {icon:'🏅',lbl:'ISO 41001',pct:iso41Pct, color:iso41Open>20?'#c62828':'#2e7d32',sub:iso41Open+' open / '+iso41Total+' total',tab:'iso41'},
+      {icon:'🎓',lbl:'ISO 21001',pct:iso21Pct, color:'#6a1b9a',sub:iso21Ok+'/'+iso21Total2+' clauses OK',  tab:'iso21'},
+      {icon:'🌐',lbl:'QS I-GAUGE',pct:qsPct,  color:'#0277bd',sub:qsFilled+'/'+qsTotal+' metrics',   tab:'qs'},
+      {icon:'📊',lbl:'NIRF',      pct:nirfPct,  color:'#2e7d32',sub:nirfConf+'/'+nirfTotal+' confirmed',  tab:'nirf'},
+      {icon:'📁',lbl:'AISHE',     pct:aishePct, color:'#e65100',sub:aisheFilled+'/'+aisheTotal+' fields', tab:'aishe'},
+    ];
+    accEl.innerHTML=accItems.map(a=>{
+      const barColor=a.pct>=75?'#2e7d32':a.pct>=50?'#e65100':'#c62828';
+      return `<div style="margin-bottom:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:13px;font-weight:600;color:#1a3c5e">${a.icon} ${a.lbl}</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;color:#888">${a.sub}</span>
+            <span style="font-size:13px;font-weight:700;color:${barColor}">${a.pct}%</span>
+            <button onclick="switchAdmTab('${a.tab}',document.querySelector('[onclick*=${a.tab}]'))"
+              style="font-size:10px;padding:2px 8px;border:1px solid #dde3ee;border-radius:4px;background:#fff;cursor:pointer;color:#0C3F6A">→</button>
+          </div>
+        </div>
+        <div style="background:#eee;border-radius:4px;height:8px;overflow:hidden">
+          <div style="background:${barColor};height:100%;width:${a.pct}%;transition:width 0.5s;border-radius:4px"></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  /* ── ISO 41001 Facility-wise open items ── */
+  const isoEl=document.getElementById('db-iso41-bars');
+  if(isoEl&&typeof ISO41_AUDIT_DATA!=='undefined'){
+    const maxOpen=Math.max(...ISO41_AUDIT_DATA.map(d=>d.items.filter(it=>{
+      const st=(it.status||'Open').toLowerCase();
+      return st!=='closed'&&st!=='close'&&st!=='na';
+    }).length),1);
+    isoEl.innerHTML='<div style="display:grid;gap:10px">'+ISO41_AUDIT_DATA.map(dept=>{
+      const open=dept.items.filter(it=>{const st=(it.status||'Open').toLowerCase();return st!=='closed'&&st!=='close'&&st!=='na';}).length;
+      const total=dept.items.length;
+      const closed=total-open;
+      const pct=total?Math.round(closed/total*100):0;
+      const barW=total?Math.round(open/maxOpen*100):0;
+      const col=open===0?'#2e7d32':open>10?'#c62828':'#e65100';
+      return `<div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+          <span style="font-size:15px">${dept.icon}</span>
+          <span style="font-size:12px;font-weight:600;color:#333;flex:1">${dept.dept}</span>
+          <span style="font-size:11px;color:#888">${closed}/${total} closed</span>
+          <span style="font-size:12px;font-weight:700;color:${col};min-width:60px;text-align:right">${open} open</span>
+        </div>
+        <div style="background:#eee;border-radius:4px;height:7px;overflow:hidden">
+          <div style="background:${col};height:100%;width:${barW}%;border-radius:4px"></div>
+        </div>
+      </div>`;
+    }).join('')+'</div>';
+  }
+
+  /* ── NAAC Criterion Progress ── */
+  const naacEl=document.getElementById('db-naac-progress');
+  if(naacEl&&typeof NAAC_CRITERIA!=='undefined'){
+    naacEl.innerHTML='<div style="display:grid;gap:10px">'+NAAC_CRITERIA.map(cr=>{
+      let filled=0,total=0;
+      (cr.kis||[]).forEach(ki=>(ki.metrics||[]).forEach(m=>{
+        total++;
+        if(accState.naac&&accState.naac[m.num]&&accState.naac[m.num].status) filled++;
+      }));
+      const pct=total?Math.round(filled/total*100):0;
+      const col=pct>=75?'#2e7d32':pct>=50?'#1565c0':'#e65100';
+      return `<div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div>
+            <span style="font-size:12px;font-weight:700;color:${col};margin-right:8px">${cr.num}</span>
+            <span style="font-size:12px;color:#333">${cr.name}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;color:#888">${filled}/${total}</span>
+            <span style="font-size:12px;font-weight:700;color:${col};min-width:38px;text-align:right">${pct}%</span>
+          </div>
+        </div>
+        <div style="background:#eee;border-radius:4px;height:8px;overflow:hidden">
+          <div style="background:${col};height:100%;width:${pct}%;transition:width 0.6s;border-radius:4px"></div>
+        </div>
+      </div>`;
+    }).join('')+'</div>';
+  }
+
+  /* ── Monthly Submission Trend (last 6 months of AY) ── */
+  const trendEl=document.getElementById('db-trend-chart');
+  if(trendEl){
+    const mIdx=MNAMES.indexOf(selMon);
+    const last6=[];
+    for(let i=5;i>=0;i--){
+      let mi=(mIdx-i+12)%12;
+      last6.push(MNAMES[mi]);
+    }
+    const counts=last6.map(m=>{
+      return allRows.filter(r=>r.period===m&&r.type==='monthly'&&(!selYr||r.year===selYr)).length;
+    });
+    const maxC=Math.max(...counts,1);
+    const chartH=120;
+    trendEl.innerHTML=`
+      <div style="display:flex;align-items:flex-end;gap:8px;height:${chartH+40}px">
+        ${last6.map((m,i)=>{
+          const barH=Math.round(counts[i]/maxC*chartH);
+          const isCurrent=m===selMon;
+          const col=isCurrent?'#F58220':'#0C3F6A';
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <span style="font-size:11px;font-weight:600;color:${col}">${counts[i]}</span>
+            <div style="width:100%;background:${col};border-radius:4px 4px 0 0;height:${barH}px;min-height:4px;position:relative">
+              ${isCurrent?'<div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);background:#F58220;color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;white-space:nowrap">Current</div>':''}
+            </div>
+            <span style="font-size:11px;color:#888">${m}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="text-align:right;font-size:11px;color:#aaa;margin-top:8px">
+        Monthly submissions · ${selYr||'All years'}
+        <span style="display:inline-block;width:10px;height:10px;background:#F58220;border-radius:2px;margin-left:8px;vertical-align:middle"></span> Current month
+      </div>`;
+  }
+}
+
+/* ── Dept list renderer (monthly / annual toggle) ── */
+function _dbRenderDeptList(selMon,selYr,allRows){
+  const tab=window._dbDeptTab||'monthly';
+  const el=document.getElementById('db-dept-list'); if(!el) return;
+  document.getElementById('db-dept-monthly-btn').style.background=tab==='monthly'?'#0C3F6A':'#e8edf5';
+  document.getElementById('db-dept-monthly-btn').style.color=tab==='monthly'?'#fff':'#555';
+  document.getElementById('db-dept-annual-btn').style.background=tab==='annual'?'#0C3F6A':'#e8edf5';
+  document.getElementById('db-dept-annual-btn').style.color=tab==='annual'?'#fff':'#555';
+
+  const deptList=tab==='monthly'?MONTHLY_DEPTS:ANNUAL_DEPTS;
+  const submittedSet=new Set(
+    tab==='monthly'
+      ? allRows.filter(r=>r.type==='monthly'&&r.period===selMon&&(!selYr||r.year===selYr)).map(r=>r.dept)
+      : allRows.filter(r=>r.type==='annual'&&(!selYr||r.year===selYr)).map(r=>r.dept)
+  );
+  const submitted=deptList.filter(d=>submittedSet.has(d.name));
+  const pending  =deptList.filter(d=>!submittedSet.has(d.name));
+
+  el.innerHTML=`
+    <div style="padding:8px 12px;background:#e8f5e9;font-size:12px;font-weight:600;color:#2e7d32;border-bottom:1px solid #e0e8f0">
+      ✅ Submitted — ${submitted.length} department${submitted.length!==1?'s':''}
+    </div>
+    ${submitted.map(d=>`<div style="padding:8px 14px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:8px">
+      <span style="color:#2e7d32;font-size:14px">✅</span>
+      <span style="font-size:13px;color:#333">${d.name}</span>
+      ${tab==='monthly'?`<span style="margin-left:auto;font-size:11px;color:#aaa">${selMon}</span>`:''}
+    </div>`).join('')}
+    <div style="padding:8px 12px;background:#ffebee;font-size:12px;font-weight:600;color:#c62828;border-bottom:1px solid #e0e8f0;border-top:1px solid #e0e8f0">
+      🔴 Pending — ${pending.length} department${pending.length!==1?'s':''}
+    </div>
+    ${pending.map(d=>`<div style="padding:8px 14px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:8px">
+      <span style="color:#c62828;font-size:14px">🔴</span>
+      <span style="font-size:13px;color:#555">${d.name}</span>
+      <span style="margin-left:auto;font-size:11px;color:#aaa">Pending</span>
+    </div>`).join('')}`;
+}
+function dbSetDeptTab(tab){
+  window._dbDeptTab=tab;
+  const dbMonSel=document.getElementById('db-month');
+  const dbYrSel =document.getElementById('db-year');
+  _dbRenderDeptList((dbMonSel&&dbMonSel.value)||'Apr',(dbYrSel&&dbYrSel.value)||'',getAdminRows());
+}
+
 function switchAdmTab(id, el){
   document.querySelectorAll('.adm-tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('adm-tab-'+id).classList.add('active');
   if(el) el.classList.add('active');
+  if(id==='dashboard'){buildDashboard();}
   if(id==='naac'&&!window._naacBuilt){buildNAAC();window._naacBuilt=true;}
   if(id==='iso41'&&!window._iso41Built){buildISO41();window._iso41Built=true;}
   if(id==='iso21'&&!window._iso21Built){buildISO21();window._iso21Built=true;}
