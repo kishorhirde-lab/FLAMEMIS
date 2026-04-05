@@ -696,6 +696,66 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   border:1px solid #fca5a5}
 .cr-all-ok{display:flex;align-items:center;gap:8px;color:#166534;font-weight:600;font-size:13px;
   padding:12px 20px;background:#f0fdf4}
+
+/* ======================================================
+   AISHE ADMIN OVERRIDE PANEL — Professional Styles
+====================================================== */
+.aishe-adm-hero{background:linear-gradient(135deg,#0C3F6A 0%,#1565c0 60%,#1a3c5e 100%);
+  color:#fff;padding:18px 24px;border-radius:10px 10px 0 0;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.aishe-adm-hero-code{font-size:28px;font-weight:900;letter-spacing:.02em;line-height:1;
+  background:rgba(255,255,255,.13);border-radius:8px;padding:4px 12px;display:inline-block;margin-bottom:6px}
+.aishe-adm-hero-title{font-size:14px;font-weight:800}
+.aishe-adm-hero-sub{font-size:11px;color:rgba(255,255,255,.65);margin-top:3px}
+.aishe-adm-hero-right{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.aishe-adm-progress-wrap{text-align:center}
+.aishe-adm-pct{font-size:26px;font-weight:900;line-height:1}
+.aishe-adm-pct-lbl{font-size:10px;color:rgba(255,255,255,.65);margin-bottom:4px}
+.aishe-adm-pbar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;width:100px;overflow:hidden}
+.aishe-adm-pbar-fill{height:6px;background:#F58220;border-radius:3px;transition:width .7s}
+.aishe-save-all-btn{padding:9px 20px;background:#F58220;color:#fff;border:none;border-radius:8px;
+  font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.aishe-save-all-btn:hover{background:#d96e15}
+.aishe-adm-legend{display:flex;gap:10px;flex-wrap:wrap;padding:10px 18px;
+  background:#f8faff;border:1px solid #e8edf5;border-top:none;border-radius:0 0 8px 8px;margin-bottom:12px}
+.aishe-adm-legend span{font-size:10.5px;font-weight:600;display:flex;align-items:center;gap:4px}
+.aishe-sec-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);
+  margin-bottom:10px;border:1px solid #e8edf5;overflow:hidden}
+.aishe-sec-hdr{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;background:#f8faff;border-bottom:1px solid #e8edf5;user-select:none;gap:12px}
+.aishe-sec-hdr:hover{background:#eef3fb}
+.aishe-sec-card.open .aishe-sec-hdr{border-bottom:2px solid #0C3F6A}
+.aishe-sec-hdr-left{display:flex;align-items:center;gap:12px}
+.aishe-sec-num{width:32px;height:32px;background:#0C3F6A;color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.aishe-sec-title-text{font-size:13px;font-weight:700;color:#1a2942}
+.aishe-sec-sub{margin-top:3px}
+.aishe-dept-tag{background:#e3f0ff;color:#0C3F6A;border-radius:10px;padding:2px 9px;font-size:10px;font-weight:700}
+.aishe-sec-hdr-right{display:flex;align-items:center;gap:10px}
+.aishe-sec-count{font-size:11px;font-weight:700;white-space:nowrap}
+.aishe-sec-mini-bar{width:60px;height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.aishe-sec-chevron{font-size:11px;color:#9aabb8;transition:transform .2s;margin-left:2px}
+.aishe-sec-body{display:none;padding:16px 18px 14px}
+.aishe-sec-card.open .aishe-sec-body{display:block}
+.aishe-sec-card.open .aishe-sec-chevron{transform:rotate(180deg)}
+.aishe-fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;margin-bottom:14px}
+.aishe-field{padding:10px 12px;border-radius:7px;border:1px solid #e8edf5;transition:box-shadow .15s}
+.aishe-field:hover{box-shadow:0 2px 8px rgba(0,0,0,.09)}
+.aishe-field-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:6px}
+.aishe-field-label{font-size:11.5px;font-weight:600;color:#374151;flex:1;line-height:1.3}
+.aishe-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.aishe-badge-saved{background:#dcfce7;color:#166534}
+.aishe-badge-report{background:#fff3e0;color:#c2410c}
+.aishe-badge-empty{background:#f3f4f6;color:#9ca3af}
+.aishe-field-input{width:100%;padding:6px 9px;border:1px solid #e2e8f0;border-radius:5px;
+  font-size:12px;color:#1a2942;background:#fff;box-sizing:border-box;outline:none;transition:border .15s}
+.aishe-field-input:focus{border-color:#0C3F6A;box-shadow:0 0 0 2px rgba(12,63,106,.1)}
+.aishe-field-note{font-size:9.5px;color:#9aabb8;margin-top:4px;font-style:italic;line-height:1.3}
+.aishe-sec-footer{display:flex;align-items:center;gap:12px;padding-top:12px;border-top:1px solid #f0f4f8}
+.aishe-sec-save-btn{padding:7px 16px;background:#0C3F6A;color:#fff;border:none;border-radius:7px;
+  font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.aishe-sec-save-btn:hover{background:#0a3358}
+.aishe-sec-dept-note{font-size:10.5px;color:#9aabb8;font-style:italic}
 </style>
 <!-- SheetJS for Excel export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -5089,170 +5149,288 @@ const NIRF_PARAMS_DATA = [
 // ── AISHE DATA ────────────────────────────────────────
 const AISHE_SECTIONS_DATA = [
   {
-    title:'A – Basic Information',
+    title:'A \u2013 Basic Information',
     dept:'ARC Office / Additional Registrar',
     fields:[
-      {label:'AISHE Code',          key:'aishe_code',   type:'text',    confirmed:'U-1181'},
-      {label:'University Name',     key:'univ_name',    type:'text',    confirmed:'FLAME University'},
-      {label:'University Type',     key:'univ_type',    type:'select',  confirmed:'Deemed to be University',
-       opts:['Private','Deemed to be University','State Public','Central']},
-      {label:'State / UT',          key:'univ_state',   type:'text',    confirmed:'Maharashtra'},
-      {label:'District',            key:'univ_dist',    type:'text',    confirmed:'Pune'},
-      {label:'Year of Establishment',key:'year_est',    type:'text',    confirmed:'2015'},
-      {label:'Survey Year (AISHE)', key:'acad_year',    type:'text',    confirmed:'2024-25'},
-      {label:'Total Campus Area (Sq.m)', key:'campus_area', type:'text', confirmed:'132252.87',
+      {label:'AISHE Code',             key:'aishe_code',         type:'text',   confirmed:'U-1181'},
+      {label:'University Name',         key:'univ_name',          type:'text',   confirmed:'FLAME University'},
+      {label:'University Type',         key:'univ_type',          type:'select', confirmed:'State Private University',
+       opts:['Private','State Private University','Deemed to be University','State Public','Central']},
+      {label:'State / UT',             key:'univ_state',         type:'text',   confirmed:'Maharashtra'},
+      {label:'District',               key:'univ_dist',          type:'text',   confirmed:'Pune'},
+      {label:'Year of Establishment',  key:'year_est',           type:'text',   confirmed:'2015'},
+      {label:'Survey Year (AISHE)',    key:'acad_year',          type:'text',   confirmed:'2024-25'},
+      {label:'Total Campus Area (Sq.m)',key:'campus_area',       type:'text',   confirmed:'132252.87',
        note:'Source: AISHE DCF 2024-25 (Estate Office)'},
-      {label:'No. of Buildings',    key:'buildings',    type:'text',    confirmed:''},
-      {label:'Nodal Officer Name',  key:'nodal_name',   type:'text',    confirmed:''},
-      {label:'Nodal Officer Email', key:'nodal_email',  type:'text',    confirmed:''},
-      {label:'Vice-Chancellor Name',key:'vc_name',      type:'text',    confirmed:''}
+      {label:'No. of Buildings',       key:'buildings',          type:'text',   confirmed:'48',
+       note:'48 buildings per AISHE DCF 2024-25'},
+      {label:'Minority Institution',   key:'minority',           type:'select', confirmed:'Yes',
+       opts:['Yes','No']},
+      {label:'Minority Community',     key:'minority_comm',      type:'text',   confirmed:'Jains'},
+      {label:'Nodal Officer Name',     key:'nodal_name',         type:'text',   confirmed:''},
+      {label:'Nodal Officer Email',    key:'nodal_email',        type:'text',   confirmed:''},
+      {label:'Vice-Chancellor Name',   key:'vc_name',            type:'text',   confirmed:''}
     ]
   },
   {
-    title:'B – Student Enrolment',
+    title:'B \u2013 Student Enrolment (Regular)',
     dept:'Additional Registrar / Examinations Office',
     fields:[
-      {label:'UG Enrolled – Total', key:'stu_ug',       type:'text',    confirmed:'654',
-       note:'UG=654 per AISHE DCF 2024-25'},
-      {label:'UG Enrolled – Male',  key:'stu_ug_m',     type:'text',    confirmed:''},
-      {label:'UG Enrolled – Female',key:'stu_ug_f',     type:'text',    confirmed:''},
-      {label:'PG Enrolled – Total', key:'stu_pg',       type:'text',    confirmed:'107',
-       note:'PG=107 per AISHE DCF 2024-25 (NIRF: 289 MBA)'},
-      {label:'PG Enrolled – Male',  key:'stu_pg_m',     type:'text',    confirmed:'141',
+      {label:'Total Enrolled \u2013 Male',    key:'stu_total_m',    type:'text', confirmed:'884',
+       note:'Male=884 per AISHE DCF 2024-25'},
+      {label:'Total Enrolled \u2013 Female',  key:'stu_total_f',    type:'text', confirmed:'1547',
+       note:'Female=1547 per AISHE DCF 2024-25'},
+      {label:'Total Enrolled Students', key:'stu_total',          type:'text', confirmed:'2431',
+       note:'Total Regular=2431 per AISHE DCF 2024-25'},
+      {label:'UG Enrolled \u2013 Total',      key:'stu_ug',         type:'text', confirmed:'654',
+       note:'UG=654 per ABC registration / AISHE DCF 2024-25'},
+      {label:'UG Enrolled \u2013 Male',       key:'stu_ug_m',       type:'text', confirmed:''},
+      {label:'UG Enrolled \u2013 Female',     key:'stu_ug_f',       type:'text', confirmed:''},
+      {label:'PG Enrolled \u2013 Total',      key:'stu_pg',         type:'text', confirmed:'107',
+       note:'PG=107 per AISHE DCF 2024-25'},
+      {label:'PG Enrolled \u2013 Male',       key:'stu_pg_m',       type:'text', confirmed:'141',
        note:'MBA male=141 per NIRF 2025'},
-      {label:'PG Enrolled – Female',key:'stu_pg_f',     type:'text',    confirmed:'148',
+      {label:'PG Enrolled \u2013 Female',     key:'stu_pg_f',       type:'text', confirmed:'148',
        note:'MBA female=148 per NIRF 2025'},
-      {label:'PhD Enrolled – Total',key:'stu_phd',      type:'text',    confirmed:'8',
-       note:'PhD=8 per AISHE DCF; NIRF full-time=5'},
-      {label:'Total Enrolled Students',key:'stu_total', type:'text',    confirmed:'769',
-       note:'UG(654)+PG(107)+PhD(8)=769 per AISHE 2024-25'},
-      {label:'Total Female Students',key:'stu_female',  type:'text',    confirmed:''},
-      {label:'Total SC Students',   key:'stu_sc',       type:'text',    confirmed:''},
-      {label:'Total ST Students',   key:'stu_st',       type:'text',    confirmed:''},
-      {label:'Total OBC Students',  key:'stu_obc',      type:'text',    confirmed:''},
-      {label:'Total EWS Students',  key:'stu_ews',      type:'text',    confirmed:''},
-      {label:'Foreign/NRI Students',key:'stu_foreign',  type:'text',    confirmed:''},
-      {label:'PG Intake (2024-25)', key:'pg_intake',    type:'text',    confirmed:'155',
+      {label:'PhD Enrolled \u2013 Total',     key:'stu_phd',        type:'text', confirmed:'8',
+       note:'PhD=8 per AISHE/ABC 2024-25'},
+      {label:'Total SC Students',       key:'stu_sc',             type:'text', confirmed:''},
+      {label:'Total ST Students',       key:'stu_st',             type:'text', confirmed:''},
+      {label:'Total OBC Students',      key:'stu_obc',            type:'text', confirmed:''},
+      {label:'Total EWS Students',      key:'stu_ews',            type:'text', confirmed:''},
+      {label:'Foreign/NRI Students',    key:'stu_foreign',        type:'select', confirmed:'Yes',
+       opts:['Yes','No'], note:'Foreign students present; 24 countries represented per DCF'},
+      {label:'No. of Foreign Countries',key:'stu_foreign_countries',type:'text', confirmed:'24',
+       note:'Students from 24 countries per AISHE DCF 2024-25'},
+      {label:'PG Intake (2024-25)',     key:'pg_intake',          type:'text', confirmed:'155',
        note:'PG sanctioned intake 2024-25 per NIRF'}
     ]
   },
   {
-    title:'C – Faculty & Staff Details',
+    title:'C \u2013 Faculty & Staff Details',
     dept:'HR Office',
     fields:[
-      {label:'Regular Faculty – Male', key:'fac_male',  type:'text',    confirmed:'109',
+      {label:'Regular Faculty \u2013 Male',   key:'fac_male',       type:'text', confirmed:'109',
        note:'M=109 per AISHE Teaching Staff DCF 2024-25'},
-      {label:'Regular Faculty – Female',key:'fac_female',type:'text',   confirmed:'74',
+      {label:'Regular Faculty \u2013 Female', key:'fac_female',     type:'text', confirmed:'74',
        note:'F=74 per AISHE Teaching Staff DCF 2024-25'},
-      {label:'Regular Faculty – Total', key:'fac_total', type:'text',   confirmed:'183',
-       note:'Total 183 regular faculty per AISHE DCF'},
-      {label:'Faculty with PhD',     key:'fac_phd',     type:'text',    confirmed:'164',
+      {label:'Regular Faculty \u2013 Total',  key:'fac_total',      type:'text', confirmed:'183',
+       note:'Total 183 regular faculty per AISHE Teaching Staff DCF'},
+      {label:'Faculty with PhD',        key:'fac_phd',            type:'text', confirmed:'164',
        note:'164 of 183 faculty hold PhD (89.6%)'},
-      {label:'Faculty with PG only', key:'fac_pg',      type:'text',    confirmed:'19'},
-      {label:'Guest/Contractual Faculty',key:'fac_guest',type:'text',   confirmed:''},
-      {label:'NIRF-Entered Faculty Count',key:'fac_nirf',type:'text',   confirmed:'24',
+      {label:'Faculty with PG only',    key:'fac_pg',             type:'text', confirmed:'19'},
+      {label:'Guest/Contractual Faculty',key:'fac_guest',         type:'text', confirmed:''},
+      {label:'NIRF-Entered Faculty Count',key:'fac_nirf',         type:'text', confirmed:'24',
        note:'24 faculty entered in NIRF portal 2025'},
-      {label:'Faculty – Business School',  key:'fac_biz',  type:'text', confirmed:'51',
+      {label:'Faculty \u2013 Business School', key:'fac_biz',     type:'text', confirmed:'51',
        note:'Business: 51 per Teaching Staff DCF'},
-      {label:'Faculty – Communication',    key:'fac_comm', type:'text', confirmed:'14',
+      {label:'Faculty \u2013 Communication',  key:'fac_comm',     type:'text', confirmed:'14',
        note:'Communication: 14 per Teaching Staff DCF'},
-      {label:'Faculty – Computing',        key:'fac_comp', type:'text', confirmed:'16',
+      {label:'Faculty \u2013 Computing',      key:'fac_comp',     type:'text', confirmed:'16',
        note:'Computing: 16 per Teaching Staff DCF'},
-      {label:'Faculty – Design',           key:'fac_des',  type:'text', confirmed:'9',
+      {label:'Faculty \u2013 Design',         key:'fac_des',      type:'text', confirmed:'9',
        note:'Design: 9 per Teaching Staff DCF'},
-      {label:'Faculty – Liberal Arts',     key:'fac_lib',  type:'text', confirmed:'93',
+      {label:'Faculty \u2013 Liberal Arts',   key:'fac_lib',      type:'text', confirmed:'93',
        note:'Liberal Arts: 93 per Teaching Staff DCF'},
-      {label:'Designation – Professor',    key:'desig_prof',    type:'text', confirmed:'2'},
-      {label:'Designation – Assoc. Professor',key:'desig_assoc',type:'text', confirmed:'39'},
-      {label:'Designation – Asst. Professor', key:'desig_asst', type:'text', confirmed:'117'},
-      {label:'Designation – Vice-Chancellor', key:'desig_vc',   type:'text', confirmed:'1'}
+      {label:'Desig. \u2013 Vice-Chancellor', key:'desig_vc',     type:'text', confirmed:'1'},
+      {label:'Desig. \u2013 Pro-VC',          key:'desig_provc',  type:'text', confirmed:'1'},
+      {label:'Desig. \u2013 Professor',       key:'desig_prof',   type:'text', confirmed:'15',
+       note:'Prof=15 per Teaching Staff DCF (in-position)'},
+      {label:'Desig. \u2013 Prof of Practice',key:'desig_prof_prac',type:'text', confirmed:'10',
+       note:'Prof of Practice=10 per Teaching Staff DCF'},
+      {label:'Desig. \u2013 Assoc. Professor',key:'desig_assoc',  type:'text', confirmed:'32',
+       note:'Assoc Prof=32 per Teaching Staff DCF (in-position)'},
+      {label:'Desig. \u2013 Asst. Professor', key:'desig_asst',   type:'text', confirmed:'105',
+       note:'Asst Prof=105 per Teaching Staff DCF (in-position)'},
+      {label:'Sanctioned Posts \u2013 Professor',   key:'sanc_prof',  type:'text', confirmed:''},
+      {label:'Sanctioned Posts \u2013 Assoc. Prof',  key:'sanc_assoc', type:'text', confirmed:''},
+      {label:'Sanctioned Posts \u2013 Asst. Prof',   key:'sanc_asst',  type:'text', confirmed:''}
     ]
   },
   {
-    title:'D – Programmes Offered',
+    title:'D \u2013 Programmes Offered',
     dept:'Academic Departments / Program Office',
     fields:[
-      {label:'UG Programmes',        key:'prog_ug',     type:'text',    confirmed:''},
-      {label:'PG Programmes',        key:'prog_pg',     type:'text',    confirmed:''},
-      {label:'PhD/Research Programmes',key:'prog_phd',  type:'text',    confirmed:''},
-      {label:'Online/Distance Programmes',key:'prog_online',type:'text',confirmed:'0'},
+      {label:'UG Programmes',           key:'prog_ug',    type:'text',   confirmed:''},
+      {label:'PG Programmes',           key:'prog_pg',    type:'text',   confirmed:''},
+      {label:'PhD/Research Programmes', key:'prog_phd',   type:'text',   confirmed:''},
+      {label:'Online/Distance Programmes',key:'prog_online',type:'text', confirmed:'0'},
       {label:'Certificate/Diploma Programmes',key:'prog_cert',type:'text',confirmed:''},
-      {label:'Integrated Programmes',key:'prog_int',    type:'text',    confirmed:''}
+      {label:'Integrated Programmes',   key:'prog_int',   type:'text',   confirmed:''},
+      {label:'4-Year UG Programme (NEP)',key:'prog_4yr',  type:'select', confirmed:'Yes',
+       opts:['Yes','No']}
     ]
   },
   {
-    title:'E – Infrastructure',
+    title:'E \u2013 Infrastructure',
     dept:'Facilities / Estate Office',
     fields:[
-      {label:'Classrooms',          key:'infra_class',  type:'text',    confirmed:'20',
+      {label:'Classrooms',              key:'infra_class',     type:'text', confirmed:'20',
        note:'20 classrooms per AISHE DCF 2024-25'},
-      {label:'Tutorial Rooms',      key:'infra_tut',    type:'text',    confirmed:''},
-      {label:'Seminar Halls',       key:'infra_sem',    type:'text',    confirmed:''},
-      {label:'Auditorium (Seats)',  key:'infra_aud',    type:'text',    confirmed:'519',
+      {label:'Tutorial Rooms',          key:'infra_tut',       type:'text', confirmed:''},
+      {label:'Seminar Halls',           key:'infra_sem',       type:'text', confirmed:''},
+      {label:'Auditorium (Seats)',       key:'infra_aud',       type:'text', confirmed:'519',
        note:'Auditorium capacity 519 per AISHE DCF'},
-      {label:'Laboratories',        key:'infra_labs',   type:'text',    confirmed:''},
-      {label:'Computer Terminals (Student)',key:'infra_comp',type:'text',confirmed:'21',
-       note:'21 student computers per AISHE DCF'},
-      {label:'Library Area (Sq.m)', key:'infra_lib_area',type:'text',   confirmed:'2555',
+      {label:'Laboratories',            key:'infra_labs',      type:'text', confirmed:''},
+      {label:'Computer Terminals (Student)',key:'infra_comp',  type:'text', confirmed:'454',
+       note:'454 computers per AISHE DCF 2024-25'},
+      {label:'Library Area (Sq.m)',     key:'infra_lib_area',  type:'text', confirmed:'2555',
        note:'Library=2555 sq.m per AISHE DCF'},
-      {label:'Library Books',       key:'infra_books',  type:'text',    confirmed:''},
-      {label:'e-Journals Subscribed',key:'infra_ejrnl', type:'text',    confirmed:''},
-      {label:'Total Campus Area (Sq.m)',key:'campus_sqm',type:'text',   confirmed:'132252.87'}
+      {label:'Library Books',           key:'infra_books',     type:'text', confirmed:'583927',
+       note:'583,927 books per AISHE DCF 2024-25'},
+      {label:'Print Journals Subscribed',key:'infra_jrnl',    type:'text', confirmed:'33372',
+       note:'33,372 journals per AISHE DCF 2024-25'},
+      {label:'e-Journals Subscribed',   key:'infra_ejrnl',     type:'text', confirmed:''},
+      {label:'Total Campus Area (Sq.m)',key:'campus_sqm',      type:'text', confirmed:'132252.87'},
+      {label:'Internet Speed (Mbps)',   key:'infra_net',       type:'text', confirmed:''}
     ]
   },
   {
-    title:'F – Hostel & Residential Facilities',
+    title:'F \u2013 Hostel & Residential Facilities',
     dept:'Student Affairs / Housing & Residential Counselling',
     fields:[
-      {label:'No. of Hostels',       key:'host_count',  type:'text',    confirmed:'24',
+      {label:'No. of Hostels',          key:'host_count',     type:'text', confirmed:'24',
        note:'24 hostel buildings per AISHE DCF'},
-      {label:'Hostel Capacity – Boys', key:'host_boys', type:'text',    confirmed:'1162',
+      {label:'Hostel Capacity \u2013 Boys',  key:'host_boys',  type:'text', confirmed:'1162',
        note:'Boys capacity=1162 per AISHE DCF'},
-      {label:'Hostel Capacity – Girls',key:'host_girls',type:'text',    confirmed:'1628',
+      {label:'Hostel Capacity \u2013 Girls', key:'host_girls', type:'text', confirmed:'1628',
        note:'Girls capacity=1628 per AISHE DCF'},
-      {label:'Total Hostel Capacity', key:'host_total', type:'text',    confirmed:'2790',
+      {label:'Total Hostel Capacity',   key:'host_total',     type:'text', confirmed:'2790',
        note:'Total ~2790 (Boys+Girls) per AISHE DCF'},
-      {label:'Residents – Boys (Actual)',key:'host_res_boys',type:'text',confirmed:''},
-      {label:'Residents – Girls (Actual)',key:'host_res_girls',type:'text',confirmed:''}
+      {label:'Residents \u2013 Boys (Actual)',  key:'host_res_boys',  type:'text', confirmed:''},
+      {label:'Residents \u2013 Girls (Actual)', key:'host_res_girls', type:'text', confirmed:''}
     ]
   },
   {
-    title:'G – Placement & Careers',
+    title:'G \u2013 Placement & Careers',
     dept:'Career Development Center',
     fields:[
-      {label:'Total Students Placed (2024-25)',key:'plac_total',type:'text',confirmed:'260',
+      {label:'Total Students Placed (2024-25)',key:'plac_total', type:'text', confirmed:'260',
        note:'Total placed=260 per AISHE DCF 2024-25'},
-      {label:'Placed – Male',        key:'plac_male',   type:'text',    confirmed:'103',
+      {label:'Placed \u2013 Male',       key:'plac_male',   type:'text', confirmed:'103',
        note:'Male placed=103 per AISHE DCF'},
-      {label:'Placed – Female',      key:'plac_female', type:'text',    confirmed:'157',
+      {label:'Placed \u2013 Female',     key:'plac_female', type:'text', confirmed:'157',
        note:'Female placed=157 per AISHE DCF'},
-      {label:'Median Salary 2022-23 (₹ LPA)',key:'sal_2223',type:'text',confirmed:'8.25'},
-      {label:'Median Salary 2023-24 (₹ LPA)',key:'sal_2324',type:'text',confirmed:'10.00'},
-      {label:'Median Salary 2024-25 (₹ LPA)',key:'sal_2425',type:'text',confirmed:'8.50'},
-      {label:'Campus Recruiters Count',key:'plac_recr', type:'text',    confirmed:''}
+      {label:'Median Salary 2022-23 (\u20b9 LPA)',key:'sal_2223', type:'text', confirmed:'8.25'},
+      {label:'Median Salary 2023-24 (\u20b9 LPA)',key:'sal_2324', type:'text', confirmed:'10.00'},
+      {label:'Median Salary 2024-25 (\u20b9 LPA)',key:'sal_2425', type:'text', confirmed:'8.50'},
+      {label:'Campus Recruiters Count', key:'plac_recr',   type:'text', confirmed:''}
     ]
   },
   {
-    title:'H – Financial Details',
+    title:'H \u2013 Financial Details',
     dept:'Finance & Accounts',
     fields:[
-      {label:'Total Income (₹ Crores)',key:'fin_income_cr',type:'text', confirmed:'178.47',
-       note:'Total income=Rs.178.47 Cr per AISHE DCF FY 2024-25'},
-      {label:'Total Income (₹ Lakhs)', key:'fin_income_l', type:'text', confirmed:'17847',
-       note:'Rs.17847 Lakhs = Rs.178.47 Cr'},
-      {label:'Income from Fees (₹ L)', key:'fin_fees',     type:'text', confirmed:''},
-      {label:'Grants from Govt (₹ L)', key:'fin_grants',   type:'text', confirmed:''},
-      {label:'Income from Research (₹ L)',key:'fin_research',type:'text',confirmed:'266',
-       note:'Sponsored research Rs.2.66 Cr per NIRF'},
-      {label:'Income from Consultancy (₹ L)',key:'fin_consult',type:'text',confirmed:'158',
-       note:'Consultancy Rs.1.58 Cr per NIRF'},
-      {label:'Income from EDP/MDP (₹ L)',key:'fin_mdp',    type:'text', confirmed:'418',
-       note:'EDP/MDP Rs.4.18 Cr per NIRF'},
-      {label:'Salary Expenditure (₹ L)',key:'fin_salary',  type:'text', confirmed:''},
-      {label:'Capital Expenditure (₹ L)',key:'fin_capital',type:'text', confirmed:''},
-      {label:'Library Expenditure (₹ L)',key:'fin_lib',    type:'text', confirmed:''},
-      {label:'Lab Expenditure (₹ L)',   key:'fin_lab',     type:'text', confirmed:''},
-      {label:'Total Expenditure (₹ L)', key:'fin_total',   type:'text', confirmed:''}
+      {label:'Total Income (\u20b9 Thousands)',    key:'fin_income_k',    type:'text', confirmed:'2372660.609',
+       note:'Total income=\u20b92,372,660.609 thousands per AISHE DCF FY 2024-25'},
+      {label:'Total Income (\u20b9 Crores)',       key:'fin_income_cr',   type:'text', confirmed:'237.27',
+       note:'\u2248 \u20b9237 Cr (converted from thousands)'},
+      {label:'Income from Tuition Fees (\u20b9 K)',key:'fin_tuition',    type:'text', confirmed:'1486797.625',
+       note:'Tuition=\u20b91,486,797.625 thousands per AISHE DCF'},
+      {label:'Income from Other Fees (\u20b9 K)',  key:'fin_other_fees', type:'text', confirmed:''},
+      {label:'Grants from Central Govt (\u20b9 K)',key:'fin_central_grant',type:'text', confirmed:''},
+      {label:'Grants from State Govt (\u20b9 K)',  key:'fin_state_grant', type:'text', confirmed:''},
+      {label:'Income from Research (\u20b9 L)',    key:'fin_research',   type:'text', confirmed:'266',
+       note:'Sponsored research \u20b92.66 Cr per NIRF'},
+      {label:'Income from Consultancy (\u20b9 L)', key:'fin_consult',   type:'text', confirmed:'158',
+       note:'Consultancy \u20b91.58 Cr per NIRF'},
+      {label:'Income from EDP/MDP (\u20b9 L)',     key:'fin_mdp',       type:'text', confirmed:'418',
+       note:'EDP/MDP \u20b94.18 Cr per NIRF'},
+      {label:'Total Expenditure (\u20b9 K)',       key:'fin_exp_total',  type:'text', confirmed:'1784680.545',
+       note:'Total expenditure=\u20b91,784,680.545 thousands per AISHE DCF FY 2024-25'},
+      {label:'Salary Expenditure (\u20b9 L)',      key:'fin_salary',     type:'text', confirmed:''},
+      {label:'Capital Expenditure (\u20b9 L)',     key:'fin_capital',    type:'text', confirmed:''},
+      {label:'Library Expenditure (\u20b9 L)',     key:'fin_lib',        type:'text', confirmed:''},
+      {label:'Lab Expenditure (\u20b9 L)',          key:'fin_lab',        type:'text', confirmed:''}
+    ]
+  },
+  {
+    title:'I \u2013 NEP & Academic Bank of Credits',
+    dept:'ARC Office / Academic Affairs',
+    fields:[
+      {label:'NHEQF Framework Adopted', key:'nep_nheqf',      type:'select', confirmed:'Yes',
+       opts:['Yes','No']},
+      {label:'4-Year UG Programme (NEP)',key:'nep_4yr',        type:'select', confirmed:'Yes',
+       opts:['Yes','No']},
+      {label:'ABC ID Registered \u2013 UG', key:'nep_abc_ug', type:'text', confirmed:'654',
+       note:'ABC registered UG students=654 per AISHE DCF 2024-25'},
+      {label:'ABC ID Registered \u2013 PG', key:'nep_abc_pg', type:'text', confirmed:'107',
+       note:'ABC registered PG students=107 per AISHE DCF 2024-25'},
+      {label:'ABC ID Registered \u2013 PhD',key:'nep_abc_phd',type:'text', confirmed:'8',
+       note:'ABC registered PhD students=8 per AISHE DCF 2024-25'},
+      {label:'Credit Transfer Policy',  key:'nep_credit',     type:'select', confirmed:'',
+       opts:['Yes','No','In Progress']},
+      {label:'Multiple Entry/Exit',     key:'nep_mee',         type:'select', confirmed:'',
+       opts:['Yes','No','In Progress']}
+    ]
+  },
+  {
+    title:'J \u2013 Accreditation & Regulatory',
+    dept:'ARC Office / Additional Registrar',
+    fields:[
+      {label:'NAAC Accredited',         key:'acc_naac',        type:'select', confirmed:'Yes',
+       opts:['Yes','No','Applied','Under Assessment']},
+      {label:'NAAC Grade',              key:'acc_naac_grade',  type:'text', confirmed:'A++'},
+      {label:'NAAC CGPA',               key:'acc_naac_cgpa',   type:'text', confirmed:'3.56'},
+      {label:'NAAC Cycle',              key:'acc_naac_cycle',  type:'text', confirmed:'1'},
+      {label:'NAAC Valid Till',         key:'acc_naac_valid',  type:'text', confirmed:'08/10/2029',
+       note:'Valid till 8 Oct 2029 per AISHE DCF 2024-25'},
+      {label:'NBA Accredited',          key:'acc_nba',         type:'select', confirmed:'No',
+       opts:['Yes','No','Applied']},
+      {label:'NBA Programmes Count',    key:'acc_nba_count',   type:'text', confirmed:'0'},
+      {label:'NIRF Rank (Overall)',     key:'acc_nirf_overall',type:'text', confirmed:''},
+      {label:'NIRF Rank (Management)', key:'acc_nirf_mgmt',   type:'text', confirmed:''},
+      {label:'NIRF Rank (University)', key:'acc_nirf_univ',   type:'text', confirmed:''},
+      {label:'IQAC Established',        key:'acc_iqac',        type:'select', confirmed:'Yes',
+       opts:['Yes','No']},
+      {label:'UGC 2(f) Status',         key:'acc_2f',          type:'select', confirmed:'',
+       opts:['Yes','No','NA']},
+      {label:'UGC 12(B) Status',        key:'acc_12b',         type:'select', confirmed:'',
+       opts:['Yes','No','NA']}
+    ]
+  },
+  {
+    title:'K \u2013 Research & Innovation',
+    dept:'Research Office / ARC',
+    fields:[
+      {label:'Govt Funded Research Projects', key:'res_govt_proj',  type:'text', confirmed:'6',
+       note:'6 Govt projects per AISHE DCF 2024-25'},
+      {label:'Industry Funded Projects',      key:'res_ind_proj',   type:'text', confirmed:'51',
+       note:'51 Industry projects per AISHE DCF 2024-25'},
+      {label:'Total Research Projects',       key:'res_total_proj', type:'text', confirmed:'57',
+       note:'6+51=57 total projects'},
+      {label:'Patents Filed',                 key:'res_patents',    type:'text', confirmed:'50',
+       note:'50 patents per AISHE DCF 2024-25'},
+      {label:'Publications (Total)',          key:'res_pubs',       type:'text', confirmed:'280',
+       note:'280 publications per AISHE DCF 2024-25'},
+      {label:'International Publications',    key:'res_intl_pubs',  type:'text', confirmed:''},
+      {label:'Scopus/WoS Indexed',            key:'res_indexed',    type:'text', confirmed:''},
+      {label:'Research Centres / Institutes', key:'res_centres',    type:'text', confirmed:''}
+    ]
+  },
+  {
+    title:'L \u2013 MoUs & International Linkages',
+    dept:'International Office / Additional Registrar',
+    fields:[
+      {label:'MoUs with Industry',           key:'mou_industry',   type:'text', confirmed:'14',
+       note:'14 Industry MoUs per AISHE DCF 2024-25'},
+      {label:'MoUs with Foreign HEIs',       key:'mou_foreign',    type:'text', confirmed:'6',
+       note:'MoUs with: Sciences Po, York, Indiana, UC Davis, Wellesley, Kings College'},
+      {label:'Foreign Students Enrolled',    key:'forn_enrolled',  type:'select', confirmed:'Yes',
+       opts:['Yes','No']},
+      {label:'No. of Foreign Students',      key:'forn_count',     type:'text', confirmed:'',
+       note:'Exact count from AISHE portal'},
+      {label:'Countries Represented',        key:'forn_countries', type:'text', confirmed:'24',
+       note:'24 countries per AISHE DCF 2024-25'},
+      {label:'Student Exchange (Outbound)',   key:'exc_out',        type:'text', confirmed:''},
+      {label:'Student Exchange (Inbound)',    key:'exc_in',         type:'text', confirmed:''},
+      {label:'Faculty Exchange (Outbound)',   key:'fex_out',        type:'text', confirmed:''},
+      {label:'Partner HEI 1',                key:'partner1',       type:'text', confirmed:'Sciences Po, France'},
+      {label:'Partner HEI 2',                key:'partner2',       type:'text', confirmed:'University of York, UK'},
+      {label:'Partner HEI 3',                key:'partner3',       type:'text', confirmed:'Indiana University, USA'},
+      {label:'Partner HEI 4',                key:'partner4',       type:'text', confirmed:'UC Davis, USA'},
+      {label:'Partner HEI 5',                key:'partner5',       type:'text', confirmed:'Wellesley College, USA'},
+      {label:'Partner HEI 6',                key:'partner6',       type:'text', confirmed:"King's College London, UK"}
     ]
   }
 ];
@@ -6148,7 +6326,7 @@ function buildAISHE(){
   /* ── Live dept data for AISHE ── */
   const enrollRows = _secRows('Additional Registrar Office','s1');
   const progRows   = _secRows('Program Office','s1');
-  const estRows    = _secRows('Estate Office','s2');          // AISHE hostel section
+  const estRows    = _secRows('Estate Office','s2');
   const fin        = _secForm('Finance & Accounts','s1') || {};
   const housingF   = _secForm('Housing & Residential Counselling','s1') || {};
 
@@ -6165,48 +6343,161 @@ function buildAISHE(){
     else if(p==='pg') levelCnt.pg++;
     else if(p==='phd') levelCnt.phd++;
   });
-
   const totalEnroll = enrollRows.length || progRows.length;
 
-  const livePanel = `<div class="aishe-live-panel">
-    <h4>📊 Live Data from Departments (auto-computed)</h4>
-    <div class="aishe-live-grid">
-      <div class="aishe-live-stat"><div class="als-val">${totalEnroll}</div><div class="als-lbl">Total Enrolled Students</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${genderCnt.male}</div><div class="als-lbl">Male Students</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${genderCnt.female}</div><div class="als-lbl">Female Students</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${levelCnt.ug}</div><div class="als-lbl">UG Enrolled</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${levelCnt.pg}</div><div class="als-lbl">PG Enrolled</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${levelCnt.phd}</div><div class="als-lbl">PhD Enrolled</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${housingF.beds_a||estRows.length||'—'}</div><div class="als-lbl">Hostel Beds (All)</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${fin.i_tuition||'—'}</div><div class="als-lbl">Tuition Income (₹ L)</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${fin.i_govt||'—'}</div><div class="als-lbl">Govt Grants (₹ L)</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${fin.e_tl||'—'}</div><div class="als-lbl">T&L Expenditure (₹ L)</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${fin.e_res||'—'}</div><div class="als-lbl">Research Exp (₹ L)</div></div>
-      <div class="aishe-live-stat"><div class="als-val">${fin.e_lib||'—'}</div><div class="als-lbl">Library Exp (₹ L)</div></div>
-    </div>
-    <div style="font-size:10px;color:#888;margin-top:8px">Source: Additional Registrar (enrollment) · Finance (income/expenditure) · Housing (hostels). Use values below to fill AISHE portal fields.</div>
-  </div>`;
+  /* ── Save function (writes accState.aishe to Firebase) ── */
+  async function saveAISHE(){
+    const btn=document.getElementById('aishe-save-btn');
+    const msg=document.getElementById('aishe-save-msg');
+    if(btn){btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving\u2026';}
+    if(msg)msg.innerHTML='';
+    const db=getDB();
+    if(!db){alert('Firebase unavailable.');if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-save"></i> Save All';}return;}
+    try{
+      await db.ref(ROOT+'/'+ACC_FB_PATH).set({...accState,savedAt:new Date().toISOString()});
+      const t=new Date().toLocaleString('en-IN');
+      if(msg)msg.innerHTML='<span style="color:#16a34a">\u2713 Saved at '+t+'</span>';
+      document.querySelectorAll('.acc-save-msg').forEach(el=>el.textContent='Last saved: '+t);
+      /* refresh badges */
+      document.querySelectorAll('.aishe-badge').forEach(el=>{
+        const fi=el.closest('.aishe-field');
+        if(!fi)return;
+        const inp=fi.querySelector('.aishe-field-input');
+        if(!inp)return;
+        const k=inp.dataset.key;
+        const sv=(accState.aishe||{})[k];
+        if(sv!==undefined&&sv!==''){el.className='aishe-badge aishe-badge-saved';el.textContent='\u2705 Admin';}
+      });
+    }catch(e){if(msg)msg.innerHTML='<span style="color:#dc2626">\u2717 Save error: '+e.message+'</span>';}
+    if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-save"></i> Save All';}
+  }
+  window.saveAISHE=saveAISHE;
 
-  const container = document.getElementById('aishe-container');
-  container.innerHTML = livePanel + AISHE_SECTIONS_DATA.map(sec=>{
-    const deptTag = sec.dept ? `<span style="background:#e3f0ff;color:#0C3F6A;border-radius:10px;padding:2px 10px;font-size:10px;font-weight:700;margin-left:10px">&#127970; ${sec.dept}</span>` : '';
-    const fields=sec.fields.map(f=>{
-      const saved=(accState.aishe||{})[f.key];
+  /* ── Stats ── */
+  const totalFields = AISHE_SECTIONS_DATA.reduce((a,s)=>a+s.fields.length,0);
+  const filledFields = AISHE_SECTIONS_DATA.reduce((a,s)=>a+s.fields.filter(f=>{
+    const v=(accState.aishe||{})[f.key];
+    return (v!==undefined&&v!=='') || !!f.confirmed;
+  }).length,0);
+  const pct = Math.round(filledFields/totalFields*100);
+
+  /* ── Hero ── */
+  const heroHtml = `
+    <div class="aishe-adm-hero">
+      <div class="aishe-adm-hero-left">
+        <div class="aishe-adm-hero-code">U-1181</div>
+        <div class="aishe-adm-hero-title">AISHE Data Capture Form \u2014 Admin Override Panel</div>
+        <div class="aishe-adm-hero-sub">Survey Year: 2024-25 &nbsp;\u2502&nbsp; FLAME University &nbsp;\u2502&nbsp; ${totalFields} fields &middot; ${AISHE_SECTIONS_DATA.length} sections</div>
+      </div>
+      <div class="aishe-adm-hero-right">
+        <div class="aishe-adm-progress-wrap">
+          <div class="aishe-adm-pct">${pct}%</div>
+          <div class="aishe-adm-pct-lbl">Data Coverage</div>
+          <div class="aishe-adm-pbar"><div class="aishe-adm-pbar-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div>
+          <button class="aishe-save-all-btn" id="aishe-save-btn" onclick="saveAISHE()">
+            <i class="fas fa-save"></i> Save All
+          </button>
+          <div id="aishe-save-msg" style="font-size:10.5px;margin-top:4px;text-align:right"></div>
+        </div>
+      </div>
+    </div>
+    <div class="aishe-adm-legend">
+      <span><span class="aishe-badge aishe-badge-saved">\u2705 Admin</span> &nbsp;Value saved/overridden by admin</span>
+      <span><span class="aishe-badge aishe-badge-report">\ud83d\udccb Report</span> &nbsp;Pre-filled from official DCF / NIRF</span>
+      <span><span class="aishe-badge aishe-badge-empty">\u25a1 Empty</span> &nbsp;Awaiting department or admin input</span>
+    </div>`;
+
+  /* ── Live panel ── */
+  const livePanel = `
+    <div class="aishe-live-panel">
+      <h4>\ud83d\udcca Live Data from Departments (auto-computed)</h4>
+      <div class="aishe-live-grid">
+        <div class="aishe-live-stat"><div class="als-val">${totalEnroll||'\u2014'}</div><div class="als-lbl">Total Enrolled</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${genderCnt.male||'\u2014'}</div><div class="als-lbl">Male Students</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${genderCnt.female||'\u2014'}</div><div class="als-lbl">Female Students</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${levelCnt.ug||'\u2014'}</div><div class="als-lbl">UG Enrolled</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${levelCnt.pg||'\u2014'}</div><div class="als-lbl">PG Enrolled</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${levelCnt.phd||'\u2014'}</div><div class="als-lbl">PhD Enrolled</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${housingF.beds_a||estRows.length||'\u2014'}</div><div class="als-lbl">Hostel Beds</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${fin.i_tuition||'\u2014'}</div><div class="als-lbl">Tuition Inc (\u20b9L)</div></div>
+        <div class="aishe-live-stat"><div class="als-val">${fin.e_lib||'\u2014'}</div><div class="als-lbl">Library Exp (\u20b9L)</div></div>
+      </div>
+      <div style="font-size:10px;color:#888;margin-top:6px">Source: Additional Registrar \u00b7 Finance \u00b7 Housing departments. Use these values to fill AISHE portal fields below.</div>
+    </div>`;
+
+  /* ── Section cards ── */
+  const sectionsHtml = AISHE_SECTIONS_DATA.map((sec,si)=>{
+    const sFields = sec.fields;
+    const secFilled = sFields.filter(f=>{
+      const v=(accState.aishe||{})[f.key];
+      return (v!==undefined&&v!=='') || !!f.confirmed;
+    }).length;
+    const secPct = Math.round(secFilled/sFields.length*100);
+    const secColor = secPct>=80?'#16a34a':secPct>=40?'#d97706':'#dc2626';
+    const deptTag = sec.dept ? `<span class="aishe-dept-tag">\ud83c\udfd7 ${sec.dept}</span>` : '';
+
+    const fieldsHtml = sFields.map(f=>{
+      const saved = (accState.aishe||{})[f.key];
       const v = saved !== undefined ? saved : (f.confirmed||'');
-      const isConfirmed = !saved && f.confirmed;
-      const confirmBadge = isConfirmed
-        ? `<span style="background:#fff3e0;color:#e65100;border-radius:8px;padding:1px 6px;font-size:9px;font-weight:700;margin-left:4px" title="${f.note||'From AISHE/NIRF report'}">&#128203; Report</span>`
-        : '';
-      const noteHtml = f.note ? `<div style="font-size:9px;color:#888;margin-top:2px">${f.note}</div>` : '';
+      const isAdminSaved = saved !== undefined && saved !== '';
+      const isConfirmed  = !isAdminSaved && !!f.confirmed;
+      const borderColor  = isAdminSaved ? '#16a34a' : isConfirmed ? '#F58220' : '#e2e8f0';
+      const bgColor      = isAdminSaved ? '#f0fdf4' : isConfirmed ? '#fffaf5' : '#fff';
+      const badge        = isAdminSaved
+        ? '<span class="aishe-badge aishe-badge-saved">\u2705 Admin</span>'
+        : isConfirmed
+          ? '<span class="aishe-badge aishe-badge-report">\ud83d\udccb Report</span>'
+          : '<span class="aishe-badge aishe-badge-empty">\u25a1 Empty</span>';
+      const noteHtml = f.note ? `<div class="aishe-field-note">${f.note}</div>` : '';
+      const onch = `if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value`;
       if(f.type==='select'){
         const opts=(f.opts||[]).map(o=>`<option ${(o===v)?'selected':''}>${o}</option>`).join('');
-        return `<div class="form-field-2"><label>${f.label}${confirmBadge}</label><select onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value">${opts}</select>${noteHtml}</div>`;
+        return `<div class="aishe-field" style="border-left:3px solid ${borderColor};background:${bgColor}">
+          <div class="aishe-field-header"><label class="aishe-field-label">${f.label}</label>${badge}</div>
+          <select class="aishe-field-input" data-key="${f.key}" onchange="${onch}">${opts}</select>
+          ${noteHtml}
+        </div>`;
       }
-      const borderStyle = isConfirmed ? 'border-left:3px solid #F58220;background:#fffaf5' : '';
-      return `<div class="form-field-2"><label>${f.label}${confirmBadge}</label><input type="text" value="${v}" placeholder="${f.confirmed?'Confirmed: '+f.confirmed:'Enter value'}" style="${borderStyle}" onchange="if(!accState.aishe)accState.aishe={};accState.aishe['${f.key}']=this.value">${noteHtml}</div>`;
+      return `<div class="aishe-field" style="border-left:3px solid ${borderColor};background:${bgColor}">
+        <div class="aishe-field-header"><label class="aishe-field-label">${f.label}</label>${badge}</div>
+        <input type="text" class="aishe-field-input" data-key="${f.key}" value="${v.toString().replace(/"/g,'&quot;')}"
+          placeholder="${f.confirmed?'Pre-filled: '+f.confirmed:'Enter value for AISHE portal'}"
+          onchange="${onch}">
+        ${noteHtml}
+      </div>`;
     }).join('');
-    return `<div class="acc-card"><div class="aishe-sec-title">${sec.title}${deptTag}</div><div class="form-grid-2">${fields}</div></div>`;
+
+    const secLetter = String.fromCharCode(65+si);
+    const isFirst = si===0;
+    return `<div class="aishe-sec-card${isFirst?' open':''}">
+      <div class="aishe-sec-hdr" onclick="this.parentElement.classList.toggle('open')">
+        <div class="aishe-sec-hdr-left">
+          <span class="aishe-sec-num">${secLetter}</span>
+          <div>
+            <div class="aishe-sec-title-text">${sec.title.replace(/^[A-L]\s*\u2013\s*/,'')}</div>
+            <div class="aishe-sec-sub">${deptTag}</div>
+          </div>
+        </div>
+        <div class="aishe-sec-hdr-right">
+          <span class="aishe-sec-count" style="color:${secColor}">${secFilled}/${sFields.length}</span>
+          <div class="aishe-sec-mini-bar"><div style="width:${secPct}%;background:${secColor};height:100%;border-radius:3px;transition:width .5s"></div></div>
+          <i class="fas fa-chevron-down aishe-sec-chevron"></i>
+        </div>
+      </div>
+      <div class="aishe-sec-body">
+        <div class="aishe-fields-grid">${fieldsHtml}</div>
+        <div class="aishe-sec-footer">
+          <button class="aishe-sec-save-btn" onclick="saveAISHE()"><i class="fas fa-save"></i> Save Section</button>
+          <span class="aishe-sec-dept-note">${sec.dept}</span>
+        </div>
+      </div>
+    </div>`;
   }).join('');
+
+  const container = document.getElementById('aishe-container');
+  container.innerHTML = heroHtml + livePanel + sectionsHtml;
 }
 
 
