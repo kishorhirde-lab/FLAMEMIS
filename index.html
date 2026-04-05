@@ -800,6 +800,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
     <div class="adm-tab active" onclick="switchAdmTab('dept',this)">📋 Department Reports</div>
     <div class="adm-tab" onclick="switchAdmTab('dashboard',this)">📊 Dashboard</div>
     <div class="adm-tab" onclick="switchAdmTab('naac',this)">📋 NAAC – SSR</div>
+    <div class="adm-tab" onclick="switchAdmTab('nacbench',this)">📐 NAAC Benchmarks</div>
     <div class="adm-tab" onclick="switchAdmTab('iso41',this)">🏅 ISO 41001</div>
     <div class="adm-tab" onclick="switchAdmTab('iso21',this)">🎓 ISO 21001</div>
     <div class="adm-tab" onclick="switchAdmTab('qs',this)">🌐 QS I-GAUGE</div>
@@ -973,6 +974,79 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
       <button class="acc-btn acc-btn-gold" onclick="accSaveAll()">💾 Save to Firebase</button>
       <button class="acc-btn acc-btn-white" onclick="exportNAACSsrPDF()">📄 Export NAAC SSR (PDF)</button>
       <span class="acc-save-msg" id="acc-save-msg">Last saved: —</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ TAB: NAAC BENCHMARKS ═══ -->
+  <div class="adm-tab-content" id="adm-tab-nacbench">
+    <div class="acc-body">
+
+      <!-- Header -->
+      <div class="acc-card" style="background:linear-gradient(135deg,#1a3c5e,#0C3F6A);color:#fff;border:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="font-size:18px;font-weight:700">📐 NAAC Benchmarking Dashboard</div>
+            <div style="font-size:12px;color:#FDB515;margin-top:2px">General University Rubric · Dec 2022 · 37 Quantitative Metrics · C1–C7</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="nb-subtab-bar">
+            <button onclick="nbShowTab('criterion',this)"
+              style="background:#F58220;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:13px;font-weight:600">🎯 Criterion Dashboard</button>
+            <button onclick="nbShowTab('metric',this)"
+              style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:8px 16px;cursor:pointer;font-size:13px">📊 Metric-wise</button>
+            <button onclick="nbShowTab('dept',this)"
+              style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:6px;padding:8px 16px;cursor:pointer;font-size:13px">🏢 Department-wise</button>
+          </div>
+        </div>
+        <!-- Overall score banner -->
+        <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px" id="nb-overall-kpi"></div>
+      </div>
+
+      <!-- Sub-panel: Criterion Dashboard -->
+      <div id="nb-panel-criterion">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px" id="nb-criterion-grid"></div>
+      </div>
+
+      <!-- Sub-panel: Metric-wise -->
+      <div id="nb-panel-metric" style="display:none">
+        <div class="acc-card" style="padding:12px 16px">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:12px;font-weight:600;color:#555">Filter Criterion:</label>
+            <select id="nb-metric-filter" class="afi-sel" style="min-width:220px" onchange="nbBuildMetricView()">
+              <option value="all">All Criteria</option>
+              <option value="C1">C1 – Curricular Aspects</option>
+              <option value="C2">C2 – Teaching-Learning & Evaluation</option>
+              <option value="C3">C3 – Research, Innovations & Extension</option>
+              <option value="C4">C4 – Infrastructure & Learning Resources</option>
+              <option value="C5">C5 – Student Support & Progression</option>
+              <option value="C6">C6 – Governance, Leadership & Management</option>
+              <option value="C7">C7 – Institutional Values & Best Practices</option>
+            </select>
+            <label style="font-size:12px;font-weight:600;color:#555">Filter Score:</label>
+            <select id="nb-score-filter" class="afi-sel" style="min-width:150px" onchange="nbBuildMetricView()">
+              <option value="all">All Scores</option>
+              <option value="0">Score 0 (Below Benchmark)</option>
+              <option value="1">Score 1 (Needs Improvement)</option>
+              <option value="2">Score 2 (Developing)</option>
+              <option value="3">Score 3 (Proficient)</option>
+              <option value="4">Score 4 (Exemplary)</option>
+              <option value="null">Not Entered Yet</option>
+            </select>
+            <button onclick="nbExportCSV()" style="margin-left:auto;background:#0C3F6A;color:#fff;border:none;border-radius:6px;padding:7px 14px;cursor:pointer;font-size:12px">⬇ Export CSV</button>
+          </div>
+        </div>
+        <div id="nb-metric-table"></div>
+      </div>
+
+      <!-- Sub-panel: Department-wise -->
+      <div id="nb-panel-dept" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px" id="nb-dept-grid"></div>
+      </div>
+
+    </div>
+    <div class="acc-save-bar">
+      <button class="acc-btn acc-btn-gold" onclick="nbSaveBench()">💾 Save Benchmark Values to Firebase</button>
+      <span class="acc-save-msg" id="nb-save-msg">Values are saved per metric entry.</span>
     </div>
   </div>
 
@@ -3994,6 +4068,14 @@ function switchAdmTab(id, el){
     }
   }
   if(id==='naac'&&!window._naacBuilt){buildNAAC();window._naacBuilt=true;}
+  if(id==='nacbench'&&!window._nacbenchBuilt){
+    // Load saved benchmark values from Firebase
+    if(db) db.ref(ROOT+'/admin_accreditation/naac_bench').once('value').then(snap=>{
+      if(snap.exists()) accState.naac_bench=snap.val()||{};
+      buildNAACBenchmarks(); window._nacbenchBuilt=true;
+    }).catch(()=>{buildNAACBenchmarks(); window._nacbenchBuilt=true;});
+    else {buildNAACBenchmarks(); window._nacbenchBuilt=true;}
+  }
   if(id==='iso41'&&!window._iso41Built){buildISO41();window._iso41Built=true;}
   if(id==='iso21'&&!window._iso21Built){buildISO21();window._iso21Built=true;}
   if(id==='qs'&&!window._qsBuilt){buildQS();window._qsBuilt=true;}
@@ -4007,6 +4089,278 @@ function switchAdmTab(id, el){
 }
 
 // ── State ──────────────────────────────────────────────────
+
+// ── NAAC Benchmarks Data (Source: NAAC General University Benchmark, Dec 2022) ──
+// ql=qualitative(A-E), hb=higherBetter, th=[for4,for3,for2,for1], unit=display unit
+const NAAC_BENCHMARKS_DATA = [
+  { num:'C1', name:'Curricular Aspects', weight:150, color:'#1a3c5e',
+    metrics:[
+      {num:'1.2.1', desc:'% of new courses introduced out of total courses (last 5 yrs)',
+       weight:30, ql:false, hb:true,  th:[20,15,10,5],   unit:'%',
+       dept:'Academic Affairs / Curriculum'},
+      {num:'1.3.2', desc:'Certificate/Value-added/MOOC/SWAYAM/NPTEL courses (enrolments)',
+       weight:30, ql:false, hb:true,  th:[50,40,20,5],   unit:'count',
+       dept:'Academic Affairs / Curriculum'},
+      {num:'1.3.3', desc:'% of programmes with field/research/internship components (last 5 yrs)',
+       weight:5,  ql:false, hb:true,  th:[80,60,40,20],  unit:'%',
+       dept:'Academic Affairs / Curriculum'},
+      {num:'1.4.1', desc:'Structured feedback obtained from stakeholders & action taken',
+       weight:20, ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'IQAC / Office of the Registrar',
+       qlDesc:{A:'Collected, analysed, action taken & hosted on website',
+               B:'Collected, analysed & action communicated',
+               C:'Collected and analysed', D:'Collected only', E:'Not collected'}}
+    ]
+  },
+  { num:'C2', name:'Teaching-Learning & Evaluation', weight:200, color:'#1565c0',
+    metrics:[
+      {num:'2.1.1', desc:'Enrollment %',
+       weight:5,  ql:false, hb:true,  th:[90,80,70,50],  unit:'%',
+       dept:'Admissions & Financial Aid'},
+      {num:'2.1.2', desc:'% of reserved category seats filled (SC/ST/OBC) — last 5 yrs',
+       weight:5,  ql:false, hb:true,  th:[80,70,50,40],  unit:'%',
+       dept:'Admissions & Financial Aid'},
+      {num:'2.2.2', desc:'Student–Full-time teacher ratio (latest AY)',
+       weight:15, ql:false, hb:false, th:[20,30,50,60],  unit:'ratio (X:1)',
+       dept:'HR Office / Academic Affairs'},
+      {num:'2.4.1', desc:'% of full-time teachers appointed vs sanctioned posts (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[90,80,70,50],  unit:'%',
+       dept:'HR Office'},
+      {num:'2.4.2', desc:'% of full-time teachers with Ph.D./D.M/M.Ch./D.N.B (last 5 yrs)',
+       weight:40, ql:false, hb:true,  th:[80,70,60,50],  unit:'%',
+       dept:'HR Office'},
+      {num:'2.4.3', desc:'Average teaching experience of full-time teachers (years, latest AY)',
+       weight:10, ql:false, hb:true,  th:[15,12,9,6],    unit:'years',
+       dept:'HR Office'},
+      {num:'2.5.1', desc:'Days from last exam to result declaration (last 5 yrs)',
+       weight:10, ql:false, hb:false, th:[20,30,40,50],  unit:'days',
+       dept:'Examinations Office'},
+      {num:'2.5.2', desc:'% student grievances about evaluation vs students appeared (last 5 yrs)',
+       weight:10, ql:false, hb:false, th:[1,5,10,15],    unit:'%',
+       dept:'Examinations Office'},
+      {num:'2.5.3', desc:'Status of automation of Examination division',
+       weight:10, ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Examinations Office',
+       qlDesc:{A:'100% automation + EMS', B:'Registration, Hall ticket & Results',
+               C:'Registration & results only', D:'Results only', E:'Manual only'}},
+      {num:'2.6.2', desc:'Pass % of students excluding backlog (latest AY)',
+       weight:15, ql:false, hb:true,  th:[90,80,70,60],  unit:'%',
+       dept:'Examinations Office'}
+    ]
+  },
+  { num:'C3', name:'Research, Innovations & Extension', weight:250, color:'#4a148c',
+    metrics:[
+      {num:'3.1.2', desc:'Seed money provided to teachers for research (avg per year, INR Lakhs)',
+       weight:3,  ql:false, hb:true,  th:[50,40,30,20],  unit:'₹ Lakhs/yr',
+       dept:'Research & Development Cell'},
+      {num:'3.1.3', desc:'% of teachers receiving national/international fellowship/support (last 5 yrs)',
+       weight:5,  ql:false, hb:true,  th:[20,15,10,5],   unit:'%',
+       dept:'Research & Development Cell'},
+      {num:'3.1.4', desc:'% of JRFs/SRFs among enrolled PhD scholars (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[70,60,50,40],  unit:'%',
+       dept:'Research & Development Cell'},
+      {num:'3.2.1', desc:'Research funding from Govt/non-govt/industry (INR Lakhs, last 5 yrs)',
+       weight:25, ql:false, hb:true,  th:[2000,1500,1000,500], unit:'₹ Lakhs',
+       dept:'Research & Development Cell'},
+      {num:'3.2.2', desc:'Research projects per teacher (Govt/industry funded, last 5 yrs)',
+       weight:15, ql:false, hb:true,  th:[2,1.5,1,0.5],  unit:'per teacher',
+       dept:'Research & Development Cell'},
+      {num:'3.3.2', desc:'Awards for research/innovations (inst/teachers/scholars/students, last 5 yrs)',
+       weight:5,  ql:false, hb:true,  th:[30,20,10,5],   unit:'count',
+       dept:'Research & Development Cell'},
+      {num:'3.4.1', desc:'Implementation of Code of Ethics for research',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Research & Development Cell',
+       qlDesc:{A:'All 4 measures', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'3.4.2', desc:'Patents awarded (last 5 yrs)',
+       weight:15, ql:false, hb:true,  th:[7,5,3,1],      unit:'count',
+       dept:'Research & Development Cell'},
+      {num:'3.4.3', desc:'Ph.Ds awarded per recognized guide (last 5 yrs)',
+       weight:15, ql:false, hb:true,  th:[5,4,2,1],      unit:'per guide',
+       dept:'Research & Development Cell'},
+      {num:'3.4.4', desc:'Research papers per teacher in UGC-listed journals (last 5 yrs)',
+       weight:20, ql:false, hb:true,  th:[10,7,4,1],     unit:'per teacher',
+       dept:'Research & Development Cell'},
+      {num:'3.4.5', desc:'Books & chapters in edited volumes per teacher (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[10,7,4,1],     unit:'per teacher',
+       dept:'Research & Development Cell'},
+      {num:'3.4.6', desc:'E-content developed by teachers (NPTEL/SWAYAM/LMS etc.)',
+       weight:15, ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Research & Development Cell',
+       qlDesc:{A:'Any 4+ platforms', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'3.4.7', desc:'Avg Citation Index in Scopus/Web of Science/PubMed (last 5 yrs)',
+       weight:20, ql:false, hb:true,  th:[10,5,2,0.5],   unit:'index',
+       dept:'Research & Development Cell'},
+      {num:'3.4.8', desc:'h-Index of the University in Scopus/Web of Science (last 5 yrs)',
+       weight:20, ql:false, hb:true,  th:[35,25,15,5],   unit:'h-index',
+       dept:'Research & Development Cell'},
+      {num:'3.5.1', desc:'Revenue from consultancy & corporate training (INR Lakhs, last 5 yrs)',
+       weight:20, ql:false, hb:true,  th:[200,150,100,50], unit:'₹ Lakhs',
+       dept:'Research & Development Cell'},
+      {num:'3.6.2', desc:'Extension and outreach programs conducted (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[100,80,60,40],  unit:'count',
+       dept:'Student Affairs / NSS'},
+      {num:'3.7.1', desc:'Functional MoUs/linkages with institutions/industries (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[40,30,10,5],    unit:'count',
+       dept:'International Relations / Partnerships'}
+    ]
+  },
+  { num:'C4', name:'Infrastructure & Learning Resources', weight:100, color:'#004d40',
+    metrics:[
+      {num:'4.1.2', desc:'% expenditure (excl. salary) for infrastructure development (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[40,30,20,10],  unit:'%',
+       dept:'Finance Office'},
+      {num:'4.2.2', desc:'% expenditure for library books/e-books & journal subscriptions (last 5 yrs)',
+       weight:5,  ql:false, hb:true,  th:[10,8,6,2],     unit:'%',
+       dept:'Library'},
+      {num:'4.3.2', desc:'Student–Computer ratio (latest AY)',
+       weight:10, ql:false, hb:false, th:[5,10,15,25],   unit:'ratio (X:1)',
+       dept:'IT Department'},
+      {num:'4.3.3', desc:'Facilities for e-content and resource development',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'IT Department',
+       qlDesc:{A:'Any 7+ facilities', B:'Any 6', C:'Any 5', D:'Any 3-4', E:'2 or below'}},
+      {num:'4.4.1', desc:'% expenditure on maintenance of physical & academic facilities (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[30,20,10,5],   unit:'%',
+       dept:'Finance Office / Estate'}
+    ]
+  },
+  { num:'C5', name:'Student Support & Progression', weight:100, color:'#bf360c',
+    metrics:[
+      {num:'5.1.1', desc:'% of students benefited by scholarships/freeships (last 5 yrs)',
+       weight:15, ql:false, hb:true,  th:[60,50,40,20],  unit:'%',
+       dept:'Admissions & Financial Aid'},
+      {num:'5.1.3', desc:'Capacity development & skills enhancement initiatives',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Student Life (Mentoring & Counselling)',
+       qlDesc:{A:'All 4 (soft, language, life skills, tech trends)', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'5.1.4', desc:'Redressal mechanisms for student grievances incl. harassment & ragging',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Student Life (Mentoring & Counselling)',
+       qlDesc:{A:'All 4 mechanisms', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'5.2.1', desc:'% placement of outgoing students (last 5 yrs)',
+       weight:15, ql:false, hb:true,  th:[70,60,50,40],  unit:'%',
+       dept:'Career Services (Placement)'},
+      {num:'5.2.2', desc:'% of graduated students progressed to higher education (last 5 yrs)',
+       weight:15, ql:false, hb:true,  th:[40,30,20,5],   unit:'%',
+       dept:'Student Affairs (Academic)'},
+      {num:'5.2.3', desc:'% of students qualifying state/national/international exams (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[1.0,0.8,0.6,0.4], unit:'%',
+       dept:'Student Affairs (Academic)'},
+      {num:'5.3.1', desc:'Awards/medals in sports/cultural events at inter-univ/state/national level (last 5 yrs)',
+       weight:10, ql:false, hb:true,  th:[80,50,20,10],  unit:'count',
+       dept:'Student Affairs (Academic)'},
+      {num:'5.3.3', desc:'Activities conducted/organized by institution',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Student Affairs (Academic)',
+       qlDesc:{A:'All 4 (sports, cultural, tech fest, clubs)', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'5.4.1', desc:'Alumni contribution via registered Alumni Association (INR Lakhs, last 5 yrs)',
+       weight:5,  ql:false, hb:true,  th:[100,50,20,5],  unit:'₹ Lakhs',
+       dept:'Alumni Relations'}
+    ]
+  },
+  { num:'C6', name:'Governance, Leadership & Management', weight:100, color:'#1b5e20',
+    metrics:[
+      {num:'6.2.2', desc:'Institution implements e-governance covering operations',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'ICT / IT Department',
+       qlDesc:{A:'All 4 (Admin, Finance, Admissions, Exams)', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'6.3.2', desc:'% of teachers given financial support for conferences/memberships (last 5 yrs)',
+       weight:15, ql:false, hb:true,  th:[60,40,25,10],  unit:'%',
+       dept:'HR Office'},
+      {num:'6.3.3', desc:'% of teachers undergoing FDP/MDP/Orientation/Refresher programs (last 5 yrs)',
+       weight:6,  ql:false, hb:true,  th:[60,40,25,10],  unit:'%',
+       dept:'HR Office'},
+      {num:'6.4.2', desc:'Govt/non-govt grants for infrastructure development (INR Lakhs, last 5 yrs)',
+       weight:12, ql:false, hb:true,  th:[100,80,60,30], unit:'₹ Lakhs',
+       dept:'Finance Office'},
+      {num:'6.5.2', desc:'Quality assurance measures adopted by institution',
+       weight:10, ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'IQAC / Office of the Registrar',
+       qlDesc:{A:'Any 5-6 measures (AAA, Conf, Collab, Orientation, NIRF, Audit)', B:'Any 4', C:'Any 3', D:'Any 2', E:'Any 1'}}
+    ]
+  },
+  { num:'C7', name:'Institutional Values & Best Practices', weight:100, color:'#e65100',
+    metrics:[
+      {num:'7.1.2', desc:'Facilities for alternate sources of energy & conservation measures',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Estate / Facilities Management',
+       qlDesc:{A:'Any 4+ (solar, biogas, grid-wheel, sensors, LED, windmill)', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'7.1.4', desc:'Water conservation facilities available in institution',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Estate / Facilities Management',
+       qlDesc:{A:'Any 4-5 (rainwater, borewell, tanks, recycling, water body maint.)', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'7.1.6', desc:'Quality audits on environment and energy regularly undertaken',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'Estate / Facilities Management',
+       qlDesc:{A:'All 4 (green audit, energy audit, clean campus, beyond campus)', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}},
+      {num:'7.1.10',desc:'Prescribed code of conduct with periodic programmes for all stakeholders',
+       weight:5,  ql:true,  hb:true,  th:null,            unit:'A–E',
+       dept:'IQAC / Office of the Registrar',
+       qlDesc:{A:'All 4 (website, committee, ethics prog, annual awareness)', B:'Any 3', C:'Any 2', D:'Any 1', E:'None'}}
+    ]
+  }
+];
+
+// ── Benchmark storage in accState ────────────────────────────────────────
+if(!accState.naac_bench) accState.naac_bench={};
+
+// ── Score calculation helper ─────────────────────────────────────────────
+function _nbScore(metric, raw){
+  const val=(raw||'').toString().trim();
+  if(!val) return null;
+  if(metric.ql){
+    const m={A:4,B:3,C:2,D:1,E:0};
+    return m[val.toUpperCase()]??null;
+  }
+  const v=parseFloat(val.replace(/[^0-9.]/g,''));
+  if(isNaN(v)) return null;
+  const [t4,t3,t2,t1]=metric.th;
+  if(metric.hb){ if(v>=t4)return 4; if(v>=t3)return 3; if(v>=t2)return 2; if(v>=t1)return 1; return 0; }
+  else{          if(v<=t4)return 4; if(v<=t3)return 3; if(v<=t2)return 2; if(v<=t1)return 1; return 0; }
+}
+function _nbScoreColor(s){
+  if(s===null) return '#aaa';
+  return ['#c62828','#e65100','#f9a825','#388e3c','#1a6b1a'][s];
+}
+function _nbScoreBg(s){
+  if(s===null) return '#f5f5f5';
+  return ['#ffebee','#fff3e0','#fffde7','#e8f5e9','#e0f2e0'][s];
+}
+function _nbScoreLabel(s){
+  if(s===null) return '—';
+  return ['0 – Below Benchmark','1 – Needs Improvement','2 – Developing','3 – Proficient','4 – Exemplary'][s];
+}
+function _nbGapToNext(metric, raw){
+  const s=_nbScore(metric,raw);
+  if(s===null||s===4) return null;
+  const v=parseFloat((raw||'').toString());
+  if(isNaN(v)) return null;
+  const targets=[null,...metric.th].reverse(); // index = score needed
+  const need=targets[s+1];
+  const gap=metric.hb?(need-v).toFixed(2):(v-need).toFixed(2);
+  return {need, gap, unit:metric.unit};
+}
+function _nbBandHtml(metric){
+  const bands=metric.ql
+    ? ['A','B','C','D','E'].map((l,i)=>`<span style="background:${_nbScoreBg(4-i)};color:${_nbScoreColor(4-i)};border:1px solid ${_nbScoreColor(4-i)}40;padding:2px 7px;border-radius:4px;font-size:11px;white-space:nowrap">${l}=${4-i}</span>`).join(' ')
+    : [4,3,2,1,0].map(s=>{
+        const t=metric.th;
+        let range='';
+        if(metric.hb){
+          if(s===4) range='>= '+t[0];
+          else if(s===0) range='< '+t[3];
+          else range=t[s]+'–'+t[s-1];
+        } else {
+          if(s===4) range='<= '+t[0];
+          else if(s===0) range='> '+t[3];
+          else range=t[s-1]+'–'+t[s];
+        }
+        return `<span style="background:${_nbScoreBg(s)};color:${_nbScoreColor(s)};border:1px solid ${_nbScoreColor(s)}40;padding:2px 7px;border-radius:4px;font-size:11px;white-space:nowrap">${s}: ${range} ${metric.unit}</span>`;
+      }).join(' ');
+  return `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:3px">${bands}</div>`;
+}
+
 let accState = {naac:{}, iso41:{}, iso21:{}, qs:{}, nirf:{}, aishe:{}};
 const ACC_FB_PATH = 'admin_accreditation';
 
@@ -4949,6 +5303,301 @@ function _isoUpdateBadges(stateKey, prefix){
   if(el_obs)el_obs.textContent=obs;
   if(el_nc)el_nc.textContent=nc;
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+//  NAAC BENCHMARKS TAB BUILDER
+// ═══════════════════════════════════════════════════════════════════════
+function buildNAACBenchmarks(){
+  if(!accState.naac_bench) accState.naac_bench={};
+  // Build KPI banner
+  let totalMetrics=0, filledMetrics=0, totalWeightedScore=0, totalMaxScore=0;
+  NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>{
+    totalMetrics++;
+    const raw=accState.naac_bench[m.num];
+    const s=_nbScore(m,raw);
+    totalMaxScore+=m.weight*4;
+    if(s!==null){ filledMetrics++; totalWeightedScore+=m.weight*s; }
+  }));
+  const overallPct=totalMaxScore?Math.round(totalWeightedScore/totalMaxScore*100):0;
+  const kpiEl=document.getElementById('nb-overall-kpi');
+  if(kpiEl){
+    const kpis=[
+      {v:37,           l:'Total QnM Metrics'},
+      {v:filledMetrics,l:'Values Entered'},
+      {v:37-filledMetrics, l:'Pending Entry'},
+      {v:overallPct+'%', l:'Overall Score %'},
+    ];
+    kpiEl.innerHTML=kpis.map(k=>`
+      <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px 10px;text-align:center">
+        <div style="font-size:22px;font-weight:800;color:#FDB515">${k.v}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.8);margin-top:2px">${k.l}</div>
+      </div>`).join('');
+  }
+  nbBuildCriterionView();
+  nbShowTab('criterion', document.querySelector('#nb-subtab-bar button'));
+}
+
+function nbShowTab(tab, btn){
+  ['criterion','metric','dept'].forEach(t=>{
+    const el=document.getElementById('nb-panel-'+t);
+    if(el) el.style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('#nb-subtab-bar button').forEach(b=>{
+    b.style.background='rgba(255,255,255,0.15)';
+    b.style.border='1px solid rgba(255,255,255,0.3)';
+    b.style.color='#fff';
+    b.style.fontWeight='400';
+  });
+  if(btn){
+    btn.style.background='#F58220';
+    btn.style.border='none';
+    btn.style.fontWeight='600';
+  }
+  if(tab==='metric') nbBuildMetricView();
+  if(tab==='dept')   nbBuildDeptView();
+}
+
+// ── Criterion Dashboard ─────────────────────────────────────────────────
+function nbBuildCriterionView(){
+  const grid=document.getElementById('nb-criterion-grid'); if(!grid) return;
+  grid.innerHTML=NAAC_BENCHMARKS_DATA.map(cr=>{
+    let cFilled=0, cScore=0, cMax=0;
+    cr.metrics.forEach(m=>{
+      const raw=accState.naac_bench[m.num];
+      const s=_nbScore(m,raw);
+      cMax+=m.weight*4;
+      if(s!==null){cFilled++;cScore+=m.weight*s;}
+    });
+    const pct=cMax?Math.round(cScore/cMax*100):0;
+    const col=pct>=75?'#2e7d32':pct>=50?'#1565c0':pct>=25?'#e65100':'#c62828';
+    const metricsHtml=cr.metrics.map(m=>{
+      const raw=accState.naac_bench[m.num]||'';
+      const s=_nbScore(m,raw);
+      const sc=_nbScoreColor(s); const sb=_nbScoreBg(s);
+      return `<tr style="border-bottom:1px solid #f0f4fa">
+        <td style="padding:5px 8px;font-size:11px;font-weight:600;color:${cr.color};white-space:nowrap">${m.num}</td>
+        <td style="padding:5px 8px;font-size:11px;color:#444;max-width:220px">${m.desc.substring(0,70)}${m.desc.length>70?'…':''}</td>
+        <td style="padding:5px 8px;text-align:center">
+          <span style="background:${sb};color:${sc};padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">${s!==null?s:'—'}</span>
+        </td>
+        <td style="padding:5px 8px;text-align:center;font-size:11px;color:#888">${m.weight}</td>
+      </tr>`;
+    }).join('');
+    return `<div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+      <div style="background:${cr.color};color:#fff;padding:12px 16px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-weight:700;font-size:14px">${cr.num} — ${cr.name}</div>
+            <div style="font-size:11px;opacity:0.8;margin-top:2px">Weight: ${cr.weight} | ${cr.metrics.length} QnM metrics</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:26px;font-weight:800;color:#FDB515">${pct}%</div>
+            <div style="font-size:10px;opacity:0.8">${cFilled}/${cr.metrics.length} entered</div>
+          </div>
+        </div>
+        <div style="background:rgba(0,0,0,0.2);border-radius:4px;height:6px;margin-top:10px;overflow:hidden">
+          <div style="background:#FDB515;height:100%;width:${pct}%;border-radius:4px;transition:width 0.6s"></div>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:#f8fafc">
+            <th style="padding:6px 8px;font-size:10px;color:#888;text-align:left;white-space:nowrap">Metric</th>
+            <th style="padding:6px 8px;font-size:10px;color:#888;text-align:left">Description</th>
+            <th style="padding:6px 8px;font-size:10px;color:#888;text-align:center">Score</th>
+            <th style="padding:6px 8px;font-size:10px;color:#888;text-align:center">Wt</th>
+          </tr></thead>
+          <tbody>${metricsHtml}</tbody>
+        </table>
+      </div>
+      <div style="padding:10px 14px;border-top:1px solid #f0f4fa;text-align:right">
+        <button onclick="nbShowMetricForCriterion('${cr.num}')"
+          style="font-size:11px;padding:4px 12px;background:${cr.color};color:#fff;border:none;border-radius:4px;cursor:pointer">
+          📊 Detailed View →
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Metric-wise View ────────────────────────────────────────────────────
+function nbBuildMetricView(){
+  const tbl=document.getElementById('nb-metric-table'); if(!tbl) return;
+  const cf=(document.getElementById('nb-metric-filter')||{}).value||'all';
+  const sf=(document.getElementById('nb-score-filter')||{}).value||'all';
+  let allM=[];
+  NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>allM.push({...m,crNum:cr.num,crName:cr.name,crColor:cr.color})));
+  if(cf!=='all') allM=allM.filter(m=>m.crNum===cf);
+  if(sf!=='all'){
+    if(sf==='null') allM=allM.filter(m=>_nbScore(m,accState.naac_bench[m.num])===null);
+    else allM=allM.filter(m=>_nbScore(m,accState.naac_bench[m.num])===parseInt(sf));
+  }
+  tbl.innerHTML=allM.map(m=>{
+    const raw=accState.naac_bench[m.num]||'';
+    const s=_nbScore(m,raw);
+    const sc=_nbScoreColor(s); const sb=_nbScoreBg(s);
+    const gap=(!m.ql&&raw)?_nbGapToNext(m,raw):null;
+    const gapHtml=gap?`<div style="font-size:10px;color:#e65100;margin-top:2px">+${gap.gap} ${gap.unit} to reach Score ${_nbScore(m,raw)+1}</div>`:'';
+    const inputHtml=m.ql
+      ? `<select class="afi-sel" style="width:80px;font-size:12px" onchange="accState.naac_bench['${m.num}']=this.value;nbRefreshRow(this,'${m.num}')">
+          <option value="">—</option>
+          <option value="A" ${raw==='A'?'selected':''}>A (4)</option>
+          <option value="B" ${raw==='B'?'selected':''}>B (3)</option>
+          <option value="C" ${raw==='C'?'selected':''}>C (2)</option>
+          <option value="D" ${raw==='D'?'selected':''}>D (1)</option>
+          <option value="E" ${raw==='E'?'selected':''}>E (0)</option>
+         </select>`
+      : `<input type="text" class="afi-inp" value="${raw}" placeholder="Enter value"
+           style="width:110px;font-size:12px"
+           onchange="accState.naac_bench['${m.num}']=this.value;nbRefreshRow(this,'${m.num}');nbBuildCriterionView()">`;
+    return `<div id="nb-row-${m.num.replace('.','_')}" style="background:#fff;border:1px solid #e0e8f0;border-radius:8px;margin-bottom:8px;padding:14px 16px">
+      <div style="display:grid;grid-template-columns:auto 1fr auto auto auto;gap:12px;align-items:start">
+        <div>
+          <span style="background:${m.crColor};color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px">${m.crNum}</span>
+          <span style="display:block;font-size:13px;font-weight:700;color:#1a3c5e;margin-top:4px">${m.num}</span>
+          <span style="font-size:10px;color:#888">${m.unit}</span>
+        </div>
+        <div>
+          <div style="font-size:13px;color:#333;font-weight:500">${m.desc}</div>
+          <div style="font-size:11px;color:#888;margin-top:3px">🏢 ${m.dept}</div>
+          ${_nbBandHtml(m)}
+          ${m.qlDesc?`<div style="font-size:10px;color:#666;margin-top:4px;line-height:1.5">`+Object.entries(m.qlDesc).map(([k,v])=>`<span style="margin-right:8px"><strong>${k}:</strong> ${v}</span>`).join('')+`</div>`:''}
+        </div>
+        <div style="text-align:center;min-width:80px">
+          <div style="font-size:10px;color:#888;margin-bottom:4px">Your Value</div>
+          ${inputHtml}
+          ${gapHtml}
+        </div>
+        <div style="text-align:center;min-width:70px">
+          <div style="font-size:10px;color:#888;margin-bottom:4px">Score</div>
+          <div style="font-size:22px;font-weight:800;color:${sc}">${s!==null?s:'—'}</div>
+          <div style="font-size:10px;color:${sc}">${s!==null?['Below','Needs Imp.','Developing','Proficient','Exemplary'][s]:'Not entered'}</div>
+        </div>
+        <div style="text-align:center;min-width:50px">
+          <div style="font-size:10px;color:#888;margin-bottom:4px">Weight</div>
+          <div style="font-size:16px;font-weight:700;color:#0C3F6A">${m.weight}</div>
+          <div style="font-size:10px;color:#888">pts</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('')||'<div style="padding:24px;text-align:center;color:#aaa">No metrics match current filters.</div>';
+}
+function nbRefreshRow(el,num){
+  const raw=accState.naac_bench[num]||'';
+  const allM=[];
+  NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>allM.push(m)));
+  const metric=allM.find(m=>m.num===num);
+  if(!metric) return;
+  const rowId='nb-row-'+num.replace('.','_');
+  const row=document.getElementById(rowId);
+  if(!row) return;
+  nbBuildMetricView(); // re-render full view for simplicity
+  nbBuildCriterionView();
+}
+function nbShowMetricForCriterion(crNum){
+  const sel=document.getElementById('nb-metric-filter');
+  if(sel) sel.value=crNum;
+  nbShowTab('metric', document.querySelectorAll('#nb-subtab-bar button')[1]);
+}
+
+// ── Department-wise View ────────────────────────────────────────────────
+function nbBuildDeptView(){
+  const grid=document.getElementById('nb-dept-grid'); if(!grid) return;
+  // Collect all depts
+  const deptMap={};
+  NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>{
+    if(!deptMap[m.dept]) deptMap[m.dept]={metrics:[],totalWeight:0,score:0,max:0};
+    deptMap[m.dept].metrics.push({...m,crNum:cr.num,crColor:cr.color});
+    deptMap[m.dept].totalWeight+=m.weight;
+    const raw=accState.naac_bench[m.num];
+    const s=_nbScore(m,raw);
+    deptMap[m.dept].max+=m.weight*4;
+    if(s!==null) deptMap[m.dept].score+=m.weight*s;
+  }));
+  grid.innerHTML=Object.entries(deptMap).sort((a,b)=>b[1].totalWeight-a[1].totalWeight).map(([dept,data])=>{
+    const pct=data.max?Math.round(data.score/data.max*100):0;
+    const filled=data.metrics.filter(m=>_nbScore(m,accState.naac_bench[m.num])!==null).length;
+    const col=pct>=75?'#2e7d32':pct>=50?'#1565c0':pct>=25?'#e65100':'#c62828';
+    const metRows=data.metrics.map(m=>{
+      const raw=accState.naac_bench[m.num]||'';
+      const s=_nbScore(m,raw);
+      const sc=_nbScoreColor(s); const sb=_nbScoreBg(s);
+      return `<tr style="border-bottom:1px solid #f5f5f5">
+        <td style="padding:5px 10px">
+          <span style="background:${m.crColor};color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:4px">${m.crNum}</span>
+          <strong style="font-size:12px;color:#1a3c5e">${m.num}</strong>
+        </td>
+        <td style="padding:5px 10px;font-size:11px;color:#444;max-width:200px">${m.desc.substring(0,60)}…</td>
+        <td style="padding:5px 10px;font-size:11px;color:#888;text-align:center">${m.weight}</td>
+        <td style="padding:5px 10px;text-align:center">
+          <span style="background:${sb};color:${sc};padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700">${s!==null?s:'—'}</span>
+        </td>
+        <td style="padding:5px 10px;text-align:center">
+          <span style="background:${sb};color:${sc};padding:2px 6px;border-radius:3px;font-size:10px">${s!==null?m.weight*s+'/'+(m.weight*4):'—'}</span>
+        </td>
+      </tr>`;
+    }).join('');
+    return `<div style="background:#fff;border-radius:10px;border:1px solid #e0e8f0;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:2px solid ${col}">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:#1a3c5e">${dept}</div>
+            <div style="font-size:11px;color:#888;margin-top:2px">${data.metrics.length} metrics · Total weight: ${data.totalWeight} · Filled: ${filled}/${data.metrics.length}</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:24px;font-weight:800;color:${col}">${pct}%</div>
+            <div style="font-size:10px;color:#888">Score ${data.score}/${data.max}</div>
+          </div>
+        </div>
+        <div style="background:#eee;border-radius:4px;height:5px;margin-top:8px;overflow:hidden">
+          <div style="background:${col};height:100%;width:${pct}%;border-radius:4px"></div>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="background:#f8fafc">
+            <th style="padding:6px 10px;font-size:10px;color:#888;text-align:left">Metric</th>
+            <th style="padding:6px 10px;font-size:10px;color:#888;text-align:left">Description</th>
+            <th style="padding:6px 10px;font-size:10px;color:#888;text-align:center">Wt</th>
+            <th style="padding:6px 10px;font-size:10px;color:#888;text-align:center">Score</th>
+            <th style="padding:6px 10px;font-size:10px;color:#888;text-align:center">Pts</th>
+          </tr></thead>
+          <tbody>${metRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Save / Export ───────────────────────────────────────────────────────
+async function nbSaveBench(){
+  const msg=document.getElementById('nb-save-msg');
+  if(msg) msg.textContent='Saving…';
+  try{
+    if(db) await db.ref(ROOT+'/admin_accreditation/naac_bench').set(accState.naac_bench);
+    if(msg) msg.textContent='Saved to Firebase: '+new Date().toLocaleTimeString();
+  }catch(e){
+    if(msg) msg.textContent='Save failed: '+e.message;
+  }
+}
+function nbExportCSV(){
+  const hdr=['Criterion','Metric No','Description','Department','Weight','Unit','Score 4 Benchmark','Score 3','Score 2','Score 1','Score 0','Your Value','Your Score','Score Label'];
+  const rows=[hdr.join(',')];
+  NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>{
+    const raw=accState.naac_bench[m.num]||'';
+    const s=_nbScore(m,raw);
+    const bands=m.ql?['A','B','C','D','E']:
+      (m.hb?['>='+m.th[0],'>='+m.th[1],'>='+m.th[2],'>='+m.th[3],'<'+m.th[3]]:
+             ['<='+m.th[0],'<='+m.th[1],'<='+m.th[2],'<='+m.th[3],'>'+m.th[3]]);
+    rows.push([cr.num,m.num,'"'+m.desc.replace(/"/g,'')+'"','"'+m.dept+'"',m.weight,m.unit,...bands,raw,s!==null?s:'',s!==null?_nbScoreLabel(s):''].join(','));
+  }));
+  const blob=new Blob([rows.join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='FLAME_NAAC_Benchmarks.csv';
+  a.click();
+}
+
 function buildISO41(){
   _buildISOPanel(ISO41_CLAUSES_DATA,'iso41-clauses-container','iso41','iso41');
   _buildISO41AuditObs();
