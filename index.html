@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLAME University — Unified MIS</title>
 <style>
@@ -268,243 +270,169 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .done-card p{color:#6b7a99;margin-bottom:24px}
 .f-msg{margin-top:14px}
 
-/* ── ADMIN ────────────────────────────────────────────────────── */
-#sc-admin{display:flex;flex-direction:column;height:100vh;overflow:hidden}
-.adm-bar{
-  background:#0C3F6A;
-  padding:10px 24px;display:flex;
-  justify-content:space-between;align-items:center;flex-shrink:0;
-  border-bottom:3px solid #F58220;
-  box-shadow:0 2px 12px rgba(0,0,0,.35)}
-.adm-left{display:flex;align-items:center;gap:16px}
-.adm-logo-pill{background:#fff;border-radius:8px;padding:6px 12px;display:inline-flex;align-items:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.22)}
-.adm-logo{height:34px;display:block}
-.adm-sep{width:1px;height:32px;background:rgba(255,255,255,.15)}
-.adm-title{font-size:14px;font-weight:700;color:#ffffff;letter-spacing:.03em}
-.adm-filters{background:#fff;padding:12px 24px;display:flex;
-  gap:14px;align-items:center;border-bottom:1px solid #e2e8f0;flex-shrink:0;flex-wrap:wrap}
-.adm-filters label{font-size:11px;font-weight:700;color:#6b7a99;text-transform:uppercase}
-.adm-filters select{padding:6px 10px;border:1.5px solid #d4dbe8;border-radius:6px;font-size:13px}
-.adm-body{flex:1;overflow-y:auto;padding:22px 24px}
-.stats-row{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
-.stat{background:#fff;border-radius:10px;padding:16px 22px;text-align:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);min-width:100px}
-.stat span{display:block;font-size:22px;font-weight:800;color:#0C3F6A}
-.stat small{font-size:11px;color:#7a8db5;text-transform:uppercase;font-weight:600}
-.a-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;
-  overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);font-size:12.5px}
-.a-table th{background:#0C3F6A;color:#FDB515;padding:10px 14px;
-  font-size:11px;font-weight:700;text-align:left}
-.a-table td{padding:9px 14px;border-bottom:1px solid #f0f3fa}
-.a-table tr:last-child td{border-bottom:none}
-.a-table tr:hover td{background:#f8faff}
-.badge{padding:2px 8px;border-radius:10px;font-size:10.5px;font-weight:600}
-.b-monthly{background:#dbeafe;color:#1e40af}
-.b-annual{background:#dcfce7;color:#166534}
-.btn-sm{padding:4px 10px;background:#e8f0fe;color:#155a94;
-  border:1px solid #c0d0f0;border-radius:5px;font-size:11.5px;cursor:pointer}
-.no-d{color:#7a8db5;font-size:13px;padding:20px}
+/* ═══════════════════════════════════════════════════════
+   ADMIN PANEL — PROFESSIONAL REDESIGN
+   Inspired by: Harvard Atlas · MIT Portal · Oxford Nexus
+   Font: Inter (Google Fonts)
+═══════════════════════════════════════════════════════ */
+#sc-admin{display:flex;flex-direction:column;height:100vh;overflow:hidden;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;background:#F1F5F9}
 
-/* ── MODAL ────────────────────────────────────────────────────── */
-#modal{position:fixed;inset:0;background:rgba(0,0,0,.5);
-  display:flex;align-items:center;justify-content:center;z-index:1000}
-.mod-box{background:#fff;border-radius:12px;width:90%;max-width:800px;
-  max-height:85vh;display:flex;flex-direction:column}
-.mod-hdr{padding:16px 20px;border-bottom:1px solid #f0f3fa;
-  display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.mod-hdr h3{font-size:15px;font-weight:700}
-.mod-cl{background:#f0f3fa;border:none;border-radius:6px;
-  padding:5px 11px;cursor:pointer;font-size:15px;color:#5a6a8a}
-#mod-body{padding:16px 20px;overflow-y:auto}
-.det-hdr{font-size:13px;font-weight:700;color:#0C3F6A;
-  padding-bottom:10px;border-bottom:2px solid #f0f3fa;margin-bottom:14px}
-.det-ts{font-size:11px;font-weight:400;color:#7a8db5;margin-left:8px}
-.det-sec{margin-bottom:14px;padding:12px;background:#f8faff;
-  border-radius:7px;border-left:3px solid #0C3F6A}
-.det-sec-ttl{font-size:10.5px;font-weight:700;color:#0C3F6A;
-  text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
-.det-tbl{width:100%;border-collapse:collapse;font-size:11.5px}
-.det-tbl th{background:#e8f0fe;color:#155a94;padding:5px 8px;font-size:10.5px;font-weight:700;text-align:left}
-.det-tbl td{padding:5px 8px;border-bottom:1px solid #f0f3fa}
-.det-fields{display:flex;flex-direction:column;gap:5px}
-.df{display:flex;gap:7px;font-size:11.5px;line-height:1.5}
-.df-l{font-weight:600;color:#4a5568;min-width:130px;flex-shrink:0}
-.det-files{margin-top:8px;font-size:11px;color:#3a5a8a}
-.det-files a{color:#155a94;margin-left:4px}
+/* ── HEADER BAR ─────────────────────────────────────── */
+.adm-header{
+  background:linear-gradient(135deg,#0C3F6A 0%,#0e4f85 100%);
+  padding:0 24px;height:58px;display:flex;align-items:center;
+  justify-content:space-between;flex-shrink:0;z-index:200;
+  box-shadow:0 2px 20px rgba(12,63,106,0.45)}
+.adm-header-brand{display:flex;align-items:center;gap:14px}
+.adm-header-logo-wrap{background:#fff;border-radius:8px;padding:5px 11px;
+  display:flex;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.adm-header-logo{height:30px;display:block}
+.adm-header-divider{width:1px;height:28px;background:rgba(255,255,255,0.15)}
+.adm-header-title{font-size:14px;font-weight:700;color:#fff;letter-spacing:0.02em}
+.adm-header-subtitle{font-size:10px;color:rgba(255,255,255,0.55);font-weight:500;margin-top:1px}
+.adm-header-actions{display:flex;gap:10px;align-items:center}
+.adm-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;
+  border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;
+  border:none;font-family:inherit;transition:all 0.2s}
+.adm-btn-outline{background:rgba(255,255,255,0.12);color:#fff;
+  border:1px solid rgba(255,255,255,0.25)}
+.adm-btn-outline:hover{background:rgba(255,255,255,0.22)}
+.adm-btn-orange{background:#F58220;color:#fff}
+.adm-btn-orange:hover{background:#e0721a}
+.adm-sidebar-toggle{background:rgba(255,255,255,0.1);border:none;color:#fff;
+  width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;transition:0.2s}
+.adm-sidebar-toggle:hover{background:rgba(255,255,255,0.2)}
 
-/* ══════════════════════════════════════════════════════
-   FACULTY MASTER SHEET
-══════════════════════════════════════════════════════ */
-.fac-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-  margin-bottom:16px;padding:12px 16px;background:#f8faff;
-  border:1px solid #e2e8f0;border-radius:8px}
-.fac-toolbar h3{font-size:14px;font-weight:700;color:#0C3F6A;flex:1}
-.btn-fac-add{padding:8px 18px;background:#0C3F6A;color:#fff;border:none;
-  border-radius:7px;font-size:13px;font-weight:600;cursor:pointer}
-.btn-fac-add:hover{background:#155a94}
-.fac-search{padding:7px 12px;border:1.5px solid #d4dbe8;border-radius:7px;
-  font-size:13px;width:200px;outline:none}
-.fac-stats{display:flex;gap:8px;font-size:11px;color:#6b7a99}
-.fac-stat{background:#e8f0fe;color:#155a94;padding:3px 9px;border-radius:10px;font-weight:600}
+/* ── MAIN LAYOUT ─────────────────────────────────────── */
+.adm-layout{display:flex;flex:1;overflow:hidden}
 
-/* Faculty card grid */
-.fac-grid{display:flex;flex-direction:column;gap:14px}
-.fac-card{border:1.5px solid #e2e8f0;border-radius:10px;overflow:hidden;
-  box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.fac-card-hdr{display:flex;align-items:center;gap:10px;padding:10px 16px;
-  background:#0C3F6A;cursor:pointer;user-select:none}
-.fac-card-hdr:hover{background:#155a94}
-.fac-avatar{width:34px;height:34px;border-radius:50%;background:#F58220;
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.adm-sidebar{
+  width:240px;min-width:240px;background:#0C3F6A;
+  display:flex;flex-direction:column;overflow-y:auto;
+  flex-shrink:0;transition:width 0.25s ease,min-width 0.25s ease;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.15) transparent}
+.adm-sidebar.collapsed{width:62px;min-width:62px}
+.adm-sidebar-profile{
+  padding:20px 16px 16px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0}
+.adm-sidebar-avatar{
+  width:36px;height:36px;min-width:36px;border-radius:50%;
+  background:linear-gradient(135deg,#F58220,#FDB515);
   display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:800;color:#fff;flex-shrink:0}
-.fac-card-name{font-size:13px;font-weight:700;color:#fff;flex:1}
-.fac-card-desig{font-size:11px;color:#a0b0cc}
-.fac-status-badge{padding:3px 10px;border-radius:10px;font-size:10.5px;font-weight:700;
-  white-space:nowrap;flex-shrink:0}
-.fac-status-badge.complete{background:#dcfce7;color:#166534}
-.fac-status-badge.incomplete{background:#fef3c7;color:#92400e}
-.fac-status-badge.invalid{background:#fee2e2;color:#991b1b}
-.fac-card-del{background:rgba(255,255,255,.12);border:none;color:#a0b0cc;
-  border-radius:5px;padding:3px 8px;cursor:pointer;font-size:12px;margin-left:4px}
-.fac-card-del:hover{background:rgba(239,68,68,.3);color:#fff}
-.fac-card-body{display:none;padding:16px}
+  font-size:15px;font-weight:800;color:#fff}
+.adm-sidebar-info{overflow:hidden}
+.adm-sidebar-name{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-sidebar-role{font-size:10px;color:rgba(255,255,255,0.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-sidebar.collapsed .adm-sidebar-info{display:none}
+.adm-nav-section{padding:12px 10px 4px;flex-shrink:0}
+.adm-nav-section-label{
+  font-size:9px;font-weight:700;color:rgba(255,255,255,0.3);
+  text-transform:uppercase;letter-spacing:1.8px;
+  padding:0 8px;margin-bottom:4px;white-space:nowrap;overflow:hidden}
+.adm-sidebar.collapsed .adm-nav-section-label{opacity:0}
+.adm-nav-divider{height:1px;background:rgba(255,255,255,0.07);margin:8px 12px}
+.adm-nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;
+  border-radius:8px;cursor:pointer;font-size:12.5px;
+  color:rgba(255,255,255,0.7);font-weight:500;
+  transition:all 0.18s;margin-bottom:1px;
+  white-space:nowrap;overflow:hidden;position:relative}
+.adm-nav-item:hover{background:rgba(255,255,255,0.08);color:#fff}
+.adm-nav-item.active{
+  background:#F58220;color:#fff;font-weight:600;
+  box-shadow:0 3px 10px rgba(245,130,32,0.35)}
+.adm-nav-icon{font-size:15px;flex-shrink:0;min-width:20px;text-align:center}
+.adm-nav-label{flex:1;overflow:hidden;text-overflow:ellipsis}
+.adm-sidebar.collapsed .adm-nav-label{display:none}
+.adm-nav-badge{
+  background:rgba(255,255,255,0.15);color:#fff;
+  font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;
+  flex-shrink:0}
+.adm-nav-item.active .adm-nav-badge{background:rgba(255,255,255,0.25)}
+.adm-sidebar.collapsed .adm-nav-badge{display:none}
+.adm-sidebar-footer{
+  padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);
+  margin-top:auto;flex-shrink:0}
+.adm-sidebar-footer-text{
+  font-size:9px;color:rgba(255,255,255,0.25);text-align:center;
+  line-height:1.5;overflow:hidden}
+.adm-sidebar.collapsed .adm-sidebar-footer-text{display:none}
 
-/* 4-section tabs */
-.fac-tabs{display:flex;border-bottom:2px solid #e8edf5;margin-bottom:14px;gap:0}
-.fac-tab{padding:7px 16px;font-size:12px;font-weight:600;color:#7a8db5;
-  cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
-.fac-tab.active{color:#0C3F6A;border-bottom-color:#0C3F6A}
-.fac-tab:hover:not(.active){color:#0C3F6A}
-.fac-tab-pane{display:none}
-.fac-tab-pane.active{display:block}
+/* ── CONTENT AREA ─────────────────────────────────────── */
+.adm-content{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.adm-content-header{
+  background:#fff;padding:14px 24px;border-bottom:1px solid #E2E8F0;
+  flex-shrink:0;display:flex;align-items:center;
+  justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.adm-breadcrumb{font-size:10.5px;color:#94A3B8;font-weight:500;margin-bottom:3px}
+.adm-breadcrumb b{color:#475569;font-weight:600}
+.adm-page-title{font-size:17px;font-weight:700;color:#0F172A;line-height:1}
+.adm-page-desc{font-size:11px;color:#94A3B8;margin-top:3px}
 
-/* Form fields inside faculty card */
-.fac-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.fac-fg{display:flex;flex-direction:column;gap:4px}
-.fac-fg.full{grid-column:1/-1}
-.fac-lbl{font-size:10.5px;font-weight:700;color:#6b7a99;text-transform:uppercase;
-  letter-spacing:.05em;display:flex;align-items:center;gap:4px}
-.fac-lbl .req{color:#dc2626;font-size:13px}
-.fac-inp{padding:7px 10px;border:1.5px solid #d4dbe8;border-radius:6px;
-  font-size:13px;color:#1a1a2e;outline:none;transition:border .2s;width:100%}
-.fac-inp:focus{border-color:#1b6ab5}
-.fac-inp.invalid{border-color:#dc2626;background:#fff5f5}
-.fac-sel{padding:7px 10px;border:1.5px solid #d4dbe8;border-radius:6px;
-  font-size:13px;color:#1a1a2e;width:100%;background:#fff}
-
-/* File upload per field */
-.fac-upload-group{display:flex;flex-direction:column;gap:5px}
-.fac-upload-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.fac-upload-btn{padding:5px 12px;background:#e8f0fe;color:#155a94;border:1px solid #c0d0f0;
-  border-radius:5px;font-size:11.5px;cursor:pointer;white-space:nowrap}
-.fac-upload-status{font-size:11px;color:#6b7a99}
-.fac-upload-status.ok{color:#166534;font-weight:600}
-.fac-upload-status.err{color:#dc2626;font-weight:600}
-.fac-file-link{display:inline-flex;align-items:center;gap:4px;background:#dcfce7;
-  color:#166534;border-radius:4px;padding:2px 8px;font-size:11px}
-.fac-file-req{font-size:10px;color:#dc2626;font-style:italic}
-
-/* Compliance section */
-.fac-compliance{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:10px;margin-top:12px;padding:12px;background:#f0f6ff;border-radius:8px;
-  border:1px solid #c8d6ee}
-.fac-comp-item{display:flex;flex-direction:column;gap:3px}
-.fac-comp-lbl{font-size:10.5px;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:.04em}
-.fac-comp-val{font-size:12px;font-weight:600}
-.fac-comp-val.yes{color:#166534}
-.fac-comp-val.no{color:#dc2626}
-.fac-comp-val.na{color:#7a8db5}
-.fac-eligible-row{grid-column:1/-1;display:flex;align-items:center;gap:10px;
-  padding:8px 12px;background:#fff;border-radius:6px;border:1.5px solid}
-.fac-eligible-row.yes{border-color:#166534}
-.fac-eligible-row.no{border-color:#dc2626}
-.fac-eligible-lbl{font-size:12px;font-weight:700;flex:1}
-.fac-eligible-frameworks{font-size:11px;color:#4a5568}
-
-/* Audit trail */
-.fac-audit{font-size:10.5px;color:#9ca3af;margin-top:10px;padding-top:8px;
-  border-top:1px solid #f0f3fa;display:flex;gap:16px;flex-wrap:wrap}
-.fac-audit span{display:inline-flex;align-items:center;gap:4px}
-
-/* Empty state */
-.fac-empty{text-align:center;padding:40px 20px;color:#9ca3af}
-.fac-empty-icon{font-size:48px;margin-bottom:12px}
-.fac-empty p{font-size:13px}
-
-/* Duplicate warning */
-.fac-dup-warn{background:#fff3cd;border:1.5px solid #f59e0b;border-radius:8px;
-  padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:#856404;display:none}
-
-.btn-export{padding:7px 16px;background:#166534;color:#fff;border:none;
-  border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;
-  display:inline-flex;align-items:center;gap:6px}
-.btn-export:hover{background:#14532d}
-.export-progress{font-size:12px;color:#FDB515;margin-left:12px;display:none}
-[hidden]{display:none!important}
-/* ── SOP Panel ─────────────────────────────── */
-.sop-panel{margin-top:18px;border:1.5px solid #c8d6ee;border-radius:10px;overflow:hidden}
-.sop-hdr{display:flex;align-items:center;gap:8px;padding:11px 16px;background:#e8f0fe;
-  cursor:pointer;user-select:none;font-size:13px;font-weight:700;color:#0C3F6A}
-.sop-hdr:hover{background:#d8e8fe}
-.sop-icon{font-size:16px}
-.sop-toggle-icon{margin-left:auto;font-size:11px;color:#5a6a8a}
-.sop-body{padding:12px 16px;display:none;background:#fafdff}
-.sop-row{padding:10px 0;border-bottom:1px solid #e8edf5}
-.sop-row:last-child{border-bottom:none}
-.sop-metric-row{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:7px}
-.sop-num{background:#0C3F6A;color:#FDB515;border-radius:50%;width:20px;height:20px;
-  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px}
-.sop-metric{font-size:12.5px;font-weight:600;color:#0C3F6A;flex:1;min-width:200px}
-.sop-bench{display:inline-flex;align-items:center;gap:3px;background:#fef3c7;color:#92400e;
-  border:1px solid #fcd34d;border-radius:5px;padding:2px 7px;font-size:11px;font-weight:600;white-space:nowrap}
-.sop-app{display:inline-flex;align-items:center;background:#ede9fe;color:#5b21b6;
-  border-radius:5px;padding:2px 7px;font-size:10.5px;font-weight:600;white-space:nowrap}
-.sop-tl{display:inline-flex;align-items:center;background:#d1fae5;color:#065f46;
-  border-radius:5px;padding:2px 7px;font-size:10.5px;font-weight:600;white-space:nowrap}
-.sop-docs-lbl{font-size:11px;font-weight:700;color:#4a5568;margin-bottom:4px}
-.sop-docs{margin:0 0 0 18px;padding:0}
-.sop-docs li{font-size:11.5px;color:#374151;margin-bottom:3px;line-height:1.5}
-.sop-scope{font-size:11.5px;color:#92400e;background:#fffbeb;border-left:3px solid #f59e0b;
-  padding:6px 10px;border-radius:0 5px 5px 0;margin-top:6px;line-height:1.5}
-
-
-/* ── REPORT TABS ─────────────────────────────────── */
-.an-bar-wrap{overflow-x:auto;margin-bottom:6px}
-.an-bar{display:flex;align-items:flex-end;gap:3px;height:160px;padding:0 4px}
-.an-bar-item{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:44px;cursor:default}
-.an-bar-fill{background:#F58220;border-radius:3px 3px 0 0;width:28px;transition:.4s;min-height:4px}
-.an-bar-lbl{font-size:9.5px;color:#555;max-width:52px;text-align:center;word-break:break-word;line-height:1.2}
-.an-bar-val{font-size:10px;font-weight:700;color:#0C3F6A}
-.an-month-bar-fill{background:#1565c0;border-radius:3px 3px 0 0;width:28px;transition:.4s;min-height:4px}
-.cr-tbl{width:100%;border-collapse:collapse;font-size:12px}
-.cr-tbl th{background:#0C3F6A;color:#FDB515;padding:8px 10px;font-size:11px;font-weight:700;text-align:left;white-space:nowrap}
-.cr-tbl td{padding:7px 10px;border-bottom:1px solid #f0f0f0}
-.cr-tbl tr:hover td{background:#f8faff}
-.cr-dot-y{display:inline-block;width:10px;height:10px;border-radius:50%;background:#2e7d32}
-.cr-dot-n{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e0e0e0;border:1px solid #ccc}
-.cr-dot-p{display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b}
-.accrep-tbl{width:100%;border-collapse:collapse;font-size:12px}
-.accrep-tbl th{background:#e8f0fe;color:#155a94;padding:7px 10px;font-size:11px;font-weight:700;text-align:left}
-.accrep-tbl td{padding:6px 10px;border-bottom:1px solid #f0f0f0}
-.accrep-tbl tr:hover td{background:#f8faff}
-.cr-missing-chip{display:inline-flex;align-items:center;background:#fff3cd;color:#856404;border:1px solid #fcd34d;border-radius:12px;padding:3px 10px;font-size:11.5px;margin:3px;font-weight:600}
-@media print{
-  .adm-bar,.adm-tab-bar,.acc-save-bar{display:none!important}
-  .adm-tab-content{display:block!important}
-  #adm-tab-analytics,#adm-tab-comprep{display:none!important}
-  #adm-tab-accrep{display:block!important}
-}
-/* ── ADMIN TABS ──────────────────────────────── */
-.adm-tab-bar{background:#fff;border-bottom:2px solid #e2e8f0;padding:0 16px;
-  display:flex;gap:0;flex-shrink:0;overflow-x:auto;box-shadow:0 2px 6px rgba(0,0,0,.06)}
-.adm-tab{padding:11px 18px;cursor:pointer;border-bottom:3px solid transparent;
-  font-weight:600;font-size:12.5px;color:#6b7a99;transition:.2s;white-space:nowrap;flex-shrink:0}
-.adm-tab:hover{color:#0C3F6A;background:#f8faff}
-.adm-tab.active{color:#0C3F6A;border-bottom-color:#F58220;background:#fffbf5}
+/* ── TAB CONTENT ─────────────────────────────────────── */
 .adm-tab-content{display:none;flex:1;overflow-y:auto;flex-direction:column}
 .adm-tab-content.active{display:flex}
 #adm-tab-dept{flex-direction:column}
+
+/* ── DEPT FILTERS BAR ─────────────────────────────────── */
+.adm-filters{
+  background:#fff;padding:11px 24px;
+  display:flex;gap:12px;align-items:center;
+  border-bottom:1px solid #E2E8F0;flex-shrink:0;flex-wrap:wrap}
+.adm-filters label{font-size:10px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:0.07em}
+.adm-filters select{padding:6px 10px;border:1.5px solid #E2E8F0;border-radius:7px;
+  font-size:12.5px;color:#334155;background:#fff;font-family:inherit}
+.adm-filters select:focus{outline:none;border-color:#0C3F6A}
+
+/* ── BODY / STATS ─────────────────────────────────────── */
+.adm-body{flex:1;overflow-y:auto;padding:20px 24px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;margin-bottom:20px}
+.stat{
+  background:#fff;border-radius:12px;padding:18px 20px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 14px rgba(0,0,0,0.04);
+  border:1px solid #F0F4F8;transition:box-shadow 0.2s}
+.stat:hover{box-shadow:0 4px 16px rgba(12,63,106,0.12)}
+.stat span{display:block;font-size:26px;font-weight:800;color:#0C3F6A;line-height:1.1}
+.stat small{font-size:10px;color:#94A3B8;text-transform:uppercase;font-weight:700;letter-spacing:0.06em;margin-top:4px;display:block}
+
+/* ── DATA TABLE ──────────────────────────────────────── */
+#adm-tbl table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;
+  border-radius:12px;overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 14px rgba(0,0,0,0.04)}
+#adm-tbl thead th{
+  background:#F8FAFC;padding:11px 14px;font-size:10.5px;font-weight:700;
+  color:#64748B;text-transform:uppercase;letter-spacing:0.06em;
+  border-bottom:1px solid #E2E8F0;text-align:left;white-space:nowrap}
+#adm-tbl tbody tr{border-bottom:1px solid #F1F5F9;transition:background 0.15s}
+#adm-tbl tbody tr:hover{background:#F8FAFC}
+#adm-tbl tbody td{padding:10px 14px;color:#334155}
+#adm-tbl tbody tr:last-child{border-bottom:none}
+
+/* ── ACC CARDS ──────────────────────────────────────── */
+.acc-body{padding:20px 24px;flex:1;overflow-y:auto}
+.acc-card{
+  background:#fff;border-radius:12px;padding:20px 22px;margin-bottom:16px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 14px rgba(0,0,0,0.04);
+  border:1px solid #F0F4F8}
+.acc-card-title{
+  font-size:14px;font-weight:700;color:#0C3F6A;
+  margin-bottom:14px;padding-bottom:10px;
+  border-bottom:2px solid #F0F4F8;
+  display:flex;align-items:center;gap:8px}
+.acc-save-bar{
+  background:#fff;padding:14px 24px;border-top:1px solid #E2E8F0;
+  display:flex;align-items:center;gap:14px;flex-shrink:0;
+  box-shadow:0 -2px 8px rgba(0,0,0,0.04)}
+.acc-btn{padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;
+  cursor:pointer;border:none;font-family:inherit;transition:all 0.2s}
+.acc-btn-blue{background:#0C3F6A;color:#fff}
+.acc-btn-blue:hover{background:#0e4f85}
+.acc-btn-gold{background:#FDB515;color:#1a1a2e}
+.acc-btn-gold:hover{background:#e5a310}
+.acc-save-msg{font-size:11px;color:#64748B}
 /* ── ACCREDITATION SHARED ────────────────────── */
 .acc-body{padding:20px 24px;overflow-y:auto;flex:1}
 .acc-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:18px}
@@ -770,51 +698,145 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 
 <!-- ═══ ADMIN ═══ -->
 <div id="sc-admin" hidden>
-  <div class="adm-bar">
-    <div class="adm-left">
-      <div style="display:flex;align-items:center;gap:14px">
+  <!-- ╣═══ PROFESSIONAL HEADER ═══ -->
+  <div class="adm-header">
+    <div class="adm-header-brand">
+      <button class="adm-sidebar-toggle" onclick="toggleAdmSidebar()" title="Toggle sidebar">☰</button>
+      <div class="adm-header-logo-wrap">
         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAABACAYAAABMbHjfAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QUZCRjY1NzFCMzA4MTFFN0JGOTFCNUM1RjAwRTU3QUYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QUZCRjY1NzJCMzA4MTFFN0JGOTFCNUM1RjAwRTU3QUYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBRkJGNjU2RkIzMDgxMUU3QkY5MUI1QzVGMDBFNTdBRiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBRkJGNjU3MEIzMDgxMUU3QkY5MUI1QzVGMDBFNTdBRiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PrElavgAABcYSURBVHja7F0JmFTV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"
              alt="FLAME University"
              style="height:28px;width:auto;max-width:130px;object-fit:contain;display:block;background:#fff;border-radius:6px;padding:4px 9px"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div style="display:none;align-items:center;gap:8px">
-          <div style="font-size:18px;font-weight:900;color:#FDB515;letter-spacing:4px">FLAME</div>
-          <div style="font-size:9px;color:#a0b0cc;font-weight:600;letter-spacing:2.5px;text-transform:uppercase">University · Pune</div>
+        <div style="display:none;align-items:center;gap:6px">
+          <div style="font-size:16px;font-weight:900;color:#F58220;letter-spacing:3px">FLAME</div>
         </div>
       </div>
-      <div class="adm-sep"></div>
-      <span class="adm-title">Unified MIS — Admin Dashboard</span>
+      <div class="adm-header-divider"></div>
+      <div>
+        <div class="adm-header-title">Unified MIS</div>
+        <div class="adm-header-subtitle">Admin Portal · FLAME University, Pune</div>
+      </div>
     </div>
-    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-      <span style="font-size:11px;color:#7a8db5">All Departments</span>
-      <button type="button" class="btn-export" id="btn-export-xl" onclick="exportToExcel()">
-        📊 Export to Excel
-      </button>
-      <span class="export-progress" id="export-progress">⏳ Preparing…</span>
-      <button type="button" class="btn btn-prev" id="btn-adm-out"
-              style="font-size:12px;padding:6px 16px;margin:0;background:#F58220;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600">⏏ Logout</button>
+    <div class="adm-header-actions">
+      <span style="font-size:10px;color:rgba(255,255,255,0.4);display:none" id="export-progress">⏳ Preparing…</span>
+      <button class="adm-btn adm-btn-outline" id="btn-export-xl" onclick="exportToExcel()">📊 Export Excel</button>
+      <button class="adm-btn adm-btn-orange" id="btn-adm-out">⏏ Logout</button>
     </div>
   </div>
-  <!-- ═══ ADMIN TAB BAR ═══ -->
-  <div class="adm-tab-bar">
-    <div class="adm-tab active" onclick="switchAdmTab('dept',this)">📋 Department Reports</div>
-    <div class="adm-tab" onclick="switchAdmTab('dashboard',this)">📊 Dashboard</div>
-    <div class="adm-tab" onclick="switchAdmTab('naac',this)">📋 NAAC – SSR</div>
-    <div class="adm-tab" onclick="switchAdmTab('nacbench',this)">📐 NAAC Benchmarks</div>
-    <div class="adm-tab" onclick="switchAdmTab('iso41',this)">🏅 ISO 41001</div>
-    <div class="adm-tab" onclick="switchAdmTab('iso21',this)">🎓 ISO 21001</div>
-    <div class="adm-tab" onclick="switchAdmTab('qs',this)">🌐 QS I-GAUGE</div>
-    <div class="adm-tab" onclick="switchAdmTab('nirf',this)">📊 NIRF</div>
-    <div class="adm-tab" onclick="switchAdmTab('aishe',this)">📁 AISHE</div>
-    <div class="adm-tab" onclick="switchAdmTab('analytics',this)">📈 Analytics</div>
-    <div class="adm-tab" onclick="switchAdmTab('accrep',this)">📄 Accreditation Report</div>
-    <div class="adm-tab" onclick="switchAdmTab('comprep',this)">📑 Compliance Report</div>
-    <div class="adm-tab" onclick="switchAdmTab('pindir',this)">🔑 PIN Directory</div>
-    <div class="adm-tab" onclick="switchAdmTab('pinreset',this)">🔄 Reset PINs</div>
-  </div>
+
+  <!-- ╣═══ MAIN LAYOUT ═══ -->
+  <div class="adm-layout">
+
+    <!-- ── SIDEBAR NAVIGATION ── -->
+    <nav class="adm-sidebar" id="adm-sidebar">
+      <div class="adm-sidebar-profile">
+        <div class="adm-sidebar-avatar">A</div>
+        <div class="adm-sidebar-info">
+          <div class="adm-sidebar-name">Administrator</div>
+          <div class="adm-sidebar-role">FLAME University MIS</div>
+        </div>
+      </div>
+
+      <!-- Overview -->
+      <div class="adm-nav-section">
+        <div class="adm-nav-item active" data-tab="dept" onclick="switchAdmTab('dept',this)">
+          <span class="adm-nav-icon">📋</span>
+          <span class="adm-nav-label">Department Reports</span>
+        </div>
+        <div class="adm-nav-item" data-tab="dashboard" onclick="switchAdmTab('dashboard',this)">
+          <span class="adm-nav-icon">📊</span>
+          <span class="adm-nav-label">Dashboard</span>
+        </div>
+      </div>
+
+      <div class="adm-nav-divider"></div>
+
+      <!-- Accreditation -->
+      <div class="adm-nav-section">
+        <div class="adm-nav-section-label">Accreditation</div>
+        <div class="adm-nav-item" data-tab="naac" onclick="switchAdmTab('naac',this)">
+          <span class="adm-nav-icon">🎓</span>
+          <span class="adm-nav-label">NAAC – SSR</span>
+        </div>
+        <div class="adm-nav-item" data-tab="nacbench" onclick="switchAdmTab('nacbench',this)">
+          <span class="adm-nav-icon">📐</span>
+          <span class="adm-nav-label">NAAC Benchmarks</span>
+          <span class="adm-nav-badge">NEW</span>
+        </div>
+        <div class="adm-nav-item" data-tab="iso41" onclick="switchAdmTab('iso41',this)">
+          <span class="adm-nav-icon">🏅</span>
+          <span class="adm-nav-label">ISO 41001</span>
+        </div>
+        <div class="adm-nav-item" data-tab="iso21" onclick="switchAdmTab('iso21',this)">
+          <span class="adm-nav-icon">🎯</span>
+          <span class="adm-nav-label">ISO 21001</span>
+        </div>
+        <div class="adm-nav-item" data-tab="qs" onclick="switchAdmTab('qs',this)">
+          <span class="adm-nav-icon">🌐</span>
+          <span class="adm-nav-label">QS I-GAUGE</span>
+        </div>
+        <div class="adm-nav-item" data-tab="nirf" onclick="switchAdmTab('nirf',this)">
+          <span class="adm-nav-icon">📈</span>
+          <span class="adm-nav-label">NIRF</span>
+        </div>
+        <div class="adm-nav-item" data-tab="aishe" onclick="switchAdmTab('aishe',this)">
+          <span class="adm-nav-icon">📁</span>
+          <span class="adm-nav-label">AISHE</span>
+        </div>
+      </div>
+
+      <div class="adm-nav-divider"></div>
+
+      <!-- Reports -->
+      <div class="adm-nav-section">
+        <div class="adm-nav-section-label">Reports &amp; Analytics</div>
+        <div class="adm-nav-item" data-tab="analytics" onclick="switchAdmTab('analytics',this)">
+          <span class="adm-nav-icon">📉</span>
+          <span class="adm-nav-label">Analytics</span>
+        </div>
+        <div class="adm-nav-item" data-tab="accrep" onclick="switchAdmTab('accrep',this)">
+          <span class="adm-nav-icon">📄</span>
+          <span class="adm-nav-label">Accreditation Report</span>
+        </div>
+        <div class="adm-nav-item" data-tab="comprep" onclick="switchAdmTab('comprep',this)">
+          <span class="adm-nav-icon">📑</span>
+          <span class="adm-nav-label">Compliance Report</span>
+        </div>
+      </div>
+
+      <div class="adm-nav-divider"></div>
+
+      <!-- System -->
+      <div class="adm-nav-section">
+        <div class="adm-nav-section-label">System</div>
+        <div class="adm-nav-item" data-tab="pindir" onclick="switchAdmTab('pindir',this)">
+          <span class="adm-nav-icon">🔑</span>
+          <span class="adm-nav-label">PIN Directory</span>
+        </div>
+        <div class="adm-nav-item" data-tab="pinreset" onclick="switchAdmTab('pinreset',this)">
+          <span class="adm-nav-icon">🔄</span>
+          <span class="adm-nav-label">Reset PINs</span>
+        </div>
+      </div>
+
+      <div class="adm-sidebar-footer">
+        <div class="adm-sidebar-footer-text">FLAME Unified MIS v23<br>Academic Year 2024–25</div>
+      </div>
+    </nav>
+
+    <!-- ── CONTENT AREA ── -->
+    <div class="adm-content" id="adm-content">
+
+      <!-- Dynamic content header / breadcrumb -->
+      <div class="adm-content-header">
+        <div>
+          <div class="adm-breadcrumb">Admin Portal / <b id="adm-bc-section">Data Entry</b></div>
+          <div class="adm-page-title" id="adm-page-title">Department Reports</div>
+          <div class="adm-page-desc" id="adm-page-desc">View and manage department submissions</div>
+        </div>
+      </div>
 
 
-  <!-- ═══ TAB: DASHBOARD ═══ -->
   <div class="adm-tab-content" id="adm-tab-dashboard">
     <div class="acc-body" style="padding:0">
 
@@ -1497,6 +1519,8 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
       </div>
     </div>
   </div>
+    </div><!-- end adm-content -->
+  </div><!-- end adm-layout -->
 
 </div>
 
@@ -4035,11 +4059,40 @@ function dbSetDeptTab(tab){
   _dbRenderDeptList((dbMonSel&&dbMonSel.value)||'Apr',(dbYrSel&&dbYrSel.value)||'',getAdminRows());
 }
 
+const ADM_TAB_META = {
+  dept:      {title:'Department Reports',   desc:'View and manage department data submissions',     section:'Data Entry'},
+  dashboard: {title:'Dashboard',            desc:'Live KPIs across all accreditation frameworks',   section:'Overview'},
+  naac:      {title:'NAAC \u2014 SSR',           desc:'National Assessment & Accreditation Council SSR', section:'Accreditation'},
+  nacbench:  {title:'NAAC Benchmarks',      desc:'Criterion-wise & metric-wise benchmark tracking', section:'Accreditation'},
+  iso41:     {title:'ISO 41001',            desc:'Facility Management System compliance tracker',   section:'Accreditation'},
+  iso21:     {title:'ISO 21001',            desc:'Educational Organization Management System',      section:'Accreditation'},
+  qs:        {title:'QS I-GAUGE',           desc:'QS Indian Institutions Gauge rankings data',      section:'Accreditation'},
+  nirf:      {title:'NIRF',                 desc:'National Institutional Ranking Framework data',   section:'Accreditation'},
+  aishe:     {title:'AISHE',                desc:'All India Survey on Higher Education',            section:'Accreditation'},
+  analytics: {title:'Analytics',            desc:'Submission trends and department performance',    section:'Reports & Analytics'},
+  accrep:    {title:'Accreditation Report', desc:'Consolidated accreditation status report',        section:'Reports & Analytics'},
+  comprep:   {title:'Compliance Report',    desc:'Cross-framework compliance summary',              section:'Reports & Analytics'},
+  pindir:    {title:'PIN Directory',        desc:'View and manage department access PINs',          section:'System'},
+  pinreset:  {title:'Reset PINs',           desc:'Reset department or admin PIN codes',             section:'System'},
+};
+
 function switchAdmTab(id, el){
+  // \u2500\u2500 content panels
   document.querySelectorAll('.adm-tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('adm-tab-'+id).classList.add('active');
-  if(el) el.classList.add('active');
+  const panel = document.getElementById('adm-tab-'+id);
+  if(panel) panel.classList.add('active');
+  // \u2500\u2500 sidebar nav items (use data-tab attribute)
+  document.querySelectorAll('.adm-nav-item').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.adm-nav-item[data-tab="'+id+'"]').forEach(t=>t.classList.add('active'));
+  // \u2500\u2500 content header update
+  const meta = ADM_TAB_META[id] || {title:id, desc:'', section:'Admin'};
+  const titleEl = document.getElementById('adm-page-title');
+  const descEl  = document.getElementById('adm-page-desc');
+  const secEl   = document.getElementById('adm-bc-section');
+  if(titleEl) titleEl.textContent = meta.title;
+  if(descEl)  descEl.textContent  = meta.desc;
+  if(secEl)   secEl.textContent   = meta.section;
+  // \u2500\u2500 builders
   if(id==='dashboard'){try{buildDashboard();}catch(e){console.warn(e);}}
   if(id==='dept'){
     const rows=getAdminRows();
@@ -4075,23 +4128,26 @@ function switchAdmTab(id, el){
   }
   if(id==='naac'&&!window._naacBuilt){buildNAAC();window._naacBuilt=true;}
   if(id==='nacbench'&&!window._nacbenchBuilt){
-    // Load saved benchmark values from Firebase
     if(db) db.ref(ROOT+'/admin_accreditation/naac_bench').once('value').then(snap=>{
       if(snap.exists()) accState.naac_bench=snap.val()||{};
-      buildNAACBenchmarks(); window._nacbenchBuilt=true;
-    }).catch(()=>{buildNAACBenchmarks(); window._nacbenchBuilt=true;});
-    else {buildNAACBenchmarks(); window._nacbenchBuilt=true;}
+      buildNAACBenchmarks();
+    }).catch(()=>buildNAACBenchmarks());
+    else buildNAACBenchmarks();
+    window._nacbenchBuilt=true;
   }
   if(id==='iso41'&&!window._iso41Built){buildISO41();window._iso41Built=true;}
   if(id==='iso21'&&!window._iso21Built){buildISO21();window._iso21Built=true;}
   if(id==='qs'&&!window._qsBuilt){buildQS();window._qsBuilt=true;}
   if(id==='nirf'&&!window._nirfBuilt){buildNIRF();window._nirfBuilt=true;}
   if(id==='aishe'&&!window._aisheBuilt){buildAISHE();window._aisheBuilt=true;}
-  if(id==='analytics'){buildAnalytics();}
-  if(id==='accrep'){buildAccReport();}
-  if(id==='comprep'){buildComplianceReport();}
-  if(id==='pindir'){buildPinDirectory();}
-  if(id==='pinreset'){buildPinReset();}
+  if(id==='analytics'&&!window._analyticsBuilt){buildAnalytics();window._analyticsBuilt=true;}
+  if(id==='accrep'&&!window._accrepBuilt){buildAccReport();window._accrepBuilt=true;}
+  if(id==='comprep'&&!window._comprepBuilt){buildCompReport();window._comprepBuilt=true;}
+}
+
+function toggleAdmSidebar(){
+  const sb=document.getElementById('adm-sidebar');
+  if(sb) sb.classList.toggle('collapsed');
 }
 
 // ── State ──────────────────────────────────────────────────
