@@ -4311,8 +4311,6 @@ const NAAC_BENCHMARKS_DATA = [
   }
 ];
 
-// ── Benchmark storage in accState ────────────────────────────────────────
-if(!accState.naac_bench) accState.naac_bench={};
 
 // ── Score calculation helper ─────────────────────────────────────────────
 function _nbScore(metric, raw){
@@ -4370,7 +4368,7 @@ function _nbBandHtml(metric){
   return `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:3px">${bands}</div>`;
 }
 
-let accState = {naac:{}, iso41:{}, iso21:{}, qs:{}, nirf:{}, aishe:{}};
+let accState = {naac:{}, iso41:{}, iso21:{}, qs:{}, nirf:{}, aishe:{}, naac_bench:{}};
 const ACC_FB_PATH = 'admin_accreditation';
 
 // ── NAAC DATA ──────────────────────────────────────────────
