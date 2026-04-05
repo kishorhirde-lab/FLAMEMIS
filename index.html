@@ -553,6 +553,149 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .acc-btn-gold{background:#F58220;color:#fff}.acc-btn-gold:hover{background:#b07d20}
 .acc-btn-white{background:#fff;color:#0C3F6A}.acc-btn-white:hover{background:#f0f0f0}
 .acc-save-msg{font-size:12px;opacity:.7;margin-left:auto}
+
+/* ======================================================
+   ACCREDITATION REPORT — Professional Report Styles
+====================================================== */
+.rep-hero{background:linear-gradient(135deg,#0C3F6A 0%,#0e5c9a 60%,#1a3c5e 100%);
+  color:#fff;padding:20px 28px;border-radius:10px 10px 0 0;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.rep-hero-title{font-size:17px;font-weight:800;letter-spacing:.02em}
+.rep-hero-sub{font-size:11px;color:rgba(255,255,255,.65);margin-top:3px}
+.rep-hero-actions{display:flex;gap:8px;flex-wrap:wrap}
+.rep-hero-btn{padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;
+  cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.rep-hero-btn-primary{background:#F58220;color:#fff}.rep-hero-btn-primary:hover{background:#d96e15}
+.rep-hero-btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.rep-hero-btn-ghost:hover{background:rgba(255,255,255,.22)}
+.rep-fw-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:0;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 8px 8px;overflow:hidden;margin-bottom:20px}
+.rep-fw-box{padding:13px 16px;background:#fff;border-right:1px solid #e2e8f0;text-align:center}
+.rep-fw-box:last-child{border-right:none}
+.rep-fw-box:hover{background:#f8faff}
+.rep-fw-box-name{font-size:9.5px;font-weight:700;color:#6b7a99;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.rep-fw-box-pct{font-size:22px;font-weight:900;color:#0C3F6A;line-height:1}
+.rep-fw-box-bar{height:4px;border-radius:2px;background:#e2e8f0;margin-top:6px;overflow:hidden}
+.rep-fw-box-bar-fill{height:4px;border-radius:2px;transition:width .5s}
+.rep-fw-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.07);
+  margin-bottom:16px;overflow:hidden;border:1px solid #e8edf5}
+.rep-fw-banner{padding:13px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;user-select:none}
+.rep-fw-banner:hover{filter:brightness(.94)}
+.rep-fw-icon-wrap{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.rep-fw-name{flex:1;color:#fff}
+.rep-fw-name-main{font-size:13.5px;font-weight:800}
+.rep-fw-name-sub{font-size:10.5px;opacity:.72;margin-top:1px}
+.rep-fw-status-pill{padding:4px 11px;border-radius:20px;background:rgba(255,255,255,.2);
+  font-size:11px;font-weight:700;color:#fff;white-space:nowrap}
+.rep-fw-toggle{color:rgba(255,255,255,.6);font-size:13px;transition:transform .2s;margin-left:4px}
+.rep-fw-toggle.open{transform:rotate(180deg)}
+.rep-fw-body{display:none}
+.rep-fw-body.open{display:block}
+.rep-prog-track{height:5px;background:#e8edf5;margin:0}
+.rep-prog-fill{height:5px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+.rep-stat-strip{display:flex;gap:0;border-bottom:1px solid #e8edf5}
+.rep-stat-item{flex:1;padding:9px 12px;text-align:center;border-right:1px solid #e8edf5}
+.rep-stat-item:last-child{border-right:none}
+.rep-stat-val{font-size:17px;font-weight:800;line-height:1}
+.rep-stat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#9aabb8;margin-top:2px}
+.rep-tbl-wrap{overflow-x:auto;padding:14px 18px}
+.rep-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.rep-tbl thead th{background:#F8FAFF;color:#4a5568;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.4px;padding:8px 11px;
+  border-bottom:2px solid #e2e8f0;text-align:left;white-space:nowrap}
+.rep-tbl tbody td{padding:7px 11px;border-bottom:1px solid #f2f5fa;vertical-align:middle}
+.rep-tbl tbody tr:last-child td{border-bottom:none}
+.rep-tbl tbody tr:hover td{background:#fafcff}
+.rep-tbl-num{font-weight:700;white-space:nowrap;font-size:11.5px}
+.rep-tbl-desc{color:#444;max-width:280px}
+.rep-tbl-notes{color:#778;font-size:11px;max-width:160px;font-style:italic}
+.rep-chip{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;
+  border-radius:20px;font-size:10.5px;font-weight:700;white-space:nowrap}
+.rep-chip-comp{background:#dcfce7;color:#166534}
+.rep-chip-dvv{background:#f3e8ff;color:#6b21a8}
+.rep-chip-ip{background:#dbeafe;color:#1e40af}
+.rep-chip-ns{background:#f3f4f6;color:#9ca3af}
+.rep-chip-ok{background:#dcfce7;color:#166534}
+.rep-chip-obs{background:#ffedd5;color:#c2410c}
+.rep-chip-nc{background:#fee2e2;color:#991b1b}
+.rep-chip-pend{background:#fef9c3;color:#854d0e}
+.rep-crit-row td{background:#f0f4ff;font-weight:700;color:#0C3F6A;font-size:11px;text-transform:uppercase;letter-spacing:.3px}
+.rep-empty{color:#9ca3af;font-size:12px;padding:20px;text-align:center;font-style:italic}
+
+/* ======================================================
+   COMPLIANCE REPORT — Professional Report Styles
+====================================================== */
+.cr-hero{background:linear-gradient(135deg,#1a3c5e 0%,#0C3F6A 100%);
+  color:#fff;padding:16px 22px;border-radius:10px 10px 0 0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.cr-hero-title{font-size:15px;font-weight:800}
+.cr-hero-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.cr-hero-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cr-hero-select{padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.1);color:#fff;font-size:12px;font-weight:500;cursor:pointer}
+.cr-hero-select option{background:#1a3c5e;color:#fff}
+.cr-hero-btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .15s}
+.cr-hero-btn-refresh{background:#F58220;color:#fff}.cr-hero-btn-refresh:hover{background:#d96e15}
+.cr-hero-btn-export{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.28)}
+.cr-hero-btn-export:hover{background:rgba(255,255,255,.22)}
+.cr-kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:0;border:1px solid #e2e8f0;border-top:none;background:#fff;margin-bottom:16px;
+  border-radius:0 0 8px 8px;overflow:hidden}
+.cr-kpi{padding:13px 14px;text-align:center;border-right:1px solid #e2e8f0}
+.cr-kpi:last-child{border-right:none}
+.cr-kpi-val{font-size:24px;font-weight:900;line-height:1;color:#0C3F6A}
+.cr-kpi-lbl{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:#9aabb8;margin-top:3px}
+.cr-kpi-bar{height:3px;border-radius:2px;background:#e2e8f0;margin-top:7px;overflow:hidden}
+.cr-kpi-bar-fill{height:3px;border-radius:2px}
+.cr-coverage-card{background:#fff;border-radius:10px;border:1px solid #e2e8f0;
+  padding:16px 22px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.cr-cov-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cr-cov-title{font-size:13px;font-weight:700;color:#0C3F6A}
+.cr-cov-pct{font-size:24px;font-weight:900;color:#0C3F6A}
+.cr-cov-track{height:14px;border-radius:7px;background:#e8edf5;overflow:hidden}
+.cr-cov-fill{height:14px;border-radius:7px;transition:width .7s}
+.cr-cov-legend{display:flex;gap:16px;margin-top:8px;font-size:11px;color:#6b7a99;flex-wrap:wrap}
+.cr-cov-legend span{display:flex;align-items:center;gap:4px}
+.cr-cov-dot{display:inline-block;width:10px;height:10px;border-radius:50%}
+.cr-matrix-card{background:#fff;border-radius:10px;border:1px solid #e2e8f0;
+  margin-bottom:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.cr-matrix-hdr{background:#0C3F6A;color:#fff;padding:12px 20px;
+  display:flex;justify-content:space-between;align-items:center}
+.cr-matrix-hdr-title{font-size:13px;font-weight:700}
+.cr-matrix-legend{display:flex;gap:14px;font-size:11px;font-weight:500}
+.cr-matrix-legend span{display:flex;align-items:center;gap:5px}
+.cr-matrix-wrap{overflow-x:auto}
+.cr-matrix-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+.cr-matrix-tbl thead th{background:#F1F5F9;color:#4a5568;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.3px;padding:8px 8px;
+  border-bottom:2px solid #e2e8f0;white-space:nowrap;text-align:center;position:sticky;top:0}
+.cr-matrix-tbl thead th:first-child,.cr-matrix-tbl thead th:nth-child(2){text-align:left;position:sticky;left:0;background:#F1F5F9;z-index:2}
+.cr-matrix-tbl thead th:first-child{z-index:3}
+.cr-matrix-tbl tbody td{padding:5px 7px;border-bottom:1px solid #f2f5fa;vertical-align:middle;text-align:center}
+.cr-matrix-tbl tbody td:first-child{text-align:left;padding-left:14px;min-width:160px;position:sticky;left:0;background:#fff;z-index:1}
+.cr-matrix-tbl tbody td:nth-child(2){text-align:left;min-width:75px;position:sticky;background:#fff}
+.cr-matrix-tbl tbody tr:hover td{background:#f8faff}
+.cr-matrix-tbl tbody tr:hover td:first-child,.cr-matrix-tbl tbody tr:hover td:nth-child(2){background:#f0f6ff}
+.cr-cell-y{display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;background:#dcfce7;color:#16a34a;font-size:13px}
+.cr-cell-n{display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;background:#f3f4f6;color:#d1d5db;font-size:12px}
+.cr-dept-name{font-weight:600;color:#1a2942;font-size:12px}
+.cr-total-chip{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
+.cr-total-good{background:#dcfce7;color:#166534}
+.cr-total-zero{background:#fee2e2;color:#991b1b}
+.cr-total-part{background:#fef9c3;color:#854d0e}
+.cr-alert-card{background:#fff;border-radius:10px;border:1px solid #fed7aa;
+  overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.cr-alert-hdr{background:#FFF7ED;padding:11px 20px;border-bottom:1px solid #fed7aa;
+  display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#9a3412}
+.cr-alert-body{padding:14px 20px;display:flex;flex-wrap:wrap;gap:6px}
+.cr-missing-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;
+  background:#fee2e2;color:#991b1b;border-radius:20px;font-size:11.5px;font-weight:600;
+  border:1px solid #fca5a5}
+.cr-all-ok{display:flex;align-items:center;gap:8px;color:#166534;font-weight:600;font-size:13px;
+  padding:12px 20px;background:#f0fdf4}
 </style>
 <!-- SheetJS for Excel export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1415,69 +1558,15 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 
   <!-- ═══ TAB: ACCREDITATION REPORT ═══ -->
   <div class="adm-tab-content" id="adm-tab-accrep">
-    <div class="acc-body">
-      <div class="acc-card" style="display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap">
-        <div class="acc-card-title" style="border:none;padding:0;margin:0">📄 Consolidated Accreditation Report</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="acc-btn acc-btn-gold" onclick="window.print()">🖨️ Print / PDF</button>
-          <button class="acc-btn acc-btn-white" onclick="exportAccReportPDF()">📄 Export PDF</button>
-        </div>
-      </div>
-      <!-- NAAC Summary -->
-      <div class="acc-card" id="accrep-naac">
-        <div class="acc-card-title">📋 NAAC SSR — Metric Status Summary</div>
-        <div id="accrep-naac-body"></div>
-      </div>
-      <!-- ISO Summary -->
-      <div class="acc-card" id="accrep-iso">
-        <div class="acc-card-title">🏅 ISO 41001:2018 — Clause Status</div>
-        <div id="accrep-iso-body"></div>
-      </div>
-      <!-- NIRF Summary -->
-      <div class="acc-card" id="accrep-nirf">
-        <div class="acc-card-title">📊 NIRF — Data Entry Status</div>
-        <div id="accrep-nirf-body"></div>
-      </div>
-      <!-- QS Summary -->
-      <div class="acc-card" id="accrep-qs">
-        <div class="acc-card-title">🌐 QS I-GAUGE — Pillar Readiness</div>
-        <div id="accrep-qs-body"></div>
-      </div>
-      <!-- AISHE Summary -->
-      <div class="acc-card" id="accrep-aishe">
-        <div class="acc-card-title">📁 AISHE — Data Completion</div>
-        <div id="accrep-aishe-body"></div>
-      </div>
+    <div class="acc-body" id="accrep-body" style="padding:20px 24px">
+      <div class="rep-empty">Loading accreditation report...</div>
     </div>
   </div>
 
   <!-- ═══ TAB: COMPLIANCE REPORT ═══ -->
   <div class="adm-tab-content" id="adm-tab-comprep">
-    <div class="acc-body">
-      <div class="acc-card">
-        <div class="acc-card-title">📑 Department-wise Compliance Status</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-          <select class="afi-sel" id="cr-yr" style="width:140px" onchange="buildComplianceReport()">
-            <option value="">All Years</option>
-          </select>
-          <select class="afi-sel" id="cr-type" style="width:140px" onchange="buildComplianceReport()">
-            <option value="">All Types</option>
-            <option value="monthly">Monthly</option>
-            <option value="annual">Annual</option>
-          </select>
-          <button class="acc-btn acc-btn-gold" onclick="buildComplianceReport()">🔄 Refresh</button>
-          <button class="acc-btn acc-btn-white" onclick="exportComplianceReport()">📤 Export Excel</button>
-        </div>
-        <div class="acc-summary-grid" id="cr-stats"></div>
-      </div>
-      <div class="acc-card">
-        <div class="acc-card-title">🗂️ Department Submission Matrix</div>
-        <div style="overflow-x:auto" id="cr-matrix"></div>
-      </div>
-      <div class="acc-card">
-        <div class="acc-card-title">⚠️ Departments with No Submissions</div>
-        <div id="cr-missing"></div>
-      </div>
+    <div class="acc-body" style="padding:20px 24px">
+      <div class="rep-empty">Loading compliance report...</div>
     </div>
   </div>
 
@@ -6832,304 +6921,406 @@ function anFilterTable(){
 
 // ══ ACCREDITATION REPORT TAB ════════════════════════════════════
 function buildAccReport(){
-  // ── NAAC ──
-  const naacEl=document.getElementById('accrep-naac-body');
-  if(naacEl){
-    let rows='';
-    let tot=0,comp=0,ip=0,dvv=0,ns_=0;
-    NAAC_CRITERIA.forEach(c=>{
-      c.kis.forEach(ki=>{
-        ki.metrics.forEach(m=>{
-          tot++;
-          const s=(accState.naac[m.num]||{}).status||'ns';
-          if(s==='comp')comp++;else if(s==='ip')ip++;else if(s==='dvv')dvv++;else ns_++;
-          const sLbl={ns:'<span style="color:#9e9e9e">Not Started</span>',ip:'<span style="color:#1565c0;font-weight:600">In Progress</span>',comp:'<span style="color:#2e7d32;font-weight:600">✅ Complete</span>',dvv:'<span style="color:#7b1fa2;font-weight:600">🔵 DVV Ready</span>'};
-          const notes=(accState.naac[m.num]||{}).notes||'—';
-          rows+=`<tr><td style="font-weight:700;color:#F58220;white-space:nowrap">${m.num}</td><td>${esc(m.desc.substring(0,80))}${m.desc.length>80?'…':''}</td><td>C${c.num}</td><td>${sLbl[s]}</td><td style="font-size:11px;color:#6b7a99">${esc(notes)}</td></tr>`;
-        });
-      });
-    });
-    const pct=tot?Math.round((comp+dvv)/tot*100):0;
-    naacEl.innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-      ${[{v:tot,l:'Total',c:''},{v:comp,l:'Complete',c:'#2e7d32'},{v:ip,l:'In Progress',c:'#1565c0'},{v:dvv,l:'DVV Ready',c:'#7b1fa2'},{v:ns_,l:'Not Started',c:'#9e9e9e'},{v:pct+'%',l:'Progress',c:'#F58220'}]
-        .map(s=>`<div style="background:#f8f9fa;border:1px solid #e2e8f0;border-radius:6px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:800;color:${s.c||'#0C3F6A'}">${s.v}</div><div style="font-size:10px;color:#6b7a99">${s.l}</div></div>`).join('')}
+  const tab = document.getElementById('adm-tab-accrep');
+  if(!tab) return;
+
+  /* ── Compute stats per framework ── */
+  let naacTot=0,naacComp=0,naacIP=0,naacDVV=0,naacNS=0;
+  NAAC_CRITERIA.forEach(c=>{c.kis.forEach(ki=>{ki.metrics.forEach(m=>{
+    naacTot++;
+    const s=(accState.naac[m.num]||{}).status||'ns';
+    if(s==='comp')naacComp++;else if(s==='ip')naacIP++;else if(s==='dvv')naacDVV++;else naacNS++;
+  });});});
+  const naacPct=naacTot?Math.round((naacComp+naacDVV)/naacTot*100):0;
+
+  function isoStats(data,stKey){
+    let ok=0,obs=0,nc=0,tot=0;
+    data.forEach(cl=>{cl.subs.forEach(s=>{
+      tot++;const f=(accState[stKey]||{})[s.num]||s.def;
+      if(f==='ok')ok++;else if(f==='obs')obs++;else nc++;
+    });});
+    return {ok,obs,nc,tot,pct:tot?Math.round(ok/tot*100):0};
+  }
+  const iso41=isoStats(ISO41_CLAUSES_DATA,'iso41');
+  const iso21=isoStats(ISO21_CLAUSES_DATA,'iso21');
+
+  let nirfFilled=0,nirfTot=0;
+  NIRF_PARAMS_DATA.forEach(p=>{p.metrics.forEach(m=>{nirfTot++;if((accState.nirf||{})[m.key])nirfFilled++;});});
+  const nirfPct=nirfTot?Math.round(nirfFilled/nirfTot*100):0;
+
+  let qsTot=0,qsFilled=0;
+  QS_PILLARS_DATA.forEach(p=>{p.indicators.forEach(ind=>{qsTot++;if((accState.qs||{})[ind.key])qsFilled++;});});
+  const qsPct=qsTot?Math.round(qsFilled/qsTot*100):0;
+
+  let aisheFilled=0,aisheTot=0;
+  AISHE_SECTIONS_DATA.forEach(sec=>{sec.fields.forEach(f=>{aisheTot++;if((accState.aishe||{})[f.key])aisheFilled++;});});
+  const aishePct=aisheTot?Math.round(aisheFilled/aisheTot*100):0;
+
+  const overall=Math.round((naacPct+iso41.pct+iso21.pct+nirfPct+qsPct+aishePct)/6);
+  const today=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+
+  /* ── Helper functions ── */
+  const pBar=(pct,color)=>`<div class="rep-prog-track"><div class="rep-prog-fill" style="width:${pct}%;background:${color}"></div></div>`;
+  const sChip=(s)=>({
+    comp:'<span class="rep-chip rep-chip-comp">&#10003; Complete</span>',
+    dvv: '<span class="rep-chip rep-chip-dvv">&#9679; DVV Ready</span>',
+    ip:  '<span class="rep-chip rep-chip-ip">&#8635; In Progress</span>',
+    ns:  '<span class="rep-chip rep-chip-ns">&#8212; Not Started</span>'
+  }[s]||'<span class="rep-chip rep-chip-ns">&#8212; Not Started</span>');
+
+  const fChip=(f)=>({
+    ok:  '<span class="rep-chip rep-chip-ok">&#10003; Compliant</span>',
+    obs: '<span class="rep-chip rep-chip-obs">&#9888; Observation</span>',
+    nc:  '<span class="rep-chip rep-chip-nc">&#10005; Non-Conformity</span>'
+  }[f]||'<span class="rep-chip rep-chip-pend">Pending</span>');
+
+  const pct2color=(p)=>p>=80?'#16a34a':p>=50?'#F58220':'#dc2626';
+
+  const fwCard=(color,icon,nameMain,nameSub,pct,statHtml,tableHtml,idx)=>`
+    <div class="rep-fw-card">
+      <div class="rep-fw-banner" style="background:${color}" onclick="(function(el){var b=el.closest('.rep-fw-card').querySelector('.rep-fw-body');var t=el.querySelector('.rep-fw-toggle');b.classList.toggle('open');t.classList.toggle('open');})(this)">
+        <div class="rep-fw-icon-wrap">${icon}</div>
+        <div class="rep-fw-name">
+          <div class="rep-fw-name-main">${nameMain}</div>
+          <div class="rep-fw-name-sub">${nameSub}</div>
+        </div>
+        <div class="rep-fw-status-pill">${pct}% Complete</div>
+        <span class="rep-fw-toggle">&#9660;</span>
       </div>
-      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Metric</th><th>Description</th><th>Criterion</th><th>Status</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  }
+      ${pBar(pct,color)}
+      <div class="rep-fw-body${idx===0?' open':''}">
+        <div class="rep-stat-strip">${statHtml}</div>
+        <div class="rep-tbl-wrap">${tableHtml}</div>
+      </div>
+    </div>`;
 
-  // ── ISO 41001 & ISO 21001 ──
-  const isoEl=document.getElementById('accrep-iso-body');
-  if(isoEl){
-    function _isoRepRows(data, stKey){
-      let rows='',ok=0,obs=0,nc=0;
-      data.forEach(cl=>{cl.subs.forEach(s=>{
-        const f=(accState[stKey]||{})[s.num]||s.def;
-        if(f==='ok')ok++;else if(f==='obs')obs++;else nc++;
-        const fLbl={ok:'<span style="color:#2e7d32;font-weight:600">✅ Compliant</span>',obs:'<span style="color:#e65100;font-weight:600">⚠️ Observation</span>',nc:'<span style="color:#c62828;font-weight:600">❌ Non-Conformity</span>'};
-        rows+=`<tr><td style="font-weight:700;color:#555">${s.num}</td><td>${esc(s.name)}</td><td>Clause ${cl.num}: ${esc(cl.name)}</td><td>${fLbl[f]}</td></tr>`;
-      });});
-      return {rows,ok,obs,nc};
-    }
-    const r41=_isoRepRows(ISO41_CLAUSES_DATA,'iso41');
-    const r21=_isoRepRows(ISO21_CLAUSES_DATA,'iso21');
-    const statBox=(v,l,c)=>`<div style="background:#f8f9fa;border:1px solid #e2e8f0;border-radius:6px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:800;color:${c}">${v}</div><div style="font-size:10px;color:#6b7a99">${l}</div></div>`;
-    isoEl.innerHTML=`
-      <div style="font-weight:700;color:#0C3F6A;font-size:13px;border-bottom:2px solid #F58220;padding-bottom:5px;margin-bottom:10px">🏅 ISO 41001:2018 — Facility Management System</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">${statBox(r41.ok,'Compliant','#2e7d32')}${statBox(r41.obs,'Observations','#e65100')}${statBox(r41.nc,'Non-Conformities','#c62828')}</div>
-      <div style="overflow-x:auto;margin-bottom:20px"><table class="accrep-tbl"><thead><tr><th>Clause</th><th>Sub-clause Name</th><th>Section</th><th>Status</th></tr></thead><tbody>${r41.rows}</tbody></table></div>
-      <div style="font-weight:700;color:#0C3F6A;font-size:13px;border-bottom:2px solid #1565c0;padding-bottom:5px;margin-bottom:10px">🎓 ISO 21001:2018 — MSEO (Educational Organizations)</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">${statBox(r21.ok,'Compliant','#2e7d32')}${statBox(r21.obs,'Observations','#e65100')}${statBox(r21.nc,'Non-Conformities','#c62828')}</div>
-      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Clause</th><th>Sub-clause Name</th><th>Section</th><th>Status</th></tr></thead><tbody>${r21.rows}</tbody></table></div>`;
-  }
+  const statItem=(val,lbl,color)=>`<div class="rep-stat-item"><div class="rep-stat-val" style="color:${color||'#0C3F6A'}">${val}</div><div class="rep-stat-lbl">${lbl}</div></div>`;
 
-  // ── NIRF ──
-  const nirfEl=document.getElementById('accrep-nirf-body');
-  if(nirfEl){
-    let rows='';let filled=0,tot=0;
-    NIRF_PARAMS_DATA.forEach(p=>{
-      p.metrics.forEach(m=>{
-        tot++;
-        const v=(accState.nirf||{})[m.key]||'';
-        if(v)filled++;
-        rows+=`<tr><td style="color:#555;font-weight:600">${esc(p.name)}</td><td>${esc(m.name)}</td><td style="font-weight:700;color:${v?'#2e7d32':'#9e9e9e'}">${v||'—'}</td><td style="font-size:11px;color:#6b7a99">${m.unit||'—'}</td></tr>`;
+  /* ── NAAC SSR Table ── */
+  let naacRows='';
+  NAAC_CRITERIA.forEach(c=>{
+    let cFill=0,cTot=0;
+    c.kis.forEach(ki=>{ki.metrics.forEach(m=>{cTot++;const s=(accState.naac[m.num]||{}).status||'ns';if(s==='comp'||s==='dvv')cFill++;});});
+    naacRows+=`<tr class="rep-crit-row"><td colspan="4">Criterion ${c.num}: ${esc(c.name)}</td><td style="text-align:right;color:#F58220">${cFill}/${cTot} (${cTot?Math.round(cFill/cTot*100):0}%)</td></tr>`;
+    c.kis.forEach(ki=>{
+      ki.metrics.forEach(m=>{
+        const s=(accState.naac[m.num]||{}).status||'ns';
+        const notes=(accState.naac[m.num]||{}).notes||'';
+        naacRows+=`<tr>
+          <td class="rep-tbl-num" style="color:#F58220">${m.num}</td>
+          <td class="rep-tbl-desc">${esc(m.desc.length>90?m.desc.substring(0,90)+'...':m.desc)}</td>
+          <td>C${c.num}</td>
+          <td>${sChip(s)}</td>
+          <td class="rep-tbl-notes">${notes?esc(notes.substring(0,60)):'—'}</td>
+        </tr>`;
       });
     });
-    nirfEl.innerHTML=`<div style="margin-bottom:12px;font-size:13px"><strong>${filled}/${tot}</strong> data points entered &nbsp;·&nbsp; <span style="color:${filled===tot?'#2e7d32':'#e65100'}">${Math.round(filled/tot*100)}% complete</span></div>
-      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Parameter</th><th>Metric</th><th>Value</th><th>Unit</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  }
+  });
+  const naacTable=`<table class="rep-tbl">
+    <thead><tr><th>Metric</th><th>Description</th><th>Criterion</th><th>Status</th><th>Notes</th></tr></thead>
+    <tbody>${naacRows}</tbody></table>`;
+  const naacStats=statItem(naacComp,'Complete','#16a34a')+statItem(naacDVV,'DVV Ready','#7c3aed')+statItem(naacIP,'In Progress','#2563eb')+statItem(naacNS,'Not Started','#9ca3af')+statItem(naacTot,'Total Metrics','')+statItem(naacPct+'%','Progress',pct2color(naacPct));
 
-  // ── QS ──
-  const qsEl=document.getElementById('accrep-qs-body');
-  if(qsEl){
-    const rows=QS_PILLARS_DATA.map((p,i)=>`<tr><td style="font-weight:700;color:${p.color}">${esc(p.name)}</td><td>${esc(p.weight)}</td><td>${p.indicators.length}</td><td><span style="color:#9e9e9e">Pending</span></td></tr>`).join('');
-    qsEl.innerHTML=`<div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Pillar</th><th>Weight</th><th>Indicators</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  }
+  /* ── ISO 41001 Table ── */
+  let iso41Rows='';
+  ISO41_CLAUSES_DATA.forEach(cl=>{
+    iso41Rows+=`<tr class="rep-crit-row"><td colspan="3">Clause ${cl.num}: ${esc(cl.name)}</td><td></td></tr>`;
+    cl.subs.forEach(s=>{
+      const f=(accState.iso41||{})[s.num]||s.def;
+      iso41Rows+=`<tr><td class="rep-tbl-num">${s.num}</td><td class="rep-tbl-desc" colspan="2">${esc(s.name)}</td><td>${fChip(f)}</td></tr>`;
+    });
+  });
+  const iso41Table=`<table class="rep-tbl">
+    <thead><tr><th>Sub-clause</th><th colspan="2">Name</th><th>Status</th></tr></thead>
+    <tbody>${iso41Rows}</tbody></table>`;
+  const iso41Stats=statItem(iso41.ok,'Compliant','#16a34a')+statItem(iso41.obs,'Observations','#ea580c')+statItem(iso41.nc,'Non-Conformities','#dc2626')+statItem(iso41.tot,'Total Clauses','')+statItem(iso41.pct+'%','Compliance',pct2color(iso41.pct));
 
-  // ── AISHE ──
-  const aisheEl=document.getElementById('accrep-aishe-body');
-  if(aisheEl){
-    let filled=0,tot=0;
-    const rows=AISHE_SECTIONS_DATA.map(sec=>{
-      const fieldRows=sec.fields.map(f=>{tot++;const v=(accState.aishe||{})[f.key]||'';if(v)filled++;return `<tr><td style="color:#555;padding-left:20px">${esc(sec.title)}</td><td>${esc(f.label)}</td><td style="font-weight:700;color:${v?'#2e7d32':'#9e9e9e'}">${esc(v)||'—'}</td></tr>`;}).join('');
-      return fieldRows;
-    }).join('');
-    aisheEl.innerHTML=`<div style="margin-bottom:12px;font-size:13px"><strong>${filled}/${tot}</strong> fields completed &nbsp;·&nbsp; <span style="color:${filled===tot?'#2e7d32':'#e65100'}">${Math.round(filled/tot*100)}% complete</span></div>
-      <div style="overflow-x:auto"><table class="accrep-tbl"><thead><tr><th>Section</th><th>Field</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  /* ── ISO 21001 Table ── */
+  let iso21Rows='';
+  ISO21_CLAUSES_DATA.forEach(cl=>{
+    iso21Rows+=`<tr class="rep-crit-row"><td colspan="3">Clause ${cl.num}: ${esc(cl.name)}</td><td></td></tr>`;
+    cl.subs.forEach(s=>{
+      const f=(accState.iso21||{})[s.num]||s.def;
+      iso21Rows+=`<tr><td class="rep-tbl-num">${s.num}</td><td class="rep-tbl-desc" colspan="2">${esc(s.name)}</td><td>${fChip(f)}</td></tr>`;
+    });
+  });
+  const iso21Table=`<table class="rep-tbl">
+    <thead><tr><th>Sub-clause</th><th colspan="2">Name</th><th>Status</th></tr></thead>
+    <tbody>${iso21Rows}</tbody></table>`;
+  const iso21Stats=statItem(iso21.ok,'Compliant','#16a34a')+statItem(iso21.obs,'Observations','#ea580c')+statItem(iso21.nc,'Non-Conformities','#dc2626')+statItem(iso21.tot,'Total Clauses','')+statItem(iso21.pct+'%','Compliance',pct2color(iso21.pct));
+
+  /* ── NIRF Table ── */
+  let nirfRows='';
+  NIRF_PARAMS_DATA.forEach(p=>{
+    nirfRows+=`<tr class="rep-crit-row"><td colspan="3">${esc(p.name)}</td><td></td></tr>`;
+    p.metrics.forEach(m=>{
+      const v=(accState.nirf||{})[m.key]||'';
+      nirfRows+=`<tr>
+        <td class="rep-tbl-desc" colspan="2">${esc(m.name)}</td>
+        <td>${m.unit?'<span style="font-size:10px;color:#9ca3af">'+esc(m.unit)+'</span>':''}</td>
+        <td>${v?'<span class="rep-chip rep-chip-ok">'+esc(String(v))+'</span>':'<span class="rep-chip rep-chip-ns">— Not Entered</span>'}</td>
+      </tr>`;
+    });
+  });
+  const nirfTable=`<table class="rep-tbl">
+    <thead><tr><th colspan="2">Metric</th><th>Unit</th><th>Value / Status</th></tr></thead>
+    <tbody>${nirfRows}</tbody></table>`;
+  const nirfStats=statItem(nirfFilled,'Entered','#16a34a')+statItem(nirfTot-nirfFilled,'Pending','#ea580c')+statItem(nirfTot,'Total','') +statItem(nirfPct+'%','Completion',pct2color(nirfPct));
+
+  /* ── QS Table ── */
+  let qsRows='';
+  QS_PILLARS_DATA.forEach(p=>{
+    qsRows+=`<tr class="rep-crit-row"><td colspan="2" style="color:${p.color||'#0C3F6A'}">${esc(p.name)}</td><td>${p.weight||''}</td><td></td></tr>`;
+    p.indicators.forEach(ind=>{
+      const v=(accState.qs||{})[ind.key]||'';
+      qsRows+=`<tr>
+        <td class="rep-tbl-desc" colspan="2">${esc(ind.name||ind.key)}</td>
+        <td style="font-size:11px;color:#9ca3af">${esc(ind.unit||'')}</td>
+        <td>${v?'<span class="rep-chip rep-chip-ok">'+esc(String(v))+'</span>':'<span class="rep-chip rep-chip-ns">Pending</span>'}</td>
+      </tr>`;
+    });
+  });
+  const qsTable=`<table class="rep-tbl">
+    <thead><tr><th colspan="2">Indicator</th><th>Unit</th><th>Status</th></tr></thead>
+    <tbody>${qsRows}</tbody></table>`;
+  const qsStats=statItem(qsFilled,'Entered','#16a34a')+statItem(qsTot-qsFilled,'Pending','#ea580c')+statItem(qsTot,'Total','')+statItem(qsPct+'%','Readiness',pct2color(qsPct));
+
+  /* ── AISHE Table ── */
+  let aisheRows='';
+  AISHE_SECTIONS_DATA.forEach(sec=>{
+    aisheRows+=`<tr class="rep-crit-row"><td colspan="2">${esc(sec.title)}</td><td></td></tr>`;
+    sec.fields.forEach(f=>{
+      const v=(accState.aishe||{})[f.key]||'';
+      aisheRows+=`<tr>
+        <td class="rep-tbl-desc" colspan="2">${esc(f.label)}</td>
+        <td>${v?'<span class="rep-chip rep-chip-ok">'+esc(String(v))+'</span>':'<span class="rep-chip rep-chip-ns">— Not Entered</span>'}</td>
+      </tr>`;
+    });
+  });
+  const aisheTable=`<table class="rep-tbl">
+    <thead><tr><th colspan="2">Field</th><th>Status / Value</th></tr></thead>
+    <tbody>${aisheRows}</tbody></table>`;
+  const aisheStats=statItem(aisheFilled,'Entered','#16a34a')+statItem(aisheTot-aisheFilled,'Pending','#ea580c')+statItem(aisheTot,'Total','')+statItem(aishePct+'%','Completion',pct2color(aishePct));
+
+  /* ── Overview boxes ── */
+  const fwList=[
+    {name:'NAAC SSR',pct:naacPct,color:'#e07b20'},
+    {name:'ISO 41001',pct:iso41.pct,color:'#1d4ed8'},
+    {name:'ISO 21001',pct:iso21.pct,color:'#0891b2'},
+    {name:'NIRF',pct:nirfPct,color:'#7c3aed'},
+    {name:'QS I-GAUGE',pct:qsPct,color:'#059669'},
+    {name:'AISHE',pct:aishePct,color:'#b91c1c'}
+  ];
+  const overviewBoxes=fwList.map(fw=>`
+    <div class="rep-fw-box">
+      <div class="rep-fw-box-name">${fw.name}</div>
+      <div class="rep-fw-box-pct" style="color:${pct2color(fw.pct)}">${fw.pct}%</div>
+      <div class="rep-fw-box-bar"><div class="rep-fw-box-bar-fill" style="width:${fw.pct}%;background:${fw.color}"></div></div>
+    </div>`).join('');
+
+  /* ── Assemble full HTML ── */
+  const html=`
+    <div class="rep-hero">
+      <div class="rep-hero-left">
+        <div class="rep-hero-title">&#128196; Consolidated Accreditation Status Report</div>
+        <div class="rep-hero-sub">FLAME University &nbsp;&#183;&nbsp; All Frameworks &nbsp;&#183;&nbsp; Generated: ${today}</div>
+      </div>
+      <div class="rep-hero-actions">
+        <button class="rep-hero-btn rep-hero-btn-primary" onclick="window.print()">&#128438; Print / PDF</button>
+        <button class="rep-hero-btn rep-hero-btn-ghost" onclick="exportAccReportPDF()">&#128196; Export PDF</button>
+      </div>
+    </div>
+    <div class="rep-fw-overview">
+      <div class="rep-fw-box" style="background:linear-gradient(135deg,#f8faff,#fff)">
+        <div class="rep-fw-box-name">Overall Readiness</div>
+        <div class="rep-fw-box-pct" style="color:${pct2color(overall)};font-size:26px">${overall}%</div>
+        <div class="rep-fw-box-bar"><div class="rep-fw-box-bar-fill" style="width:${overall}%;background:${pct2color(overall)}"></div></div>
+      </div>
+      ${overviewBoxes}
+    </div>
+
+    ${fwCard('#e07b20','&#128203;','NAAC &mdash; SSR','National Assessment &amp; Accreditation Council',naacPct,naacStats,naacTable,0)}
+    ${fwCard('#1d4ed8','&#127885;','ISO 41001:2018','Facility Management System',iso41.pct,iso41Stats,iso41Table,1)}
+    ${fwCard('#0891b2','&#127919;','ISO 21001:2018','MSEO &mdash; Educational Organization',iso21.pct,iso21Stats,iso21Table,2)}
+    ${fwCard('#7c3aed','&#128202;','NIRF','National Institutional Ranking Framework',nirfPct,nirfStats,nirfTable,3)}
+    ${fwCard('#059669','&#127758;','QS I-GAUGE','QS Indian Institutions Gauge',qsPct,qsStats,qsTable,4)}
+    ${fwCard('#b91c1c','&#128193;','AISHE','All India Survey on Higher Education',aishePct,aisheStats,aisheTable,5)}
+  `;
+
+  const body=document.getElementById('accrep-body');
+  if(body){body.innerHTML=html;}
+  else{
+    /* Fallback: write into the acc-body container */
+    const accBody=tab.querySelector('.acc-body');
+    if(accBody) accBody.innerHTML=html;
   }
 }
 
-function exportAccReportPDF(){
-  // ── Build data for both ISO standards ──────────────────
-  const stLbl={ns:'Not Started',ip:'In Progress',comp:'Complete',dvv:'DVV Ready'};
-  const stColor={ns:'#9e9e9e',ip:'#1565c0',comp:'#2e7d32',dvv:'#7b1fa2'};
-  const fLbl={ok:'Compliant',obs:'Observation',nc:'Non-Conformity'};
-  const fColor={ok:'#2e7d32',obs:'#e65100',nc:'#c62828'};
-
-  // NAAC stats
-  let naac_tot=0,naac_comp=0,naac_ip=0,naac_dvv=0,naac_ns=0;
-  NAAC_CRITERIA.forEach(cr=>cr.kis.forEach(ki=>ki.metrics.forEach(m=>{naac_tot++;const s=(accState.naac[m.num]||{}).status||'ns';if(s==='comp')naac_comp++;else if(s==='ip')naac_ip++;else if(s==='dvv')naac_dvv++;else naac_ns++;})));
-  const naac_pct=naac_tot?Math.round((naac_comp+naac_dvv)/naac_tot*100):0;
-
-  // NAAC criterion rows
-  const naacRows=NAAC_CRITERIA.map(cr=>`
-    <tr style="background:#1a3c5e"><td colspan="5" style="color:#fff;font-weight:700;padding:6px 10px;font-size:12px">
-      C${cr.num}: ${cr.name} <span style="font-weight:400;opacity:.7">(${cr.weight} marks)</span></td></tr>`+
-    cr.kis.flatMap(ki=>ki.metrics.map(m=>{
-      const s=(accState.naac[m.num]||{}).status||'ns';
-      const notes=(accState.naac[m.num]||{}).notes||'';
-      return `<tr><td style="color:#F58220;font-weight:700;white-space:nowrap;font-size:11px">${m.num}</td>
-        <td style="font-size:11px">${m.desc.substring(0,75)}${m.desc.length>75?'…':''}</td>
-        <td style="font-size:10px;color:#555">${ki.name}</td>
-        <td style="font-weight:600;color:${stColor[s]};font-size:11px;white-space:nowrap">${stLbl[s]}</td>
-        <td style="font-size:10px;color:#777">${notes||'—'}</td></tr>`;
-    })).join('')
-  ).join('');
-
-  // ISO rows helper
-  function isoRows(data, stateKey){
-    return data.map(cl=>`
-      <tr style="background:#e8f0fe"><td colspan="4" style="font-weight:700;color:#1565c0;padding:5px 10px;font-size:11.5px">Clause ${cl.num}: ${cl.name}</td></tr>`+
-      cl.subs.map(s=>{const f=(accState[stateKey]||{})[s.num]||s.def;
-        return `<tr><td style="font-weight:700;color:#555;font-size:11px">${s.num}</td>
-          <td style="font-size:11px" colspan="2">${s.name}</td>
-          <td style="font-weight:600;color:${fColor[f]};font-size:11px">${fLbl[f]}</td></tr>`;
-      }).join('')
-    ).join('');
-  }
-
-  const d=new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
-  const html=`<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>FLAME University — Accreditation Report</title>
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Segoe UI',Arial,sans-serif;font-size:12px;color:#1a1a2e;background:#fff}
-  .page-header{background:#0C3F6A;color:#fff;padding:18px 28px;display:flex;align-items:center;gap:16px}
-  .page-header h1{font-size:18px;font-weight:800;color:#FDB515}
-  .page-header .sub{font-size:11px;color:#a0b0cc;margin-top:3px}
-  .page-header .badge{background:#F58220;color:#fff;border-radius:4px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap}
-  .section-header{background:#0C3F6A;color:#fff;padding:10px 16px;margin:20px 0 0;font-size:14px;font-weight:700;page-break-before:auto}
-  .subsection-header{background:#F58220;color:#fff;padding:7px 14px;font-size:12px;font-weight:700}
-  .summary-row{display:flex;gap:10px;flex-wrap:wrap;padding:14px 16px;background:#f8f9fa;border-bottom:1px solid #e2e8f0}
-  .stat-chip{background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:8px 16px;text-align:center;min-width:90px}
-  .stat-chip .n{font-size:22px;font-weight:800}
-  .stat-chip .l{font-size:9px;color:#6b7a99;text-transform:uppercase;letter-spacing:.04em}
-  .prog-bar-wrap{padding:10px 16px;background:#f8f9fa}
-  .prog-bar-bg{background:#e0e0e0;border-radius:3px;height:10px;margin-top:3px}
-  .prog-bar-fill{height:10px;border-radius:3px}
-  .tbl{width:100%;border-collapse:collapse;font-size:11px}
-  .tbl th{background:#e8f0fe;color:#155a94;padding:6px 9px;text-align:left;font-size:10px;font-weight:700;border:1px solid #d0dcf0}
-  .tbl td{padding:5px 9px;border:1px solid #eef0f5;vertical-align:top}
-  .tbl tr:nth-child(even) td{background:#fafbff}
-  .prog-lbl{font-size:11px;font-weight:600;color:#333}
-  .footer{margin-top:24px;padding:12px 16px;background:#EFF4FA;font-size:10px;color:#7a8db5;border-top:2px solid #F58220;display:flex;justify-content:space-between}
-  @media print{
-    @page{margin:15mm;size:A4}
-    .section-header{page-break-before:always}
-    .section-header:first-of-type{page-break-before:avoid}
-  }
-</style>
-</head>
-<body>
-
-<div class="page-header">
-  <div style="background:#F58220;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;flex-shrink:0">F</div>
-  <div style="flex:1">
-    <h1>FLAME University — Consolidated Accreditation Report</h1>
-    <div class="sub">Unified MIS · ARC Office · Generated: ${d}</div>
-  </div>
-  <div class="badge">CONFIDENTIAL</div>
-</div>
-
-<!-- ═══ NAAC SSR ═══ -->
-<div class="section-header">📋 NAAC — Self Study Report (SSR) Metric Status</div>
-<div class="summary-row">
-  <div class="stat-chip"><div class="n">${naac_tot}</div><div class="l">Total Metrics</div></div>
-  <div class="stat-chip"><div class="n" style="color:#2e7d32">${naac_comp}</div><div class="l">Complete</div></div>
-  <div class="stat-chip"><div class="n" style="color:#1565c0">${naac_ip}</div><div class="l">In Progress</div></div>
-  <div class="stat-chip"><div class="n" style="color:#7b1fa2">${naac_dvv}</div><div class="l">DVV Ready</div></div>
-  <div class="stat-chip"><div class="n" style="color:#9e9e9e">${naac_ns}</div><div class="l">Not Started</div></div>
-  <div class="stat-chip"><div class="n" style="color:#F58220">${naac_pct}%</div><div class="l">Progress</div></div>
-</div>
-<div class="prog-bar-wrap">
-  <div class="prog-lbl">Overall NAAC Completion — ${naac_pct}%</div>
-  <div class="prog-bar-bg"><div class="prog-bar-fill" style="width:${naac_pct}%;background:#F58220"></div></div>
-</div>
-${NAAC_CRITERIA.map(cr=>{
-  const all=cr.kis.flatMap(ki=>ki.metrics);
-  const done=all.filter(m=>{const s=(accState.naac[m.num]||{}).status||'ns';return s==='comp'||s==='dvv';}).length;
-  const pct=all.length?Math.round(done/all.length*100):0;
-  return `<div class="prog-bar-wrap" style="padding:5px 16px"><span class="prog-lbl" style="color:${cr.color}">C${cr.num}: ${cr.name} &nbsp;</span><span style="font-size:10px;color:#777">${done}/${all.length} (${pct}%)</span><div class="prog-bar-bg"><div class="prog-bar-fill" style="width:${pct}%;background:${cr.color}"></div></div></div>`;
-}).join('')}
-<table class="tbl" style="margin-top:10px">
-  <thead><tr><th style="width:60px">Metric</th><th>Description</th><th style="width:120px">Key Indicator</th><th style="width:80px">Status</th><th>Notes</th></tr></thead>
-  <tbody>${naacRows}</tbody>
-</table>
-
-<!-- ═══ ISO 41001 ═══ -->
-<div class="section-header">🏅 ISO 41001:2018 — Facility Management System</div>
-<table class="tbl" style="margin-top:10px">
-  <thead><tr><th style="width:50px">Clause</th><th colspan="2">Sub-clause Name</th><th style="width:90px">Status</th></tr></thead>
-  <tbody>${isoRows(ISO41_CLAUSES_DATA,'iso41')}</tbody>
-</table>
-
-<!-- ═══ ISO 21001 ═══ -->
-<div class="section-header">🎓 ISO 21001:2018 — Management Systems for Educational Organizations</div>
-<table class="tbl" style="margin-top:10px">
-  <thead><tr><th style="width:50px">Clause</th><th colspan="2">Sub-clause Name</th><th style="width:90px">Status</th></tr></thead>
-  <tbody>${isoRows(ISO21_CLAUSES_DATA,'iso21')}</tbody>
-</table>
-
-<!-- ═══ NIRF ═══ -->
-<div class="section-header">📊 NIRF — National Institutional Ranking Framework</div>
-<table class="tbl" style="margin-top:10px">
-  <thead><tr><th>Parameter</th><th>Metric</th><th style="width:70px">Value</th><th style="width:60px">Unit</th></tr></thead>
-  <tbody>${NIRF_PARAMS_DATA.map(p=>`<tr style="background:#f0f4ff"><td colspan="4" style="font-weight:700;color:#0C3F6A;font-size:11.5px">
-    ${p.name} <span style="font-weight:400;color:#7a8db5">(${p.weight}%)</span></td></tr>`+
-    p.metrics.map(m=>`<tr><td style="color:#555;font-size:11px">${p.name}</td>
-      <td style="font-size:11px">${m.name}</td>
-      <td style="font-weight:700;color:${(accState.nirf||{})[m.key]?'#2e7d32':'#9e9e9e'}">${(accState.nirf||{})[m.key]||'—'}</td>
-      <td style="font-size:10px;color:#777">${m.unit||'—'}</td></tr>`).join('')
-  ).join('')}</tbody>
-</table>
-
-<!-- ═══ AISHE ═══ -->
-<div class="section-header">📁 AISHE — All India Survey on Higher Education</div>
-<table class="tbl" style="margin-top:10px">
-  <thead><tr><th style="width:140px">Section</th><th>Field</th><th>Value</th></tr></thead>
-  <tbody>${AISHE_SECTIONS_DATA.map(sec=>sec.fields.map(f=>`<tr>
-    <td style="font-weight:600;color:#555;font-size:11px">${sec.title}</td>
-    <td style="font-size:11px">${f.label}</td>
-    <td style="font-weight:600;color:${(accState.aishe||{})[f.key]?'#2e7d32':'#9e9e9e'};font-size:11px">${(accState.aishe||{})[f.key]||'—'}</td>
-  </tr>`).join('')).join('')}</tbody>
-</table>
-
-<div class="footer">
-  <span>FLAME University — Unified MIS · ARC Office</span>
-  <span>Generated: ${d} &nbsp;·&nbsp; CONFIDENTIAL — For Internal Use Only</span>
-</div>
-
-<script>window.onload=function(){window.print();}<\/script>
-</body></html>`;
-
-  const w=window.open('','_blank','width=900,height=700');
-  if(!w){alert('Please allow popups for this site to generate PDF.');return;}
-  w.document.write(html);
-  w.document.close();
-}
-
-
-// ══ COMPLIANCE REPORT TAB ════════════════════════════════════════
 function buildComplianceReport(){
   populateReportSelectors();
-  let rows = getAdminRows();
+  let rows=getAdminRows();
   const yr=(document.getElementById('cr-yr')||{}).value||'';
   const tp=(document.getElementById('cr-type')||{}).value||'';
   if(yr) rows=rows.filter(r=>r.year===yr);
   if(tp) rows=rows.filter(r=>r.type===tp);
   window._crRows=rows;
 
-  // Stats
+  const tab=document.getElementById('adm-tab-comprep');
+  if(!tab) return;
+
+  /* ── Stats ── */
   const subDepts=[...new Set(rows.map(r=>r.dept))];
   const totalDepts=DEPTS.length;
-  const pct=Math.round(subDepts.length/totalDepts*100);
-  const crSt=document.getElementById('cr-stats');
-  if(crSt) crSt.innerHTML=[
-    {n:totalDepts,l:'Total Departments',c:''},
-    {n:subDepts.length,l:'Submitted',c:'color:#2e7d32'},
-    {n:totalDepts-subDepts.length,l:'Not Submitted',c:'color:#c62828'},
-    {n:rows.filter(r=>r.type==='monthly').length,l:'Monthly Entries',c:'color:#1565c0'},
-    {n:rows.filter(r=>r.type==='annual').length,l:'Annual Entries',c:'color:#F58220'},
-    {n:pct+'%',l:'Coverage Rate',c:'color:'+(pct>=80?'#2e7d32':pct>=50?'#e65100':'#c62828')}
-  ].map(s=>`<div class="acc-stat-card"><div class="acc-stat-num" style="${s.c}">${s.n}</div><div class="acc-stat-lbl">${s.l}</div></div>`).join('');
+  const pct=totalDepts?Math.round(subDepts.length/totalDepts*100):0;
+  const monthly=rows.filter(r=>r.type==='monthly').length;
+  const annual=rows.filter(r=>r.type==='annual').length;
+  const missing=DEPTS.filter(d=>!subDepts.includes(d.name));
+  const today=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  const pct2color=(p)=>p>=80?'#16a34a':p>=50?'#F58220':'#dc2626';
+  const selYr=yr||'All Years';
+  const selTp=tp?tp.charAt(0).toUpperCase()+tp.slice(1):'All Types';
 
-  // Matrix: depts × months (for monthly) or depts × years (for annual)
-  const matEl=document.getElementById('cr-matrix'); if(!matEl)return;
+  /* ── Matrix ── */
   const MONTH_ORDER=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
-  // Group by dept
   const deptSubs={};
   rows.forEach(r=>{if(!deptSubs[r.dept])deptSubs[r.dept]=[];deptSubs[r.dept].push(r);});
-  // All periods
-  const periods=tp==='annual'?[...new Set(rows.map(r=>r.year))].sort():MONTH_ORDER;
-  const thead='<tr><th style="min-width:160px">Department</th><th>Type</th>'+periods.map(p=>`<th style="text-align:center;min-width:40px">${p}</th>`).join('')+'<th>Total</th></tr>';
+  const isAnnual=tp==='annual';
+  const periods=isAnnual?[...new Set(rows.map(r=>r.year))].sort():MONTH_ORDER;
+
+  const thead='<tr><th>Department</th><th>Type</th>'+
+    periods.map(p=>`<th>${p}</th>`).join('')+
+    '<th>Submitted</th></tr>';
+
   const tbody=DEPTS.map(d=>{
     const subs=deptSubs[d.name]||[];
     const cells=periods.map(p=>{
-      const match=subs.find(s=>(tp==='annual'?s.year:s.period)===p);
-      return `<td style="text-align:center">${match?`<span class="cr-dot-y" title="${match.ts}"></span>`:'<span class="cr-dot-n"></span>'}</td>`;
+      const match=subs.find(s=>(isAnnual?s.year:s.period)===p);
+      if(match){
+        const ts=match.ts?match.ts.replace('T',' ').substring(0,16):'';
+        return `<td><div class="cr-cell-y" title="${ts}">&#10003;</div></td>`;
+      }
+      return `<td><div class="cr-cell-n">&#8901;</div></td>`;
     }).join('');
-    const total=subs.length;
-    return `<tr><td><strong>${esc(d.name)}</strong></td><td><span class="badge ${d.type==='monthly'?'b-monthly':'b-annual'}">${d.type}</span></td>${cells}<td style="font-weight:700;color:${total>0?'#2e7d32':'#c62828'}">${total}</td></tr>`;
+    const tot=subs.length;
+    const chipCls=tot===0?'cr-total-zero':tot>=periods.length?'cr-total-good':'cr-total-part';
+    const typeChip=`<span class="badge ${d.type==='monthly'?'b-monthly':'b-annual'}">${d.type}</span>`;
+    return `<tr>
+      <td><span class="cr-dept-name">${esc(d.name)}</span></td>
+      <td>${typeChip}</td>
+      ${cells}
+      <td><span class="cr-total-chip ${chipCls}">${tot}</span></td>
+    </tr>`;
   }).join('');
-  matEl.innerHTML=`<table class="cr-tbl"><thead>${thead}</thead><tbody>${tbody}</tbody></table>`;
 
-  // Missing
-  const missing=DEPTS.filter(d=>!subDepts.includes(d.name));
-  const missEl=document.getElementById('cr-missing');
-  if(missEl) missEl.innerHTML=missing.length?missing.map(d=>`<span class="cr-missing-chip">⚠ ${esc(d.name)}</span>`).join(''):'<span style="color:#2e7d32;font-weight:600">✅ All departments have submitted.</span>';
+  /* ── Missing chips ── */
+  const missingHtml=missing.length
+    ? missing.map(d=>`<span class="cr-missing-chip">&#9888; ${esc(d.name)}</span>`).join('')
+    : `<div class="cr-all-ok">&#10003; All departments have submitted for the selected period.</div>`;
+
+  /* ── Full HTML ── */
+  const html=`
+    <div class="cr-hero">
+      <div class="cr-hero-left">
+        <div class="cr-hero-title">&#128196; Department Compliance Report</div>
+        <div class="cr-hero-sub">FLAME University &nbsp;&#183;&nbsp; ${selYr} &nbsp;&#183;&nbsp; ${selTp} &nbsp;&#183;&nbsp; ${today}</div>
+      </div>
+      <div class="cr-hero-filters">
+        <select class="cr-hero-select" id="cr-yr" onchange="buildComplianceReport()">
+          <option value="">All Years</option>
+        </select>
+        <select class="cr-hero-select" id="cr-type" onchange="buildComplianceReport()">
+          <option value="">All Types</option>
+          <option value="monthly">Monthly</option>
+          <option value="annual">Annual</option>
+        </select>
+        <button class="cr-hero-btn cr-hero-btn-refresh" onclick="buildComplianceReport()">&#8635; Refresh</button>
+        <button class="cr-hero-btn cr-hero-btn-export" onclick="exportComplianceReport()">&#128197; Export Excel</button>
+      </div>
+    </div>
+
+    <div class="cr-kpi-strip">
+      <div class="cr-kpi">
+        <div class="cr-kpi-val">${totalDepts}</div>
+        <div class="cr-kpi-lbl">Total Departments</div>
+        <div class="cr-kpi-bar"><div class="cr-kpi-bar-fill" style="width:100%;background:#0C3F6A"></div></div>
+      </div>
+      <div class="cr-kpi">
+        <div class="cr-kpi-val" style="color:#16a34a">${subDepts.length}</div>
+        <div class="cr-kpi-lbl">Submitted</div>
+        <div class="cr-kpi-bar"><div class="cr-kpi-bar-fill" style="width:${pct}%;background:#16a34a"></div></div>
+      </div>
+      <div class="cr-kpi">
+        <div class="cr-kpi-val" style="color:${missing.length?'#dc2626':'#16a34a'}">${missing.length}</div>
+        <div class="cr-kpi-lbl">Not Submitted</div>
+        <div class="cr-kpi-bar"><div class="cr-kpi-bar-fill" style="width:${totalDepts?Math.round(missing.length/totalDepts*100):0}%;background:#dc2626"></div></div>
+      </div>
+      <div class="cr-kpi">
+        <div class="cr-kpi-val" style="color:#1d4ed8">${monthly}</div>
+        <div class="cr-kpi-lbl">Monthly Entries</div>
+        <div class="cr-kpi-bar"><div class="cr-kpi-bar-fill" style="width:${rows.length?Math.round(monthly/rows.length*100):0}%;background:#1d4ed8"></div></div>
+      </div>
+      <div class="cr-kpi">
+        <div class="cr-kpi-val" style="color:#F58220">${annual}</div>
+        <div class="cr-kpi-lbl">Annual Entries</div>
+        <div class="cr-kpi-bar"><div class="cr-kpi-bar-fill" style="width:${rows.length?Math.round(annual/rows.length*100):0}%;background:#F58220"></div></div>
+      </div>
+      <div class="cr-kpi">
+        <div class="cr-kpi-val" style="color:${pct2color(pct)}">${pct}%</div>
+        <div class="cr-kpi-lbl">Coverage Rate</div>
+        <div class="cr-kpi-bar"><div class="cr-kpi-bar-fill" style="width:${pct}%;background:${pct2color(pct)}"></div></div>
+      </div>
+    </div>
+
+    <div class="cr-coverage-card">
+      <div class="cr-cov-header">
+        <div>
+          <div class="cr-cov-title">&#128202; Submission Coverage</div>
+          <div style="font-size:11px;color:#6b7a99;margin-top:2px">${subDepts.length} of ${totalDepts} departments submitted</div>
+        </div>
+        <div class="cr-cov-pct" style="color:${pct2color(pct)}">${pct}%</div>
+      </div>
+      <div class="cr-cov-track">
+        <div class="cr-cov-fill" style="width:${pct}%;background:linear-gradient(90deg,${pct2color(pct)},${pct>=80?'#4ade80':pct>=50?'#fbbf24':'#f87171'})"></div>
+      </div>
+      <div class="cr-cov-legend">
+        <span><span class="cr-cov-dot" style="background:#16a34a"></span>Submitted (${subDepts.length})</span>
+        <span><span class="cr-cov-dot" style="background:#e2e8f0"></span>Not Submitted (${missing.length})</span>
+        <span>&#183; Target: 100% &nbsp;</span>
+        <span style="margin-left:auto;font-weight:600;color:${pct2color(pct)}">${pct>=80?'&#10003; On Track':pct>=50?'&#9888; Needs Attention':'&#10005; Critical'}</span>
+      </div>
+    </div>
+
+    <div class="cr-matrix-card">
+      <div class="cr-matrix-hdr">
+        <div class="cr-matrix-hdr-title">&#128202; Department Submission Matrix</div>
+        <div class="cr-matrix-legend">
+          <span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(220,252,231,.9);color:#16a34a;font-size:12px">&#10003;</span> Submitted</span>
+          <span><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(243,244,246,.8);color:#9ca3af;font-size:11px">&#8901;</span> Pending</span>
+        </div>
+      </div>
+      <div class="cr-matrix-wrap">
+        <table class="cr-matrix-tbl">
+          <thead>${thead}</thead>
+          <tbody>${tbody}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="cr-alert-card">
+      <div class="cr-alert-hdr">&#9888; Departments with No Submissions &nbsp;<span style="background:#fee2e2;color:#991b1b;border-radius:20px;padding:1px 9px;font-size:12px">${missing.length}</span></div>
+      <div class="cr-alert-body">${missingHtml}</div>
+    </div>
+  `;
+
+  const accBody=tab.querySelector('.acc-body');
+  if(accBody) accBody.innerHTML=html;
+
+  /* Re-populate year selector after re-render */
+  populateReportSelectors();
+  const yrSel=document.getElementById('cr-yr');
+  const tpSel=document.getElementById('cr-type');
+  if(yrSel&&yr) yrSel.value=yr;
+  if(tpSel&&tp) tpSel.value=tp;
 }
 
 function exportComplianceReport(){
