@@ -12,7 +12,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   color:#1a1a2e;background:#EFF4FA}
 
 /* ── LOGIN ──────────────────────────────────────────────────── */
-#sc-login{
+#sc-login:not([hidden]){
   min-height:100vh;display:flex;align-items:center;justify-content:center;
   background:linear-gradient(135deg,#071e38 0%,#0C3F6A 55%,#155a94 100%)}
 .lcard{
@@ -168,7 +168,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .flash.hidden{display:none}
 
 /* ── FORM ────────────────────────────────────────────────────── */
-#sc-form{display:flex;height:100vh;overflow:hidden}
+#sc-form:not([hidden]){display:flex;height:100vh;overflow:hidden}
 .sidebar{width:280px;min-width:260px;background:#0C3F6A;
   display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
 .s-logo-fb{color:#FDB515;font-weight:700;font-size:14px}
@@ -275,7 +275,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
    Inspired by: Harvard Atlas · MIT Portal · Oxford Nexus
    Font: Inter (Google Fonts)
 ═══════════════════════════════════════════════════════ */
-#sc-admin{display:flex;flex-direction:column;height:100vh;overflow:hidden;
+#sc-admin:not([hidden]){display:flex;flex-direction:column;height:100vh;overflow:hidden;
   font-family:'Inter',system-ui,-apple-system,sans-serif;background:#F1F5F9}
 
 /* ── HEADER BAR ─────────────────────────────────────── */
@@ -4142,7 +4142,9 @@ function switchAdmTab(id, el){
   if(id==='aishe'&&!window._aisheBuilt){buildAISHE();window._aisheBuilt=true;}
   if(id==='analytics'&&!window._analyticsBuilt){buildAnalytics();window._analyticsBuilt=true;}
   if(id==='accrep'&&!window._accrepBuilt){buildAccReport();window._accrepBuilt=true;}
-  if(id==='comprep'&&!window._comprepBuilt){buildCompReport();window._comprepBuilt=true;}
+  if(id==='comprep'&&!window._comprepBuilt){buildComplianceReport();window._comprepBuilt=true;}
+  if(id==='pindir'&&!window._pindirBuilt){buildPinDirectory();window._pindirBuilt=true;}
+  if(id==='pinreset'&&!window._pinresetBuilt){buildPinReset();window._pinresetBuilt=true;}
 }
 
 function toggleAdmSidebar(){
