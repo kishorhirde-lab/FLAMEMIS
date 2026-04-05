@@ -987,7 +987,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
           <div>
             <div style="font-size:18px;font-weight:700">📐 NAAC Benchmarking Dashboard</div>
-            <div style="font-size:12px;color:#FDB515;margin-top:2px">General University Rubric · Dec 2022 · 37 Quantitative Metrics · C1–C7</div>
+            <div style="font-size:12px;color:#FDB515;margin-top:2px">General University Rubric · Dec 2022 · 55 QnM Metrics · C1–C7</div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap" id="nb-subtab-bar">
             <button onclick="nbShowTab('criterion',this)"
@@ -1031,6 +1031,12 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
               <option value="3">Score 3 (Proficient)</option>
               <option value="4">Score 4 (Exemplary)</option>
               <option value="null">Not Entered Yet</option>
+            </select>
+            <label style="font-size:12px;font-weight:600;color:#555">Completion:</label>
+            <select id="nb-comp-filter" class="afi-sel" style="min-width:160px" onchange="nbBuildMetricView()">
+              <option value="all">All Metrics</option>
+              <option value="entered">✅ Entered Only</option>
+              <option value="pending">⏳ Pending Only</option>
             </select>
             <button onclick="nbExportCSV()" style="margin-left:auto;background:#0C3F6A;color:#fff;border:none;border-radius:6px;padding:7px 14px;cursor:pointer;font-size:12px">⬇ Export CSV</button>
           </div>
@@ -4145,7 +4151,10 @@ const NAAC_BENCHMARKS_DATA = [
                C:'Registration & results only', D:'Results only', E:'Manual only'}},
       {num:'2.6.2', desc:'Pass % of students excluding backlog (latest AY)',
        weight:15, ql:false, hb:true,  th:[90,80,70,60],  unit:'%',
-       dept:'Examinations Office'}
+       dept:'Examinations Office'},
+      {num:'2.7.1', desc:'Online Student Satisfaction Survey (SSS) — overall % satisfaction score (latest AY)',
+       weight:20, ql:false, hb:true,  th:[80,70,60,50],  unit:'%',
+       dept:'IQAC / Academic Affairs'}
     ]
   },
   { num:'C3', name:'Research, Innovations & Extension', weight:250, color:'#4a148c',
@@ -5322,10 +5331,11 @@ function buildNAACBenchmarks(){
   const kpiEl=document.getElementById('nb-overall-kpi');
   if(kpiEl){
     const kpis=[
-      {v:37,           l:'Total QnM Metrics'},
-      {v:filledMetrics,l:'Values Entered'},
-      {v:37-filledMetrics, l:'Pending Entry'},
-      {v:overallPct+'%', l:'Overall Score %'},
+      {v:totalMetrics,              l:'Total QnM Metrics'},
+      {v:filledMetrics,             l:'✅ Entered'},
+      {v:(totalMetrics-filledMetrics),l:'⏳ Pending'},
+      {v:Math.round(filledMetrics/Math.max(1,totalMetrics)*100)+'%', l:'Data Completion'},
+      {v:overallPct+'%',            l:'Overall Score %'},
     ];
     kpiEl.innerHTML=kpis.map(k=>`
       <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px 10px;text-align:center">
@@ -5377,6 +5387,7 @@ function nbBuildCriterionView(){
       return `<tr style="border-bottom:1px solid #f0f4fa">
         <td style="padding:5px 8px;font-size:11px;font-weight:600;color:${cr.color};white-space:nowrap">${m.num}</td>
         <td style="padding:5px 8px;font-size:11px;color:#444;max-width:220px">${m.desc.substring(0,70)}${m.desc.length>70?'…':''}</td>
+        <td style="padding:5px 8px;text-align:center">${raw!==''?'<span style="background:#e8f5e9;color:#2e7d32;font-size:10px;padding:2px 6px;border-radius:8px">✅</span>':'<span style="background:#fff8e1;color:#f57f17;font-size:10px;padding:2px 6px;border-radius:8px">⏳</span>'}</td>
         <td style="padding:5px 8px;text-align:center">
           <span style="background:${sb};color:${sc};padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700">${s!==null?s:'—'}</span>
         </td>
@@ -5392,7 +5403,7 @@ function nbBuildCriterionView(){
           </div>
           <div style="text-align:right">
             <div style="font-size:26px;font-weight:800;color:#FDB515">${pct}%</div>
-            <div style="font-size:10px;opacity:0.8">${cFilled}/${cr.metrics.length} entered</div>
+            <div style="font-size:10px;opacity:0.8">${cFilled}/${cr.metrics.length} entered · ${cr.metrics.length-cFilled} pending</div>
           </div>
         </div>
         <div style="background:rgba(0,0,0,0.2);border-radius:4px;height:6px;margin-top:10px;overflow:hidden">
@@ -5404,6 +5415,7 @@ function nbBuildCriterionView(){
           <thead><tr style="background:#f8fafc">
             <th style="padding:6px 8px;font-size:10px;color:#888;text-align:left;white-space:nowrap">Metric</th>
             <th style="padding:6px 8px;font-size:10px;color:#888;text-align:left">Description</th>
+            <th style="padding:6px 8px;font-size:10px;color:#888;text-align:center">Status</th>
             <th style="padding:6px 8px;font-size:10px;color:#888;text-align:center">Score</th>
             <th style="padding:6px 8px;font-size:10px;color:#888;text-align:center">Wt</th>
           </tr></thead>
@@ -5425,19 +5437,45 @@ function nbBuildMetricView(){
   const tbl=document.getElementById('nb-metric-table'); if(!tbl) return;
   const cf=(document.getElementById('nb-metric-filter')||{}).value||'all';
   const sf=(document.getElementById('nb-score-filter')||{}).value||'all';
+  const cpf=(document.getElementById('nb-comp-filter')||{}).value||'all';
   let allM=[];
   NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>allM.push({...m,crNum:cr.num,crName:cr.name,crColor:cr.color})));
+  // compute totals before filtering
+  const totalM=allM.length;
+  const entM=allM.filter(m=>(accState.naac_bench[m.num]||'')!=='').length;
+  const pendM=totalM-entM;
+  const compPct=totalM?Math.round(entM/totalM*100):0;
   if(cf!=='all') allM=allM.filter(m=>m.crNum===cf);
   if(sf!=='all'){
     if(sf==='null') allM=allM.filter(m=>_nbScore(m,accState.naac_bench[m.num])===null);
     else allM=allM.filter(m=>_nbScore(m,accState.naac_bench[m.num])===parseInt(sf));
   }
-  tbl.innerHTML=allM.map(m=>{
+  if(cpf==='entered') allM=allM.filter(m=>(accState.naac_bench[m.num]||'')!=='');
+  if(cpf==='pending')  allM=allM.filter(m=>(accState.naac_bench[m.num]||'')==='');
+  const statsBar=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:12px 0">
+    <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
+      <div style="font-size:18px;font-weight:800;color:#2e7d32">${entM}</div>
+      <div style="font-size:10px;color:#555">✅ Entered</div></div>
+    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
+      <div style="font-size:18px;font-weight:800;color:#f57f17">${pendM}</div>
+      <div style="font-size:10px;color:#555">⏳ Pending</div></div>
+    <div style="background:#e3f2fd;border:1px solid #90caf9;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
+      <div style="font-size:18px;font-weight:800;color:#1565c0">${compPct}%</div>
+      <div style="font-size:10px;color:#555">Completion</div></div>
+    <div style="background:#f3f4f6;border:1px solid #ddd;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
+      <div style="font-size:18px;font-weight:800;color:#444">${allM.length}</div>
+      <div style="font-size:10px;color:#555">Showing</div></div>
+  </div>`;
+  const rows=allM.map(m=>{
     const raw=accState.naac_bench[m.num]||'';
+    const isEntered=(raw!=='');
     const s=_nbScore(m,raw);
     const sc=_nbScoreColor(s); const sb=_nbScoreBg(s);
     const gap=(!m.ql&&raw)?_nbGapToNext(m,raw):null;
     const gapHtml=gap?`<div style="font-size:10px;color:#e65100;margin-top:2px">+${gap.gap} ${gap.unit} to reach Score ${_nbScore(m,raw)+1}</div>`:'';
+    const compBadge=isEntered
+      ? `<span style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap">✅ Entered</span>`
+      : `<span style="background:#fff8e1;color:#f57f17;border:1px solid #ffe082;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap">⏳ Pending</span>`;
     const inputHtml=m.ql
       ? `<select class="afi-sel" style="width:80px;font-size:12px" onchange="accState.naac_bench['${m.num}']=this.value;nbRefreshRow(this,'${m.num}')">
           <option value="">—</option>
@@ -5450,12 +5488,13 @@ function nbBuildMetricView(){
       : `<input type="text" class="afi-inp" value="${raw}" placeholder="Enter value"
            style="width:110px;font-size:12px"
            onchange="accState.naac_bench['${m.num}']=this.value;nbRefreshRow(this,'${m.num}');nbBuildCriterionView()">`;
-    return `<div id="nb-row-${m.num.replace('.','_')}" style="background:#fff;border:1px solid #e0e8f0;border-radius:8px;margin-bottom:8px;padding:14px 16px">
+    return `<div id="nb-row-${m.num.replace('.','_')}" style="background:#fff;border:1px solid ${isEntered?'#c8e6c9':'#e0e8f0'};border-left:4px solid ${isEntered?'#2e7d32':'#ccc'};border-radius:8px;margin-bottom:8px;padding:14px 16px">
       <div style="display:grid;grid-template-columns:auto 1fr auto auto auto;gap:12px;align-items:start">
         <div>
           <span style="background:${m.crColor};color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px">${m.crNum}</span>
           <span style="display:block;font-size:13px;font-weight:700;color:#1a3c5e;margin-top:4px">${m.num}</span>
           <span style="font-size:10px;color:#888">${m.unit}</span>
+          <div style="margin-top:4px">${compBadge}</div>
         </div>
         <div>
           <div style="font-size:13px;color:#333;font-weight:500">${m.desc}</div>
@@ -5481,8 +5520,8 @@ function nbBuildMetricView(){
       </div>
     </div>`;
   }).join('')||'<div style="padding:24px;text-align:center;color:#aaa">No metrics match current filters.</div>';
-}
-function nbRefreshRow(el,num){
+  tbl.innerHTML=statsBar+rows;
+}function nbRefreshRow(el,num){
   const raw=accState.naac_bench[num]||'';
   const allM=[];
   NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>allM.push(m)));
@@ -5528,6 +5567,7 @@ function nbBuildDeptView(){
           <strong style="font-size:12px;color:#1a3c5e">${m.num}</strong>
         </td>
         <td style="padding:5px 10px;font-size:11px;color:#444;max-width:200px">${m.desc.substring(0,60)}…</td>
+        <td style="padding:5px 10px;text-align:center">${raw!==''?'<span style="background:#e8f5e9;color:#2e7d32;font-size:10px;padding:2px 6px;border-radius:8px">✅</span>':'<span style="background:#fff8e1;color:#f57f17;font-size:10px;padding:2px 6px;border-radius:8px">⏳</span>'}</td>
         <td style="padding:5px 10px;font-size:11px;color:#888;text-align:center">${m.weight}</td>
         <td style="padding:5px 10px;text-align:center">
           <span style="background:${sb};color:${sc};padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700">${s!==null?s:'—'}</span>
@@ -5558,6 +5598,7 @@ function nbBuildDeptView(){
           <thead><tr style="background:#f8fafc">
             <th style="padding:6px 10px;font-size:10px;color:#888;text-align:left">Metric</th>
             <th style="padding:6px 10px;font-size:10px;color:#888;text-align:left">Description</th>
+            <th style="padding:6px 10px;font-size:10px;color:#888;text-align:center">Status</th>
             <th style="padding:6px 10px;font-size:10px;color:#888;text-align:center">Wt</th>
             <th style="padding:6px 10px;font-size:10px;color:#888;text-align:center">Score</th>
             <th style="padding:6px 10px;font-size:10px;color:#888;text-align:center">Pts</th>
