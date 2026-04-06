@@ -240,6 +240,12 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .btn-bulk-cert{padding:7px 14px;background:#1a3570;color:#fff;border:none;border-radius:6px;
   font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
 .btn-bulk-cert:hover{background:#1e40af}
+/* ── Typed input overrides ── */
+.ci-date{width:130px;padding:3px 6px;font-size:12px;color-scheme:light}
+.ci-num{width:90px;text-align:right;padding:3px 6px;font-size:12px}
+input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer}
+/* ── Upload hint ── */
+.up-hint{font-size:11px;color:#94a3b8;align-self:center;white-space:nowrap}
 .fixed-tbl .fix-lbl{font-size:12px;color:#4a5568;font-weight:500;padding:7px 10px}
 .flds{display:flex;flex-direction:column;gap:14px}
 .fg label,.flbl{display:block;font-size:11.5px;font-weight:600;color:#4a5568;margin-bottom:4px}
@@ -2848,19 +2854,12 @@ const EV_RULES={
 const ALLOWED_ANY=['pdf','xlsx','xls','csv','docx','doc','jpg','jpeg','png'];
 const MAX_MB=10;
 function validateFiles(files,sec){
-  const t=(sec?sec.title:'').toLowerCase();
-  let rule=null;
-  for(const [k,r] of Object.entries(EV_RULES)){if(t.includes(k)){rule=r;break;}}
-  const exts=rule?rule.exts:ALLOWED_ANY;
   const errs=[];
   for(const f of files){
     const ext=f.name.split('.').pop().toLowerCase();
     const mb=f.size/1048576;
-    if(mb>MAX_MB)errs.push('"'+f.name+'" is '+mb.toFixed(1)+' MB — exceeds 10 MB limit');
-    else if(!exts.includes(ext)){
-      const note=rule?rule.note:'Accepted: '+ALLOWED_ANY.join(', ').toUpperCase();
-      errs.push('"'+f.name+'" (.'+ext.toUpperCase()+') not accepted here.\n'+note);
-    }
+    if(mb>MAX_MB)errs.push('"'+f.name+'" is '+mb.toFixed(1)+' MB — exceeds 10 MB limit. Please compress or split the file.');
+    else if(ext!=='pdf')errs.push('"'+f.name+'" is not a PDF. Only PDF files are accepted for upload.');
   }
   return errs;
 }
@@ -3009,12 +3008,12 @@ function _openFILCertWindow(row,certId,bulkMode){
     +"<div class=\"cert-sigs\">"
     +"<div class=\"cert-sig\"><div class=\"cert-sig-space\"></div>"
     +"<div class=\"cert-sig-line\"></div>"
-    +"<div class=\"cert-sig-name\">Dr. Santosh Kudtarkar</div>"
-    +"<div class=\"cert-sig-role\">Dean</div></div>"
+    +"<div class=\"cert-sig-name\">Program Coordinator</div>"
+    +"<div class=\"cert-sig-role\">FLAME Investment Lab</div></div>"
     +"<div class=\"cert-sig\"><div class=\"cert-sig-space\"></div>"
     +"<div class=\"cert-sig-line\"></div>"
-    +"<div class=\"cert-sig-name\">Dr. Virender Sharma</div>"
-    +"<div class=\"cert-sig-role\">Registrar</div></div>"
+    +"<div class=\"cert-sig-name\">Dean R&amp;D / Registrar</div>"
+    +"<div class=\"cert-sig-role\">FLAME University Pune</div></div>"
     +"</div>"
     +"<div class=\"cert-ref\">Ref. No.: "+certId+"</div>"
     +"</div>";
@@ -3178,21 +3177,32 @@ function _processImportedData(secId,sec,jsonData){
     Object.keys(r).forEach(function(h){var k=headerMap[h];if(k!==undefined)row[k]=String(r[h]||"");});
     return row;
   }).filter(function(r){return Object.values(r).some(function(v){return v!=="";});});
-  if(newRows.length===0){showMsg("f-msg","No matching columns found. Ensure file headers match section column names.","error");return;}
+  var matchedCols=Object.values(headerMap).length;
+  var unmatchedHdrs=importedHeaders.filter(function(h){return !headerMap[h];});
+  if(newRows.length===0){showMsg("f-msg","No matching columns found. File headers: ["+importedHeaders.join(", ")+"]. Expected: ["+sec.cols.join(", ")+"]","error");return;}
+  /* Build user-visible header mismatch report */
+  var unmatchedMsg='';
+  if(unmatchedHdrs.length){
+    unmatchedMsg='\n\n⚠️ Unrecognised column(s) in file (skipped):\n  '+unmatchedHdrs.join('\n  ')
+      +'\n\nExpected column names:\n  '+sec.cols.join('\n  ');
+    console.warn('Unmatched import headers:',unmatchedHdrs);
+  }
   var existing=S.rows[secId]||[];
   if(existing.length>0){
-    var choice=confirm("Import ready: "+newRows.length+" row(s) found.\n\nOK = APPEND to existing "+existing.length+" row(s)\nCancel = REPLACE all existing data");
+    var choice=confirm("Import ready: "+newRows.length+" row(s) found ("+matchedCols+"/"+sec.cols.length+" column(s) matched)."+unmatchedMsg+"\n\nOK = APPEND to existing "+existing.length+" row(s)\nCancel = REPLACE all existing data");
     S.rows[secId]=choice?[...existing,...newRows]:newRows;
   }else{
+    if(unmatchedMsg)alert("Import note:"+unmatchedMsg);
     S.rows[secId]=newRows;
   }
   renderSec(S.secIdx);
-  showMsg("f-msg","✅ Imported "+newRows.length+" row(s) successfully.","ok");
+  showMsg("f-msg","✅ Imported "+newRows.length+" row(s) successfully ("+matchedCols+" column(s) matched).","ok");
 }
 
 
 /* ═══════════════ AI VALIDATION AGENT ═══════════════ */
 const AI_AGENT_VERSION='v1.0';
+const GLOBAL_POC_EMAIL='iqac@flame.edu.in'; /* Fallback POC for depts without explicit poc field */
 
 /* Rules applied per column ------------------------------------------------ */
 const _FIL_RULES={
@@ -3218,85 +3228,150 @@ const _FIL_RULES={
   }
 };
 
-function runFILValidation(){
+/* ── Date input helpers ── */
+function _toDateInput(v){
+  if(!v)return '';
+  // DD/MM/YYYY -> YYYY-MM-DD (HTML date input format)
+  var m=v.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(m)return m[3]+'-'+m[2]+'-'+m[1];
+  // DD-MM-YYYY -> YYYY-MM-DD
+  var m2=v.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+  if(m2)return m2[3]+'-'+m2[2]+'-'+m2[1];
+  return v; // already YYYY-MM-DD or free text
+}
+function _fromDateInput(v){
+  if(!v)return '';
+  // YYYY-MM-DD -> DD/MM/YYYY
+  var m=v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(m)return m[3]+'/'+m[2]+'/'+m[1];
+  return v;
+}
+
+/* ── Column type detector ── */
+function _detectColType(colName){
+  var c=colName.toLowerCase();
+  if(/\bdate\b|dob|\bdt\b|\/date/.test(c)) return 'date';
+  if(/email|e-mail/.test(c)) return 'email';
+  if(/mobile|phone|contact\s*no|\btel\b/.test(c)) return 'phone';
+  if(/amount|\bfees?\b|salary|\bcost\b|\bprice\b|\binr\b|rupee|lakh|crore|paid|grant|\bfund\b/.test(c)) return 'currency';
+  if(/percent|\b%\b|attendance/.test(c)) return 'percent';
+  if(/\burl\b|\blink\b|http|website|drive\.google/.test(c)) return 'url';
+  if(/(\bno\.?\s*$|\bnum(ber)?\b|\bcount\b|\brank\b|\broll\b|\bmarks\b|\bscore\b|\bhours\b|\bduration\b)/.test(c)&&!/name|phone/.test(c)) return 'number';
+  if(/\byear\b|\bbatch\b/.test(c)) return 'year';
+  return 'text';
+}
+
+/* ── Universal AI Table Validation ── */
+function runTableValidation(secId){
   saveCurrent();
-  const sec=S.dept.sections[S.secIdx];
-  if(!sec||!sec.certSection){
-    alert('AI Validation is only available for FLAME Investment Lab registration sections.');
+  if(!S.dept)return;
+  var sec=S.dept.sections.find(function(s){return s.id===secId;});
+  if(!sec||sec.mode!=='table'){
+    _showAgentPanel([],[],'AI Validation is only available for table-mode sections.',secId);
     return;
   }
-  const rows=S.rows[sec.id]||[];
+  var rows=S.rows[secId]||[];
   if(rows.length===0){
-    _showAgentPanel([],[],'No participant records found. Please add entries first.');
+    _showAgentPanel([],[],'No data entries found. Please add rows first.',secId);
     return;
   }
 
-  const errors=[];
-  const warnings=[];
-  const emailsSeen={};
-  const namesSeen={};
-
-  /* Cross-row: detect most common program name for consistency check */
-  const progCount={};
-  rows.forEach(function(r){ const p=(r[san('Name of the Program')]||'').trim().toLowerCase(); if(p)progCount[p]=(progCount[p]||0)+1; });
-  const majorProg=Object.keys(progCount).sort(function(a,b){return progCount[b]-progCount[a];})[0]||'';
+  var errors=[],warnings=[],seen={};
 
   rows.forEach(function(row,ri){
-    const rowNum=ri+1;
+    var rowNum=ri+1;
+    sec.cols.forEach(function(col){
+      var k=san(col);
+      // Skip read-only cert columns
+      if(col==='Certificate ID'||col==='Sr. No.'||col==='S. No.')return;
+      var val=(row[k]||'').trim();
+      var type=_detectColType(col);
+      var cLow=col.toLowerCase();
 
-    /* ── Per-field validation ── */
-    Object.keys(_FIL_RULES).forEach(function(k){
-      const rule=_FIL_RULES[k];
-      const rawVal=row[k]||'';
-      if(rule.required&&!rawVal.trim()){
-        errors.push({row:rowNum,field:rule.label,msg:rule.label+' is required'});
+      // ── Required field check ──
+      // Required: columns that mention "name" (not program/scheme) OR email
+      var isRequired=(cLow.includes('name')&&!cLow.includes('program')&&!cLow.includes('scheme')&&!cLow.includes('awarding')&&!cLow.includes('organisation'))
+        ||cLow.includes('email');
+      if(isRequired&&!val){
+        errors.push({row:rowNum,field:col,msg:col+' is required and cannot be empty'});
         return;
       }
-      if(rawVal.trim()){
-        const msg=rule.validate(rawVal);
-        if(msg)errors.push({row:rowNum,field:rule.label,msg:msg});
+      if(!val)return; // skip empty optional fields
+
+      // ── Type-based validation ──
+      if(type==='email'){
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val))
+          errors.push({row:rowNum,field:col,msg:'Invalid email address: "'+val+'"'});
+      } else if(type==='phone'){
+        var digits=val.replace(/[\s\-\+]/g,'');
+        if(!/^\d{10}$/.test(digits)&&!/^\d{12}$/.test(digits))
+          errors.push({row:rowNum,field:col,msg:'Phone/mobile must be 10 digits. Got: "'+val+'"'});
+      } else if(type==='date'){
+        var dmyOk=/^\d{2}\/\d{2}\/\d{4}$/.test(val);
+        var isoOk=/^\d{4}-\d{2}-\d{2}$/.test(val);
+        var ddmOk=/^\d{2}-\d{2}-\d{4}$/.test(val);
+        if(!dmyOk&&!isoOk&&!ddmOk)
+          errors.push({row:rowNum,field:col,msg:'Date must be DD/MM/YYYY. Got: "'+val+'"'});
+        else{
+          // Range sanity check
+          var parts=dmyOk?val.split('/'):isoOk?[val.slice(0,4),val.slice(5,7),val.slice(8,10)]:val.split('-');
+          var yr=parseInt(isoOk?parts[0]:parts[2]);
+          if(yr<1990||yr>2050)
+            warnings.push({row:rowNum,field:col,msg:'Year '+yr+' seems unusual — please verify'});
+        }
+      } else if(type==='currency'||type==='number'||type==='year'){
+        var n=parseFloat(val);
+        if(isNaN(n)||n<0)
+          errors.push({row:rowNum,field:col,msg:col+' must be a valid positive number. Got: "'+val+'"'});
+        if(type==='year'&&(n<1900||n>2050))
+          warnings.push({row:rowNum,field:col,msg:'Year '+val+' is out of expected range (1900-2050)'});
+      } else if(type==='percent'){
+        var pn=parseFloat(val);
+        if(isNaN(pn)||pn<0)
+          errors.push({row:rowNum,field:col,msg:col+' must be a valid number. Got: "'+val+'"'});
+        else if(pn>100)
+          warnings.push({row:rowNum,field:col,msg:col+' = '+pn+'% — exceeds 100%. Please verify'});
+      } else if(type==='url'){
+        if(!/^https?:\/\/|^www\.|^drive\.google|^docs\.google/i.test(val))
+          warnings.push({row:rowNum,field:col,msg:'Link may be invalid — should start with http(s):// or www. Got: "'+val.substring(0,60)+'"'});
       }
     });
 
-    /* ── Duplicate email check ── */
-    const email=(row[san('Email ID')]||'').trim().toLowerCase();
-    if(email){
-      if(emailsSeen[email]!==undefined){
-        errors.push({row:rowNum,field:'Email ID',msg:'Duplicate email — same as Row '+emailsSeen[email]});
-      }else{ emailsSeen[email]=rowNum; }
-    }
-
-    /* ── Duplicate name check ── */
-    const nameKey=(row[san('Name of Participant')]||'').trim().toLowerCase().replace(/\s+/g,' ');
-    if(nameKey){
-      if(namesSeen[nameKey]!==undefined){
-        warnings.push({row:rowNum,field:'Name of Participant',msg:'Possible duplicate name — same as Row '+namesSeen[nameKey]});
-      }else{ namesSeen[nameKey]=rowNum; }
-    }
-
-    /* ── Program name consistency warning ── */
-    const prog=(row[san('Name of the Program')]||'').trim().toLowerCase();
-    if(prog&&majorProg&&prog!==majorProg){
-      warnings.push({row:rowNum,field:'Name of the Program',msg:'Program name differs from majority: expected "'+majorProg.replace(/(^|\s)\S/g,function(c){return c.toUpperCase();})+'"'});
-    }
-
-    /* ── Certificate Status stuck as Generated but no email ── */
-    if((row[san('Certificate Status')]||'')==='Generated'&&!(row[san('Email ID')]||'').trim()){
-      warnings.push({row:rowNum,field:'Certificate Status',msg:'Certificate marked Generated but Email ID is missing — cannot deliver'});
+    // ── Duplicate check on first content column ──
+    var fc=sec.cols.find(function(c){return c!=='Sr. No.'&&c!=='S. No.'&&c!=='Certificate ID';});
+    if(fc){
+      var fk=san(fc);
+      var fv=(row[fk]||'').trim().toLowerCase();
+      if(fv){
+        var dk=fk+':'+fv;
+        if(seen[dk]!==undefined)
+          warnings.push({row:rowNum,field:fc,msg:'Possible duplicate — same value as Row '+seen[dk]});
+        else seen[dk]=rowNum;
+      }
     }
   });
 
-  _showAgentPanel(errors,warnings,'');
+  _showAgentPanel(errors,warnings,'',secId);
 }
 
-function _showAgentPanel(errors,warnings,emptyMsg){
+/* ── FIL validation: delegates to universal ── */
+function runFILValidation(){
+  var sec=S.dept?S.dept.sections[S.secIdx]:null;
+  if(sec)runTableValidation(sec.id);
+}
+
+
+function _showAgentPanel(errors,warnings,emptyMsg,secId){
   /* Remove any existing panel */
   const old=document.getElementById('fil-agent-panel');
   if(old)old.remove();
 
   const dept=S.dept;
-  const pocEmail=dept.poc||'';
+  const pocEmail=dept?(dept.poc||GLOBAL_POC_EMAIL):GLOBAL_POC_EMAIL;
   const hasIssues=(errors.length+warnings.length)>0;
+  const sec=secId&&dept?dept.sections.find(function(s){return s.id===secId;}):null;
+  const secTitle=sec?sec.title:'';
+  const deptName=dept?dept.name:'FLAME MIS';
 
   let html='<div id="fil-agent-panel" style="'
     +'margin:16px 0;border-radius:10px;overflow:hidden;'
@@ -3309,7 +3384,8 @@ function _showAgentPanel(errors,warnings,emptyMsg){
   html+='<span style="font-size:22px;">'+headerIcon+'</span>';
   html+='<div style="flex:1;">';
   html+='<div style="font-weight:700;font-size:15px;">AI Validation Agent '+AI_AGENT_VERSION+'</div>';
-  html+='<div style="font-size:12px;opacity:.85;">FLAME Investment Lab — MDP Registration | '
+  html+='<div style="font-size:11px;opacity:.7;margin-top:1px;">'+esc(deptName)+(secTitle?' — '+esc(secTitle):'')+'</div>';
+  html+='<div style="font-size:12px;opacity:.85;">'
        +(errors.length?errors.length+' error(s)':'')
        +(errors.length&&warnings.length?' · ':'')
        +(warnings.length?warnings.length+' warning(s)':'')
@@ -3323,8 +3399,9 @@ function _showAgentPanel(errors,warnings,emptyMsg){
   if(emptyMsg){
     html+='<div style="background:#f8fafc;padding:20px;color:#64748b;text-align:center;">'+esc(emptyMsg)+'</div>';
   } else if(!hasIssues){
+    const _rowCount=secId&&S.rows&&S.rows[secId]?S.rows[secId].length:0;
     html+='<div style="background:#f0fdf4;padding:20px;color:#166534;font-weight:600;text-align:center;">'
-         +'✅ All '+Object.keys({}).length+' validation checks passed. Data looks clean!</div>';
+         +'\u2705 All '+_rowCount+' row(s) passed all validation checks. Data looks clean!</div>';
   } else {
     html+='<div style="background:#fff;padding:16px 20px;max-height:320px;overflow-y:auto;">';
 
@@ -3357,10 +3434,14 @@ function _showAgentPanel(errors,warnings,emptyMsg){
 
     /* Email Alert button */
     if(pocEmail){
-      const subject=encodeURIComponent('[FIL MDP] Data Validation Alert — '+errors.length+' Error(s), '+warnings.length+' Warning(s)');
+      const _mailTag='['+deptName+(secTitle?' / '+secTitle:'')+']';
+      const subject=encodeURIComponent(_mailTag+' Data Validation Alert — '+errors.length+' Error(s), '+warnings.length+' Warning(s)');
       const body=encodeURIComponent(
         'Dear POC,\n\n'
-        +'The AI Validation Agent has flagged the following issues in the FLAME Investment Lab MDP Participant Registration:\n\n'
+        +'The AI Validation Agent has flagged the following issues in:\n'
+        +'Department: '+deptName+'\n'
+        +(secTitle?'Section: '+secTitle+'\n':'')
+        +'\n'
         +(errors.length?'ERRORS:\n'+errors.map(function(e){return '  • Row '+e.row+' ['+e.field+']: '+e.msg;}).join('\n')+'\n\n':'')
         +(warnings.length?'WARNINGS:\n'+warnings.map(function(w){return '  • Row '+w.row+' ['+w.field+']: '+w.msg;}).join('\n')+'\n\n':'')
         +'Please log in to the FLAME Unified MIS and correct these entries at your earliest.\n\n'
@@ -3580,7 +3661,20 @@ function renderSec(idx){
           const cv=row[k]||'';
           html+='<td><span class="cert-id-chip">'+(cv?esc(cv):'—')+'</span></td>';
         }else{
-          html+='<td><input type="text" class="ci" data-key="'+k+'" value="'+esc(row[k]||'')+'"></td>';
+          const _ct=_detectColType(c);
+          if(_ct==='date'){
+            html+='<td><input type="date" class="ci ci-date" data-key="'+k+'" value="'+esc(_toDateInput(row[k]||''))+'"></td>';
+          }else if(_ct==='email'){
+            html+='<td><input type="email" class="ci" data-key="'+k+'" value="'+esc(row[k]||'')+'"></td>';
+          }else if(_ct==='url'){
+            html+='<td><input type="text" class="ci" placeholder="https://..." data-key="'+k+'" value="'+esc(row[k]||'')+'"></td>';
+          }else if(_ct==='currency'||_ct==='number'||_ct==='year'){
+            html+='<td><input type="number" class="ci ci-num" data-key="'+k+'" min="0" step="any" value="'+esc(row[k]||'')+'"></td>';
+          }else if(_ct==='percent'){
+            html+='<td><input type="number" class="ci ci-num" data-key="'+k+'" min="0" max="100" step="0.01" value="'+esc(row[k]||'')+'"></td>';
+          }else{
+            html+='<td><input type="text" class="ci" data-key="'+k+'" value="'+esc(row[k]||'')+'"></td>';
+          }
         }
       });
       if(isCert)html+='<td><button type="button" class="btn-gen-cert" onclick="generateFILCert(\''+sec.id+'\','+ri+')" title="Generate &amp; View Certificate">🎓</button></td>';
@@ -3592,8 +3686,8 @@ function renderSec(idx){
     html+='<button type="button" class="btn-import" onclick="importTableData(\''+sec.id+'\')" title="Import data from Excel / CSV">📥 Import Excel/CSV</button>';
     if(isCert){
       html+='<button type="button" class="btn-bulk-cert" onclick="bulkGenerateFILCerts(\''+sec.id+'\')" title="Generate certificates for all eligible participants">🎓 Bulk Generate Certs</button>';
-      html+='<button type="button" class="btn-ai-validate" onclick="runFILValidation()" title="Run AI Data Verification &amp; Validation">🤖 AI Validate</button>';
     }
+    html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
     html+='</div>';
 
   }else if(sec.mode==='fixed'){
@@ -3635,9 +3729,10 @@ function renderSec(idx){
     html+='<div class="up-zone">';
     html+='<div class="up-lbl">📎 Upload Evidence Files</div>';
     html+='<div class="up-row">';
-    html+='<input type="file" id="up-'+sec.id+'" class="up-inp" multiple accept=".pdf,.xlsx,.xls,.csv,.docx,.doc,.jpg,.jpeg,.png">';
-    html+='<label for="up-'+sec.id+'" class="up-btn">Choose Files</label>';
+    html+='<input type="file" id="up-'+sec.id+'" class="up-inp" multiple accept=".pdf">';
+    html+='<label for="up-'+sec.id+'" class="up-btn">Choose PDF Files</label>';
     html+='<button type="button" class="btn-upload" onclick="uploadFiles(\''+sec.id+'\')">Upload ↑</button>';
+    html+='<span class="up-hint">📄 PDF only  &bull;  Max 10 MB per file</span>';
     html+='</div>';
     html+='<div id="up-st-'+sec.id+'" class="up-status">';
     if(ex.length){
@@ -3764,7 +3859,10 @@ function saveCurrent(){
     const rows=[];
     tbody.querySelectorAll('tr').forEach(function(tr){
       const row={};
-      tr.querySelectorAll('input.ci').forEach(function(inp){row[inp.dataset.key]=inp.value;});
+      tr.querySelectorAll('input.ci').forEach(function(inp){
+        /* Convert date inputs from YYYY-MM-DD (HTML) back to DD/MM/YYYY for storage */
+        row[inp.dataset.key]=(inp.type==='date'&&inp.value)?_fromDateInput(inp.value):inp.value;
+      });
       tr.querySelectorAll('select.ci').forEach(function(sel){row[sel.dataset.key]=sel.value;});
       if(Object.keys(row).length)rows.push(row);
     });
