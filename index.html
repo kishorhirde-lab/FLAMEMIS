@@ -230,6 +230,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .btn-gen-cert{background:#0d2452;color:#fff;border:none;border-radius:5px;
   padding:4px 8px;font-size:14px;cursor:pointer;line-height:1;transition:transform .1s}
 .btn-gen-cert:hover{background:#1a3a6b;transform:scale(1.12)}
+.btn-ai-validate{padding:7px 16px;background:#4f1d91;color:#fff;border:none;border-radius:6px;
+  font-size:12.5px;font-weight:700;cursor:pointer;letter-spacing:.02em;
+  box-shadow:0 2px 8px rgba(79,29,145,.3);transition:background .15s}
+.btn-ai-validate:hover{background:#6d28d9}
 .fixed-tbl .fix-lbl{font-size:12px;color:#4a5568;font-weight:500;padding:7px 10px}
 .flds{display:flex;flex-direction:column;gap:14px}
 .fg label,.flbl{display:block;font-size:11.5px;font-weight:600;color:#4a5568;margin-bottom:4px}
@@ -2762,8 +2766,9 @@ const DEPTS = [
 
 ]},
 
-,
-{id:'fil',name:'FLAME Investment Lab (MDP Program)',pin:'FIL@FLAME2025',type:'annual',sections:[
+{id:'fil',name:'FLAME Investment Lab',pin:'FIL@FLAME2025',type:'annual',
+ poc:'fil.mdp@flame.edu.in',
+ sections:[
   {id:'s1',sr:1,title:'Participant Registration — MDP Programs',mode:'table',fileUpload:false,certSection:true,
    cols:['Name of Participant','Name of Company','Designation','City','State',
          'Name of the Program','Amount Paid','Email ID','Mobile Number',
@@ -3040,6 +3045,205 @@ body{background:#f0f4f8;display:flex;flex-direction:column;align-items:center;mi
   else{alert('Pop-up blocked. Please allow pop-ups for this page and try again.');}
 }
 
+/* ═══════════════ AI VALIDATION AGENT ═══════════════ */
+const AI_AGENT_VERSION='v1.0';
+
+/* Rules applied per column ------------------------------------------------ */
+const _FIL_RULES={
+  'Name_of_Participant': {
+    label:'Name of Participant', required:true,
+    validate(v){ return v.trim().length>=2 ? null : 'Name must be at least 2 characters'; }
+  },
+  'Email_ID': {
+    label:'Email ID', required:true,
+    validate(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? null : 'Invalid email format'; }
+  },
+  'Mobile_Number': {
+    label:'Mobile Number', required:false,
+    validate(v){ if(!v.trim())return null; return /^[6-9]\d{9}$/.test(v.replace(/\s|-/g,'')) ? null : 'Mobile must be 10 digits starting with 6-9'; }
+  },
+  'Amount_Paid': {
+    label:'Amount Paid', required:false,
+    validate(v){ if(!v.trim())return null; return (!isNaN(parseFloat(v))&&parseFloat(v)>=0) ? null : 'Amount must be a valid positive number'; }
+  },
+  'Name_of_the_Program': {
+    label:'Name of the Program', required:false,
+    validate(v){ return null; /* cross-row consistency checked separately */ }
+  }
+};
+
+function runFILValidation(){
+  saveCurrent();
+  const sec=S.dept.sections[S.secIdx];
+  if(!sec||!sec.certSection){
+    alert('AI Validation is only available for FLAME Investment Lab registration sections.');
+    return;
+  }
+  const rows=S.rows[sec.id]||[];
+  if(rows.length===0){
+    _showAgentPanel([],[],'No participant records found. Please add entries first.');
+    return;
+  }
+
+  const errors=[];
+  const warnings=[];
+  const emailsSeen={};
+  const namesSeen={};
+
+  /* Cross-row: detect most common program name for consistency check */
+  const progCount={};
+  rows.forEach(function(r){ const p=(r[san('Name of the Program')]||'').trim().toLowerCase(); if(p)progCount[p]=(progCount[p]||0)+1; });
+  const majorProg=Object.keys(progCount).sort(function(a,b){return progCount[b]-progCount[a];})[0]||'';
+
+  rows.forEach(function(row,ri){
+    const rowNum=ri+1;
+
+    /* ── Per-field validation ── */
+    Object.keys(_FIL_RULES).forEach(function(k){
+      const rule=_FIL_RULES[k];
+      const rawVal=row[k]||'';
+      if(rule.required&&!rawVal.trim()){
+        errors.push({row:rowNum,field:rule.label,msg:rule.label+' is required'});
+        return;
+      }
+      if(rawVal.trim()){
+        const msg=rule.validate(rawVal);
+        if(msg)errors.push({row:rowNum,field:rule.label,msg:msg});
+      }
+    });
+
+    /* ── Duplicate email check ── */
+    const email=(row[san('Email ID')]||'').trim().toLowerCase();
+    if(email){
+      if(emailsSeen[email]!==undefined){
+        errors.push({row:rowNum,field:'Email ID',msg:'Duplicate email — same as Row '+emailsSeen[email]});
+      }else{ emailsSeen[email]=rowNum; }
+    }
+
+    /* ── Duplicate name check ── */
+    const nameKey=(row[san('Name of Participant')]||'').trim().toLowerCase().replace(/\s+/g,' ');
+    if(nameKey){
+      if(namesSeen[nameKey]!==undefined){
+        warnings.push({row:rowNum,field:'Name of Participant',msg:'Possible duplicate name — same as Row '+namesSeen[nameKey]});
+      }else{ namesSeen[nameKey]=rowNum; }
+    }
+
+    /* ── Program name consistency warning ── */
+    const prog=(row[san('Name of the Program')]||'').trim().toLowerCase();
+    if(prog&&majorProg&&prog!==majorProg){
+      warnings.push({row:rowNum,field:'Name of the Program',msg:'Program name differs from majority: expected "'+majorProg.replace(/(^|\s)\S/g,function(c){return c.toUpperCase();})+'"'});
+    }
+
+    /* ── Certificate Status stuck as Generated but no email ── */
+    if((row[san('Certificate Status')]||'')==='Generated'&&!(row[san('Email ID')]||'').trim()){
+      warnings.push({row:rowNum,field:'Certificate Status',msg:'Certificate marked Generated but Email ID is missing — cannot deliver'});
+    }
+  });
+
+  _showAgentPanel(errors,warnings,'');
+}
+
+function _showAgentPanel(errors,warnings,emptyMsg){
+  /* Remove any existing panel */
+  const old=document.getElementById('fil-agent-panel');
+  if(old)old.remove();
+
+  const dept=S.dept;
+  const pocEmail=dept.poc||'';
+  const hasIssues=(errors.length+warnings.length)>0;
+
+  let html='<div id="fil-agent-panel" style="'
+    +'margin:16px 0;border-radius:10px;overflow:hidden;'
+    +'box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:system-ui,sans-serif;">';
+
+  /* Header */
+  const headerBg=hasIssues?(errors.length?'#7f1d1d':'#78350f'):'#14532d';
+  const headerIcon=hasIssues?(errors.length?'🚨':'⚠️'):'✅';
+  html+='<div style="background:'+headerBg+';color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;">';
+  html+='<span style="font-size:22px;">'+headerIcon+'</span>';
+  html+='<div style="flex:1;">';
+  html+='<div style="font-weight:700;font-size:15px;">AI Validation Agent '+AI_AGENT_VERSION+'</div>';
+  html+='<div style="font-size:12px;opacity:.85;">FLAME Investment Lab — MDP Registration | '
+       +(errors.length?errors.length+' error(s)':'')
+       +(errors.length&&warnings.length?' · ':'')
+       +(warnings.length?warnings.length+' warning(s)':'')
+       +(!hasIssues?'All checks passed':'')+'</div>';
+  html+='</div>';
+  html+='<button onclick="document.getElementById(\'fil-agent-panel\').remove()" '
+       +'style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;'
+       +'padding:4px 10px;cursor:pointer;font-size:13px;">✕ Close</button>';
+  html+='</div>';
+
+  if(emptyMsg){
+    html+='<div style="background:#f8fafc;padding:20px;color:#64748b;text-align:center;">'+esc(emptyMsg)+'</div>';
+  } else if(!hasIssues){
+    html+='<div style="background:#f0fdf4;padding:20px;color:#166534;font-weight:600;text-align:center;">'
+         +'✅ All '+Object.keys({}).length+' validation checks passed. Data looks clean!</div>';
+  } else {
+    html+='<div style="background:#fff;padding:16px 20px;max-height:320px;overflow-y:auto;">';
+
+    if(errors.length){
+      html+='<div style="font-weight:700;color:#991b1b;margin-bottom:8px;font-size:13px;">🔴 ERRORS — Must be fixed before submission</div>';
+      errors.forEach(function(e){
+        html+='<div style="display:flex;gap:10px;padding:8px 12px;margin-bottom:6px;'
+             +'background:#fef2f2;border-left:4px solid #ef4444;border-radius:0 6px 6px 0;">';
+        html+='<span style="background:#ef4444;color:#fff;font-size:11px;font-weight:700;'
+             +'padding:2px 7px;border-radius:10px;white-space:nowrap;">Row '+e.row+'</span>';
+        html+='<div><span style="font-weight:600;color:#991b1b;font-size:12px;">'+esc(e.field)+'</span>'
+             +' <span style="color:#64748b;font-size:12px;">— '+esc(e.msg)+'</span></div>';
+        html+='</div>';
+      });
+    }
+
+    if(warnings.length){
+      html+='<div style="font-weight:700;color:#92400e;margin:12px 0 8px;font-size:13px;">🟡 WARNINGS — Review recommended</div>';
+      warnings.forEach(function(w){
+        html+='<div style="display:flex;gap:10px;padding:8px 12px;margin-bottom:6px;'
+             +'background:#fffbeb;border-left:4px solid #f59e0b;border-radius:0 6px 6px 0;">';
+        html+='<span style="background:#f59e0b;color:#fff;font-size:11px;font-weight:700;'
+             +'padding:2px 7px;border-radius:10px;white-space:nowrap;">Row '+w.row+'</span>';
+        html+='<div><span style="font-weight:600;color:#92400e;font-size:12px;">'+esc(w.field)+'</span>'
+             +' <span style="color:#64748b;font-size:12px;">— '+esc(w.msg)+'</span></div>';
+        html+='</div>';
+      });
+    }
+    html+='</div>';
+
+    /* Email Alert button */
+    if(pocEmail){
+      const subject=encodeURIComponent('[FIL MDP] Data Validation Alert — '+errors.length+' Error(s), '+warnings.length+' Warning(s)');
+      const body=encodeURIComponent(
+        'Dear POC,\n\n'
+        +'The AI Validation Agent has flagged the following issues in the FLAME Investment Lab MDP Participant Registration:\n\n'
+        +(errors.length?'ERRORS:\n'+errors.map(function(e){return '  • Row '+e.row+' ['+e.field+']: '+e.msg;}).join('\n')+'\n\n':'')
+        +(warnings.length?'WARNINGS:\n'+warnings.map(function(w){return '  • Row '+w.row+' ['+w.field+']: '+w.msg;}).join('\n')+'\n\n':'')
+        +'Please log in to the FLAME Unified MIS and correct these entries at your earliest.\n\n'
+        +'This is an automated alert from the FLAME MIS AI Validation Agent '+AI_AGENT_VERSION+'.\n'
+        +'FLAME University Pune.'
+      );
+      html+='<div style="padding:12px 20px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;gap:10px;align-items:center;">';
+      html+='<a href="mailto:'+esc(pocEmail)+'?subject='+subject+'&body='+body+'" '
+           +'style="display:inline-flex;align-items:center;gap:8px;background:#1a3a6b;color:#fff;'
+           +'text-decoration:none;padding:9px 18px;border-radius:6px;font-weight:600;font-size:13px;">'
+           +'📧 Send Warning Email to POC</a>';
+      html+='<span style="font-size:12px;color:#94a3b8;">→ '+esc(pocEmail)+'</span>';
+      html+='</div>';
+    }
+  }
+  html+='</div>';
+
+  /* Insert before the table */
+  const card=document.querySelector('#f-main .sc-card');
+  if(card)card.insertAdjacentHTML('afterbegin',html);
+  else document.getElementById('f-main').insertAdjacentHTML('afterbegin',html);
+
+  /* Scroll panel into view */
+  setTimeout(function(){
+    const panel=document.getElementById('fil-agent-panel');
+    if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});
+  },80);
+}
+
 function toggleSOP(hdr){
   const body=hdr.nextElementSibling;
   const icon=hdr.querySelector('.sop-toggle-icon');
@@ -3237,7 +3441,10 @@ function renderSec(idx){
       html+='<td><button type="button" class="del-r" onclick="delRow(\''+sec.id+'\','+ri+')">✕</button></td></tr>';
     });
     html+='</tbody></table></div>';
+    html+='<div style="display:flex;gap:10px;align-items:center;margin-top:10px;">';
     html+='<button type="button" class="btn-add-row" onclick="addRow(\''+sec.id+'\')">+ Add Row</button>';
+    if(isCert)html+='<button type="button" class="btn-ai-validate" onclick="runFILValidation()" title="Run AI Data Verification &amp; Validation">🤖 Run AI Validation</button>';
+    html+='</div>';
 
   }else if(sec.mode==='fixed'){
     html+='<div class="tbl-wrap"><table class="dtbl fixed-tbl"><thead><tr><th>Item</th><th>'+esc(sec.valueLabel||'Value')+'</th></tr></thead><tbody>';
