@@ -794,6 +794,396 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .sop-scope{margin:6px 0 0 30px;padding:9px 13px;background:#fffbf0;
   border-left:3px solid #F58220;border-radius:0 7px 7px 0;
   font-size:11.5px;color:#555;line-height:1.55}
+
+/* ──────────────────────────────────────────────────────────
+   DEPT TABLE — View Button, Type Badges, Empty State
+────────────────────────────────────────────────────────── */
+.btn-sm{
+  padding:5px 14px;background:#0C3F6A;color:#fff;border:none;
+  border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;
+  white-space:nowrap;transition:background .15s;font-family:inherit}
+.btn-sm:hover{background:#0a3460}
+.btn-sm:active{transform:scale(.97)}
+
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.b-monthly{background:#dbeafe;color:#1e40af}
+.b-annual{background:#fef3c7;color:#92400e}
+
+.no-d{text-align:center;color:#9ca3af;font-size:13px;
+  padding:40px 20px;font-style:italic}
+
+/* ──────────────────────────────────────────────────────────
+   DEPT SUBMISSION DETAIL MODAL
+────────────────────────────────────────────────────────── */
+#modal{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:9999;
+  display:flex;align-items:center;justify-content:center;padding:16px}
+#modal[hidden]{display:none!important}
+.mod-box{background:#fff;border-radius:14px;
+  width:min(900px,96vw);max-height:88vh;overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 24px 64px rgba(0,0,0,.28)}
+.mod-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:15px 20px;border-bottom:1px solid #e8edf5;flex-shrink:0;
+  background:linear-gradient(135deg,#f8faff,#f0f5fc)}
+.mod-hdr h3{margin:0;font-size:15px;font-weight:700;color:#1a2942}
+.mod-cl{border:none;background:none;font-size:20px;cursor:pointer;
+  color:#9aabb8;padding:2px 8px;border-radius:6px;line-height:1;transition:all .15s}
+.mod-cl:hover{background:#f0f4f8;color:#374151}
+#mod-body{overflow-y:auto;padding:20px;flex:1}
+
+.det-hdr{display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+  padding-bottom:14px;border-bottom:2px solid #f0f5fb;margin-bottom:16px}
+.det-hdr strong{font-size:15px;font-weight:700;color:#1a2942}
+.det-hdr span:not(.det-ts){font-size:12px;color:#64748b}
+.det-ts{margin-left:auto;font-size:11px;color:#9aabb8;font-style:italic;white-space:nowrap}
+
+.det-sec{margin-bottom:20px;background:#fff;border:1px solid #e8edf5;
+  border-radius:10px;overflow:hidden}
+.det-sec-ttl{font-size:11px;font-weight:800;color:#0C3F6A;
+  text-transform:uppercase;letter-spacing:.07em;
+  padding:10px 14px;background:#f0f6ff;border-bottom:1px solid #dce8f5}
+
+.det-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.det-tbl th{padding:7px 12px;background:#f8fafc;font-weight:700;
+  color:#64748b;font-size:10.5px;text-align:left;
+  border-bottom:1px solid #e8edf5;text-transform:uppercase;letter-spacing:.04em}
+.det-tbl td{padding:8px 12px;border-bottom:1px solid #f5f7fa;color:#334155}
+.det-tbl tr:last-child td{border-bottom:none}
+.det-tbl tbody tr:hover td{background:#f8fafc}
+
+.det-fields{display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:6px;padding:12px 14px}
+.df{font-size:12px;padding:6px 10px;background:#f8fafc;
+  border-radius:6px;display:flex;align-items:flex-start;gap:6px;
+  border:1px solid #f0f4f8}
+.df-l{font-weight:700;color:#475569;white-space:nowrap;
+  min-width:fit-content;flex-shrink:0}
+.det-files{margin:8px 14px 12px;padding:8px 12px;
+  background:#f0f6ff;border-radius:7px;font-size:12px;
+  border:1px solid #dce8f5}
+.det-files a{color:#0C3F6A;text-decoration:none;
+  margin-right:10px;font-weight:600}
+.det-files a:hover{text-decoration:underline}
+
+/* ──────────────────────────────────────────────────────────
+   ANALYTICS BAR CHARTS
+────────────────────────────────────────────────────────── */
+.an-bar-wrap{overflow-x:auto;padding:8px 0 4px;
+  border-bottom:2px solid #e8edf5;margin-bottom:4px}
+.an-bar{display:flex;align-items:flex-end;gap:8px;
+  min-height:150px;padding:12px 10px 0;min-width:max-content}
+.an-bar-item{display:flex;flex-direction:column;
+  align-items:center;gap:3px;min-width:52px;max-width:64px;flex-shrink:0}
+.an-bar-val{font-size:11.5px;font-weight:700;color:#334155;line-height:1.2}
+.an-bar-fill{
+  width:40px;border-radius:5px 5px 0 0;min-height:4px;
+  background:linear-gradient(to top,#0C3F6A 0%,#1a72c4 100%);
+  transition:height .4s ease;align-self:flex-end}
+.an-month-bar-fill{
+  width:40px;border-radius:5px 5px 0 0;min-height:4px;
+  background:linear-gradient(to top,#F58220 0%,#FDB515 100%);
+  transition:height .4s ease;align-self:flex-end}
+.an-bar-lbl{font-size:10px;color:#64748b;text-align:center;
+  max-width:58px;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;padding-top:3px;line-height:1.3}
+
+/* ──────────────────────────────────────────────────────────
+   DEPARTMENT FORM — field + grid (sc-form panels)
+────────────────────────────────────────────────────────── */
+.form-field{display:flex;flex-direction:column;gap:4px;margin-bottom:2px}
+.form-field label{font-size:11.5px;font-weight:600;color:#374151}
+.form-field input,
+.form-field select,
+.form-field textarea{
+  border:1.5px solid #e2e8f0;border-radius:7px;
+  padding:7px 10px;font-size:12.5px;color:#1a2942;
+  font-family:inherit;transition:border .15s;outline:none;
+  width:100%;box-sizing:border-box;background:#fff}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus{
+  border-color:#0C3F6A;box-shadow:0 0 0 2px rgba(12,63,106,.08)}
+.form-field textarea{resize:vertical;min-height:72px}
+
+.form-grid{display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+
+/* Section card used in dept form sections */
+.sec-card{background:#fff;border-radius:12px;
+  border:1px solid #e8edf5;margin-bottom:14px;overflow:hidden;
+  box-shadow:0 2px 8px rgba(12,63,106,.06)}
+.sec-hdr{padding:12px 18px;background:linear-gradient(135deg,#f0f6ff,#e8f0fa);
+  border-bottom:1px solid #dce8f5;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  user-select:none;transition:background .15s}
+.sec-hdr:hover{background:linear-gradient(135deg,#e6eef8,#d8e6f4)}
+.sec-hdr-title{font-size:13px;font-weight:700;color:#1a2942}
+.sec-hdr-badge{font-size:10px;color:#64748b;font-weight:500}
+.sec-body{padding:16px 18px}
+
+/* ═══════════════════════════════════════════════════════════════
+   FACULTY MASTER SHEET — complete CSS
+   ══════════════════════════════════════════════════════════════ */
+
+/* Toolbar row */
+.fac-toolbar{
+  display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+  padding:12px 18px;background:linear-gradient(135deg,#f0f6ff,#e8f0fa);
+  border-radius:10px;margin-bottom:14px;border:1px solid #dce8f5;
+}
+.fac-toolbar h3{margin:0;font-size:15px;font-weight:700;color:#0C3F6A;flex:none;}
+.fac-search{
+  flex:1;min-width:160px;max-width:300px;
+  border:1px solid #c5d8f0;border-radius:7px;
+  padding:6px 12px;font-size:13px;color:#1a2942;
+  outline:none;background:#fff;
+}
+.fac-search:focus{border-color:#0C3F6A;box-shadow:0 0 0 2px rgba(12,63,106,.12);}
+.fac-stats{display:flex;gap:6px;flex-wrap:wrap;}
+.fac-stat{
+  font-size:11.5px;font-weight:600;padding:4px 10px;
+  background:#e0ecfb;color:#0C3F6A;border-radius:20px;white-space:nowrap;
+}
+.btn-fac-add{
+  padding:7px 16px;background:#0C3F6A;color:#fff;border:none;
+  border-radius:7px;font-size:12.5px;font-weight:700;cursor:pointer;
+  white-space:nowrap;transition:background .2s;
+}
+.btn-fac-add:hover{background:#1a5a9e;}
+
+/* Duplicate warning */
+.fac-dup-warn{
+  display:none;padding:9px 14px;background:#fff3cd;color:#856404;
+  border:1px solid #ffc107;border-radius:8px;font-size:12px;
+  font-weight:600;margin-bottom:10px;
+}
+
+/* Empty state */
+.fac-empty{
+  text-align:center;padding:40px 20px;color:#64748b;font-size:14px;
+}
+.fac-empty-icon{font-size:48px;margin-bottom:12px;}
+.fac-empty p{margin:0;line-height:1.6;}
+
+/* Card grid */
+.fac-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));
+  gap:16px;
+}
+
+/* Individual faculty card */
+.fac-card{
+  border:1px solid #dce8f5;border-radius:12px;overflow:hidden;
+  background:#fff;box-shadow:0 2px 8px rgba(12,63,106,.07);
+  transition:box-shadow .2s;
+}
+.fac-card:hover{box-shadow:0 4px 18px rgba(12,63,106,.13);}
+
+/* Card header */
+.fac-card-hdr{
+  display:flex;align-items:center;gap:10px;padding:12px 16px;
+  background:linear-gradient(135deg,#f0f6ff,#e6eef8);cursor:pointer;
+  border-bottom:1px solid #dce8f5;user-select:none;
+}
+.fac-card-hdr:hover{background:linear-gradient(135deg,#e4f0fc,#d8e8f6);}
+
+/* Avatar circle */
+.fac-avatar{
+  width:40px;height:40px;border-radius:50%;background:#0C3F6A;
+  color:#fff;font-size:15px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+
+/* Name & designation */
+.fac-card-name{font-size:14px;font-weight:700;color:#0C3F6A;}
+.fac-card-desig{font-size:11.5px;color:#64748b;margin-top:2px;}
+
+/* Status badge */
+.fac-status-badge{
+  font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;
+  white-space:nowrap;flex-shrink:0;
+}
+.fac-status-badge.complete{background:#dcfce7;color:#166534;border:1px solid #b6f0c8;}
+.fac-status-badge.incomplete{background:#fef3c7;color:#92400e;border:1px solid #fde68a;}
+
+/* Delete button */
+.fac-card-del{
+  background:none;border:none;color:#dc2626;font-size:16px;
+  cursor:pointer;padding:4px 6px;border-radius:4px;flex-shrink:0;
+  line-height:1;transition:background .15s;
+}
+.fac-card-del:hover{background:#fee2e2;}
+
+/* Card body (collapsible) */
+.fac-card-body{padding:16px;display:none;}
+.fac-card-body.open{display:block;}
+
+/* Tab strip */
+.fac-tabs{
+  display:flex;flex-wrap:wrap;gap:4px;
+  border-bottom:2px solid #e8edf5;padding-bottom:0;margin-bottom:14px;
+}
+.fac-tab{
+  padding:7px 13px;font-size:12px;font-weight:600;color:#64748b;
+  cursor:pointer;border-radius:7px 7px 0 0;border:1px solid transparent;
+  border-bottom:none;transition:all .15s;margin-bottom:-2px;
+}
+.fac-tab:hover{background:#f0f6ff;color:#0C3F6A;}
+.fac-tab.active{
+  background:#fff;color:#0C3F6A;
+  border-color:#e8edf5 #e8edf5 #fff;
+  border-bottom:2px solid #fff;
+  font-weight:700;
+}
+
+/* Tab pane (hidden unless active) */
+.fac-tab-pane{display:none;}
+.fac-tab-pane.active{display:block;}
+
+/* Fields grid inside a tab */
+.fac-fields{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:12px;
+}
+
+/* Single field group */
+.fac-fg{display:flex;flex-direction:column;gap:3px;}
+.fac-lbl{font-size:11.5px;font-weight:700;color:#334155;}
+.req{color:#dc2626;margin-left:1px;}
+.fac-inp,
+.fac-sel{
+  border:1px solid #c5d8f0;border-radius:6px;
+  padding:6px 10px;font-size:12.5px;color:#1a2942;
+  outline:none;background:#fff;width:100%;box-sizing:border-box;
+}
+.fac-inp:focus,
+.fac-sel:focus{border-color:#0C3F6A;box-shadow:0 0 0 2px rgba(12,63,106,.12);}
+
+/* File upload group */
+.fac-upload-group{margin-bottom:14px;}
+.fac-file-req{
+  display:block;font-size:10.5px;color:#9ca3af;margin:2px 0 6px;
+}
+.fac-upload-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;}
+.fac-upload-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 14px;background:#e0ecfb;color:#0C3F6A;
+  border:1px solid #b8d4ef;border-radius:6px;
+  font-size:12px;font-weight:600;cursor:pointer;
+  transition:background .15s;
+}
+.fac-upload-btn:hover{background:#c9dff5;}
+.fac-upload-status{font-size:11.5px;color:#64748b;margin-top:5px;}
+.fac-file-link{color:#166534;font-weight:600;text-decoration:none;}
+.fac-file-link:hover{text-decoration:underline;}
+
+/* Compliance section */
+.fac-compliance{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.fac-comp-item{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+  background:#f8fafc;border:1px solid #e8edf5;border-radius:8px;
+  padding:10px 14px;
+}
+.fac-comp-lbl{font-size:12.5px;font-weight:700;color:#1a2942;flex:1;min-width:140px;}
+.fac-comp-val{
+  font-size:12px;font-weight:700;padding:3px 12px;border-radius:20px;
+  white-space:nowrap;
+}
+.fac-comp-val.yes{background:#dcfce7;color:#166534;border:1px solid #b6f0c8;}
+.fac-comp-val.no{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;}
+.fac-comp-val.na{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;}
+
+/* Eligibility row */
+.fac-eligible-row{
+  display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+  padding:12px 14px;border-radius:8px;border:2px solid;margin-top:4px;
+}
+.fac-eligible-row.yes{background:#f0fdf4;border-color:#b6f0c8;}
+.fac-eligible-row.no{background:#fff7f7;border-color:#fca5a5;}
+.fac-eligible-lbl{font-size:13px;font-weight:700;flex:none;}
+.fac-eligible-frameworks{display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+
+/* Audit trail */
+.fac-audit{
+  display:flex;flex-wrap:wrap;gap:12px;font-size:10.5px;color:#94a3b8;
+  padding:10px 0 0;border-top:1px solid #f0f5fb;margin-top:10px;
+}
+/* ─── end Faculty CSS ─────────────────────────────────────────────────────── */
+
+.nb-stats-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:12px 0;}
+
+/* ═══════════════════════════════════════════════════════════════
+   REMAINING MISSING CSS — Comprehensive Audit Fix
+   ══════════════════════════════════════════════════════════════ */
+
+/* Hero left panels (flex children) */
+.aishe-adm-hero-left{flex:1;min-width:200px;}
+.cr-hero-left{flex:1;min-width:200px;}
+.rep-hero-left{flex:1;min-width:200px;}
+
+/* NAAC Key Indicator blocks in compliance view */
+.ki-block{
+  margin-bottom:20px;border:1px solid #dce8f5;border-radius:10px;
+  overflow:hidden;background:#fff;
+}
+.ki-header{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+  padding:12px 16px;background:linear-gradient(135deg,#f0f6ff,#e8eef8);
+  border-bottom:1px solid #dce8f5;
+}
+.ki-num{
+  font-size:10.5px;font-weight:800;color:#fff;background:#0C3F6A;
+  padding:3px 10px;border-radius:12px;white-space:nowrap;flex-shrink:0;
+}
+.ki-name{
+  flex:1;font-size:13px;font-weight:700;color:#1a2942;min-width:120px;
+}
+.ki-weight{
+  font-size:11px;font-weight:700;color:#F58220;
+  background:#fff3e0;padding:2px 9px;border-radius:10px;
+  border:1px solid #fde0b0;white-space:nowrap;
+}
+.ki-pct{
+  font-size:13px;font-weight:900;min-width:36px;text-align:right;
+}
+
+/* Metric table inside KI block */
+.metric-table{
+  width:100%;border-collapse:collapse;font-size:12px;
+}
+.metric-table th{
+  padding:8px 12px;background:#f8fafc;font-size:10.5px;font-weight:800;
+  color:#334155;text-align:left;border-bottom:2px solid #e8edf5;
+  white-space:nowrap;
+}
+.metric-table td{
+  padding:9px 12px;border-bottom:1px solid #f0f5fb;vertical-align:top;
+}
+.metric-table tr:hover td{background:#fafcff;}
+
+/* Department view table (.a-table) — base reset; element has inline styles too */
+.a-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;}
+.a-table th{
+  padding:11px 14px;font-size:10.5px;font-weight:700;color:#334155;
+  background:#F8FAFC;text-align:left;border-bottom:2px solid #e8edf5;
+  white-space:nowrap;
+}
+.a-table td{
+  padding:10px 14px;border-bottom:1px solid #f0f5fb;vertical-align:middle;
+}
+.a-table tr:hover td{background:#f8fbff;}
+
+/* .fix-val — fixed-metric input modifier (used with .ci) */
+.fix-val{
+  background:#f0f6ff;border-color:#b8d4ef;font-weight:600;color:#1a2942;
+}
+.fix-val:focus{background:#fff;border-color:#0C3F6A;}
+
+/* ─── end Remaining CSS ───────────────────────────────────────────────────── */
 </style>
 <!-- SheetJS for Excel export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1647,7 +2037,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
           <input id="an-search" class="afi-inp" placeholder="Search dept, period…" style="width:220px" oninput="anFilterTable()">
         </div>
         <div style="overflow-x:auto"><table class="afi-tbl" id="an-log-tbl">
-          <thead><tr><th>#</th><th>Department</th><th>Type</th><th>Year</th><th>Period</th><th>Submitted</th></tr></thead>
+          <thead><tr><th>#</th><th>Department</th><th>Type</th><th>Year</th><th>Period</th><th>Submitted</th><th></th></tr></thead>
           <tbody id="an-log-body"></tbody>
         </table></div>
       </div>
@@ -3051,20 +3441,37 @@ async function renderAdmin(){
 function renderATable(rows){
   const el=$('adm-tbl');
   if(!el)return;
-  if(!rows.length){el.innerHTML='<p class="no-d">No records match filters.</p>';return;}
-  let h='<table class="a-table"><thead><tr><th>#</th><th>Department</th><th>Type</th><th>Year</th><th>Period</th><th>Submitted</th><th></th></tr></thead><tbody>';
+  /* Store currently displayed rows so showDet(i) always gets the right record */
+  window._dispRows = rows;
+  if(!rows.length){el.innerHTML='<p class="no-d">No records match current filters.</p>';return;}
+  let h='<div style="overflow-x:auto"><table class="a-table" style="width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.04)">';
+  h+='<thead><tr style="background:#F8FAFC">';
+  h+='<th style="padding:11px 14px;font-size:10.5px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #E2E8F0;text-align:left;white-space:nowrap">#</th>';
+  h+='<th style="padding:11px 14px;font-size:10.5px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #E2E8F0;text-align:left">Department</th>';
+  h+='<th style="padding:11px 14px;font-size:10.5px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #E2E8F0;text-align:left">Type</th>';
+  h+='<th style="padding:11px 14px;font-size:10.5px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #E2E8F0;text-align:left">Year</th>';
+  h+='<th style="padding:11px 14px;font-size:10.5px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #E2E8F0;text-align:left">Period</th>';
+  h+='<th style="padding:11px 14px;font-size:10.5px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #E2E8F0;text-align:left">Submitted</th>';
+  h+='<th style="padding:11px 14px;border-bottom:1px solid #E2E8F0"></th>';
+  h+='</tr></thead><tbody>';
   rows.forEach(function(r,i){
-    h+='<tr><td>'+(i+1)+'</td><td><strong>'+esc(r.dept)+'</strong></td>';
-    h+='<td><span class="badge b-'+esc(r.type)+'">'+esc(r.type)+'</span></td>';
-    h+='<td>'+esc(r.year)+'</td><td>'+esc(r.period)+'</td><td>'+esc(r.ts)+'</td>';
-    h+='<td><button type="button" class="btn-sm" onclick="showDet('+i+')">View</button></td></tr>';
+    h+='<tr style="border-bottom:1px solid #F1F5F9;transition:background .15s" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">';
+    h+='<td style="padding:10px 14px;color:#94A3B8;font-size:12px">'+(i+1)+'</td>';
+    h+='<td style="padding:10px 14px"><strong style="color:#1a2942;font-size:13px">'+esc(r.dept)+'</strong></td>';
+    h+='<td style="padding:10px 14px"><span class="badge b-'+esc(r.type)+'">'+esc(r.type)+'</span></td>';
+    h+='<td style="padding:10px 14px;color:#64748b;font-size:12.5px">'+esc(r.year)+'</td>';
+    h+='<td style="padding:10px 14px;color:#64748b;font-size:12.5px">'+esc(r.period)+'</td>';
+    h+='<td style="padding:10px 14px;color:#94A3B8;font-size:11px">'+esc(r.ts)+'</td>';
+    h+='<td style="padding:10px 14px;text-align:right"><button type="button" class="btn-sm" onclick="showDet('+i+')">View →</button></td>';
+    h+='</tr>';
   });
-  h+='</tbody></table>';
+  h+='</tbody></table></div>';
   el.innerHTML=h;
 }
 
 function showDet(i){
-  const r=window._arows[i];
+  const r=(window._dispRows||window._arows||[])[i];
+  if(!r){console.warn("showDet: row",i,"not found");return;}
   const d=DEPTS.find(function(x){return x.name===r.dept;});
   let h='<div class="det-hdr"><strong>'+esc(r.dept)+'</strong> — '+esc(r.year)+' / '+esc(r.period)+'<span class="det-ts">'+esc(r.ts)+'</span></div>';
   if(d){
@@ -4280,7 +4687,7 @@ function switchAdmTab(id, el){
   if(id==='dashboard'){try{buildDashboard();}catch(e){console.warn(e);}}
   if(id==='dept'){
     const rows=getAdminRows();
-    if(rows.length&&!document.getElementById('adm-tbl')){
+    if(rows.length){
       const mon=rows.filter(r=>r.type==='monthly').length;
       const ann=rows.filter(r=>r.type==='annual').length;
       const depts=[...new Set(rows.map(r=>r.dept))].sort();
@@ -7225,6 +7632,14 @@ function populateReportSelectors(){
 // ══ ANALYTICS TAB ══════════════════════════════════════════════
 function buildAnalytics(){
   populateReportSelectors();
+  /* Populate year selector if empty */
+  const anYrSel=document.getElementById('an-yr');
+  if(anYrSel&&anYrSel.options.length<=1&&typeof AY!=='undefined'){
+    AY.forEach(function(y){
+      if(![].slice.call(anYrSel.options).some(o=>o.value===y))
+        anYrSel.add(new Option(y,y));
+    });
+  }
   let rows = getAdminRows();
   const yr = (document.getElementById('an-yr')||{}).value||'';
   const tp = (document.getElementById('an-type')||{}).value||'';
@@ -7280,12 +7695,17 @@ function buildAnalytics(){
 
 function anBuildLog(rows){
   const tbody=document.getElementById('an-log-body'); if(!tbody)return;
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" style="color:#9ca3af;padding:12px">No records found.</td></tr>';return;}
-  tbody.innerHTML=rows.map((r,i)=>`<tr>
-    <td>${i+1}</td><td><strong>${esc(r.dept)}</strong></td>
-    <td><span class="badge ${r.type==='monthly'?'b-monthly':'b-annual'}">${r.type}</span></td>
-    <td>${esc(r.year)}</td><td>${esc(r.period)}</td>
-    <td style="font-size:11px;color:#6b7a99">${esc(r.ts)}</td>
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="7" style="color:#9ca3af;padding:16px;text-align:center">No records found.</td></tr>';return;}
+  /* Store for View button */
+  window._anRows=rows;
+  tbody.innerHTML=rows.map((r,i)=>`<tr style="border-bottom:1px solid #f5f7fa;transition:background .12s" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">
+    <td style="padding:8px 12px;color:#94a3b8;font-size:12px">${i+1}</td>
+    <td style="padding:8px 12px"><strong style="color:#1a2942;font-size:12.5px">${esc(r.dept)}</strong></td>
+    <td style="padding:8px 12px"><span class="badge ${r.type==='monthly'?'b-monthly':'b-annual'}">${r.type}</span></td>
+    <td style="padding:8px 12px;color:#64748b;font-size:12px">${esc(r.year)}</td>
+    <td style="padding:8px 12px;color:#64748b;font-size:12px">${esc(r.period)}</td>
+    <td style="padding:8px 12px;font-size:11px;color:#6b7a99">${esc(r.ts)}</td>
+    <td style="padding:8px 12px;text-align:right"><button type="button" class="btn-sm" onclick="(function(){window._dispRows=window._anRows;showDet(${i});})()">View →</button></td>
   </tr>`).join('');
 }
 window._anRows=[];
