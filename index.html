@@ -555,6 +555,66 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .acc-save-msg{font-size:12px;opacity:.7;margin-left:auto}
 
 /* ======================================================
+   AISHE ADMIN OVERRIDE PANEL — Professional Styles
+====================================================== */
+.aishe-adm-hero{background:linear-gradient(135deg,#0C3F6A 0%,#1565c0 60%,#1a3c5e 100%);
+  color:#fff;padding:18px 24px;border-radius:10px 10px 0 0;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.aishe-adm-hero-code{font-size:28px;font-weight:900;letter-spacing:.02em;line-height:1;
+  background:rgba(255,255,255,.13);border-radius:8px;padding:4px 12px;display:inline-block;margin-bottom:6px}
+.aishe-adm-hero-title{font-size:14px;font-weight:800}
+.aishe-adm-hero-sub{font-size:11px;color:rgba(255,255,255,.65);margin-top:3px}
+.aishe-adm-hero-right{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.aishe-adm-progress-wrap{text-align:center}
+.aishe-adm-pct{font-size:26px;font-weight:900;line-height:1}
+.aishe-adm-pct-lbl{font-size:10px;color:rgba(255,255,255,.65);margin-bottom:4px}
+.aishe-adm-pbar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;width:100px;overflow:hidden}
+.aishe-adm-pbar-fill{height:6px;background:#F58220;border-radius:3px;transition:width .7s}
+.aishe-save-all-btn{padding:9px 20px;background:#F58220;color:#fff;border:none;border-radius:8px;
+  font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.aishe-save-all-btn:hover{background:#d96e15}
+.aishe-adm-legend{display:flex;gap:10px;flex-wrap:wrap;padding:10px 18px;
+  background:#f8faff;border:1px solid #e8edf5;border-top:none;border-radius:0 0 8px 8px;margin-bottom:12px}
+.aishe-adm-legend span{font-size:10.5px;font-weight:600;display:flex;align-items:center;gap:4px}
+.aishe-sec-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);
+  margin-bottom:10px;border:1px solid #e8edf5;overflow:hidden}
+.aishe-sec-hdr{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;background:#f8faff;border-bottom:1px solid #e8edf5;user-select:none;gap:12px}
+.aishe-sec-hdr:hover{background:#eef3fb}
+.aishe-sec-card.open .aishe-sec-hdr{border-bottom:2px solid #0C3F6A}
+.aishe-sec-hdr-left{display:flex;align-items:center;gap:12px}
+.aishe-sec-num{width:32px;height:32px;background:#0C3F6A;color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.aishe-sec-title-text{font-size:13px;font-weight:700;color:#1a2942}
+.aishe-sec-sub{margin-top:3px}
+.aishe-dept-tag{background:#e3f0ff;color:#0C3F6A;border-radius:10px;padding:2px 9px;font-size:10px;font-weight:700}
+.aishe-sec-hdr-right{display:flex;align-items:center;gap:10px}
+.aishe-sec-count{font-size:11px;font-weight:700;white-space:nowrap}
+.aishe-sec-mini-bar{width:60px;height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.aishe-sec-chevron{font-size:11px;color:#9aabb8;transition:transform .2s;margin-left:2px}
+.aishe-sec-body{display:none;padding:16px 18px 14px}
+.aishe-sec-card.open .aishe-sec-body{display:block}
+.aishe-sec-card.open .aishe-sec-chevron{transform:rotate(180deg)}
+.aishe-fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;margin-bottom:14px}
+.aishe-field{padding:10px 12px;border-radius:7px;border:1px solid #e8edf5;transition:box-shadow .15s}
+.aishe-field:hover{box-shadow:0 2px 8px rgba(0,0,0,.09)}
+.aishe-field-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:6px}
+.aishe-field-label{font-size:11.5px;font-weight:600;color:#374151;flex:1;line-height:1.3}
+.aishe-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.aishe-badge-saved{background:#dcfce7;color:#166534}
+.aishe-badge-report{background:#fff3e0;color:#c2410c}
+.aishe-badge-empty{background:#f3f4f6;color:#9ca3af}
+.aishe-field-input{width:100%;padding:6px 9px;border:1px solid #e2e8f0;border-radius:5px;
+  font-size:12px;color:#1a2942;background:#fff;box-sizing:border-box;outline:none;transition:border .15s}
+.aishe-field-input:focus{border-color:#0C3F6A;box-shadow:0 0 0 2px rgba(12,63,106,.1)}
+.aishe-field-note{font-size:9.5px;color:#9aabb8;margin-top:4px;font-style:italic;line-height:1.3}
+.aishe-sec-footer{display:flex;align-items:center;gap:12px;padding-top:12px;border-top:1px solid #f0f4f8}
+.aishe-sec-save-btn{padding:7px 16px;background:#0C3F6A;color:#fff;border:none;border-radius:7px;
+  font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
+.aishe-sec-save-btn:hover{background:#0a3358}
+.aishe-sec-dept-note{font-size:10.5px;color:#9aabb8;font-style:italic}
+
+/* ======================================================
    ACCREDITATION REPORT — Professional Report Styles
 ====================================================== */
 .rep-hero{background:linear-gradient(135deg,#0C3F6A 0%,#0e5c9a 60%,#1a3c5e 100%);
@@ -698,64 +758,42 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   padding:12px 20px;background:#f0fdf4}
 
 /* ======================================================
-   AISHE ADMIN OVERRIDE PANEL — Professional Styles
+   SOP REQUIREMENTS & BENCHMARKS PANEL
 ====================================================== */
-.aishe-adm-hero{background:linear-gradient(135deg,#0C3F6A 0%,#1565c0 60%,#1a3c5e 100%);
-  color:#fff;padding:18px 24px;border-radius:10px 10px 0 0;
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.aishe-adm-hero-code{font-size:28px;font-weight:900;letter-spacing:.02em;line-height:1;
-  background:rgba(255,255,255,.13);border-radius:8px;padding:4px 12px;display:inline-block;margin-bottom:6px}
-.aishe-adm-hero-title{font-size:14px;font-weight:800}
-.aishe-adm-hero-sub{font-size:11px;color:rgba(255,255,255,.65);margin-top:3px}
-.aishe-adm-hero-right{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.aishe-adm-progress-wrap{text-align:center}
-.aishe-adm-pct{font-size:26px;font-weight:900;line-height:1}
-.aishe-adm-pct-lbl{font-size:10px;color:rgba(255,255,255,.65);margin-bottom:4px}
-.aishe-adm-pbar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;width:100px;overflow:hidden}
-.aishe-adm-pbar-fill{height:6px;background:#F58220;border-radius:3px;transition:width .7s}
-.aishe-save-all-btn{padding:9px 20px;background:#F58220;color:#fff;border:none;border-radius:8px;
-  font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
-.aishe-save-all-btn:hover{background:#d96e15}
-.aishe-adm-legend{display:flex;gap:10px;flex-wrap:wrap;padding:10px 18px;
-  background:#f8faff;border:1px solid #e8edf5;border-top:none;border-radius:0 0 8px 8px;margin-bottom:12px}
-.aishe-adm-legend span{font-size:10.5px;font-weight:600;display:flex;align-items:center;gap:4px}
-.aishe-sec-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);
-  margin-bottom:10px;border:1px solid #e8edf5;overflow:hidden}
-.aishe-sec-hdr{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;
-  cursor:pointer;background:#f8faff;border-bottom:1px solid #e8edf5;user-select:none;gap:12px}
-.aishe-sec-hdr:hover{background:#eef3fb}
-.aishe-sec-card.open .aishe-sec-hdr{border-bottom:2px solid #0C3F6A}
-.aishe-sec-hdr-left{display:flex;align-items:center;gap:12px}
-.aishe-sec-num{width:32px;height:32px;background:#0C3F6A;color:#fff;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
-.aishe-sec-title-text{font-size:13px;font-weight:700;color:#1a2942}
-.aishe-sec-sub{margin-top:3px}
-.aishe-dept-tag{background:#e3f0ff;color:#0C3F6A;border-radius:10px;padding:2px 9px;font-size:10px;font-weight:700}
-.aishe-sec-hdr-right{display:flex;align-items:center;gap:10px}
-.aishe-sec-count{font-size:11px;font-weight:700;white-space:nowrap}
-.aishe-sec-mini-bar{width:60px;height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
-.aishe-sec-chevron{font-size:11px;color:#9aabb8;transition:transform .2s;margin-left:2px}
-.aishe-sec-body{display:none;padding:16px 18px 14px}
-.aishe-sec-card.open .aishe-sec-body{display:block}
-.aishe-sec-card.open .aishe-sec-chevron{transform:rotate(180deg)}
-.aishe-fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;margin-bottom:14px}
-.aishe-field{padding:10px 12px;border-radius:7px;border:1px solid #e8edf5;transition:box-shadow .15s}
-.aishe-field:hover{box-shadow:0 2px 8px rgba(0,0,0,.09)}
-.aishe-field-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:6px}
-.aishe-field-label{font-size:11.5px;font-weight:600;color:#374151;flex:1;line-height:1.3}
-.aishe-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0}
-.aishe-badge-saved{background:#dcfce7;color:#166534}
-.aishe-badge-report{background:#fff3e0;color:#c2410c}
-.aishe-badge-empty{background:#f3f4f6;color:#9ca3af}
-.aishe-field-input{width:100%;padding:6px 9px;border:1px solid #e2e8f0;border-radius:5px;
-  font-size:12px;color:#1a2942;background:#fff;box-sizing:border-box;outline:none;transition:border .15s}
-.aishe-field-input:focus{border-color:#0C3F6A;box-shadow:0 0 0 2px rgba(12,63,106,.1)}
-.aishe-field-note{font-size:9.5px;color:#9aabb8;margin-top:4px;font-style:italic;line-height:1.3}
-.aishe-sec-footer{display:flex;align-items:center;gap:12px;padding-top:12px;border-top:1px solid #f0f4f8}
-.aishe-sec-save-btn{padding:7px 16px;background:#0C3F6A;color:#fff;border:none;border-radius:7px;
-  font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s}
-.aishe-sec-save-btn:hover{background:#0a3358}
-.aishe-sec-dept-note{font-size:10.5px;color:#9aabb8;font-style:italic}
+.sop-panel{margin:18px 0;border:1px solid #dce6f5;border-radius:12px;
+  overflow:hidden;background:#fff;box-shadow:0 2px 8px rgba(12,63,106,.06)}
+.sop-hdr{padding:13px 18px;background:linear-gradient(135deg,#f0f6ff 0%,#e6eef8 100%);
+  border-bottom:1px solid #dce6f5;cursor:pointer;display:flex;align-items:center;gap:10px;
+  user-select:none;transition:background .15s}
+.sop-hdr:hover{background:linear-gradient(135deg,#e6eef8 0%,#d8e6f2 100%)}
+.sop-icon{font-size:16px;flex-shrink:0}
+.sop-hdr>span:nth-child(2){flex:1;font-size:13px;font-weight:700;color:#1a2942;letter-spacing:.01em}
+.sop-toggle-icon{font-size:12px;color:#7a9ab8;transition:transform .25s;flex-shrink:0}
+.sop-body{background:#fafcff;padding:0}
+.sop-row{padding:14px 18px;border-bottom:1px solid #f0f5fb;transition:background .1s}
+.sop-row:last-child{border-bottom:none}
+.sop-row:hover{background:#f5f9ff}
+.sop-metric-row{display:flex;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:7px}
+.sop-num{width:22px;height:22px;background:#0C3F6A;color:#fff;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;font-size:10px;
+  font-weight:800;flex-shrink:0;margin-top:1px}
+.sop-metric{font-size:12.5px;font-weight:600;color:#1a2942;flex:1;min-width:180px;
+  line-height:1.45}
+.sop-bench{background:#fff3e0;color:#c2410c;border:1px solid #fde0b0;border-radius:12px;
+  padding:2px 10px;font-size:10px;font-weight:700;white-space:nowrap;display:inline-flex;
+  align-items:center;gap:3px}
+.sop-app{background:#e3f0ff;color:#0C3F6A;border:1px solid #b3d4f5;border-radius:12px;
+  padding:2px 10px;font-size:10px;font-weight:700;white-space:nowrap}
+.sop-tl{background:#f0fdf4;color:#166534;border:1px solid #b6f0c8;border-radius:12px;
+  padding:2px 10px;font-size:10px;font-weight:600;white-space:nowrap;display:inline-flex;
+  align-items:center;gap:3px}
+.sop-docs-lbl{font-size:10.5px;font-weight:700;color:#555;margin:6px 0 4px 30px;
+  text-transform:uppercase;letter-spacing:.04em}
+.sop-docs{margin:0 0 4px 30px;padding-left:18px;list-style:disc}
+.sop-docs li{font-size:11.5px;color:#444;margin-bottom:3px;line-height:1.45}
+.sop-scope{margin:6px 0 0 30px;padding:9px 13px;background:#fffbf0;
+  border-left:3px solid #F58220;border-radius:0 7px 7px 0;
+  font-size:11.5px;color:#555;line-height:1.55}
 </style>
 <!-- SheetJS for Excel export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -2469,13 +2507,10 @@ function initLogin(){
 function toggleSOP(hdr){
   const body=hdr.nextElementSibling;
   const icon=hdr.querySelector('.sop-toggle-icon');
-  if(body.style.display==='none'||!body.style.display){
-    body.style.display='block';
-    if(icon)icon.textContent='▲';
-  }else{
-    body.style.display='none';
-    if(icon)icon.textContent='▼';
-  }
+  /* body starts with display:none; isOpen means currently visible */
+  const isOpen = (body.style.display !== 'none' && body.style.display !== '');
+  body.style.display = isOpen ? 'none' : 'block';
+  if(icon) icon.textContent = isOpen ? '▼' : '▲';
 }
 function togglePin(){
   const inp=$('l-pin');
@@ -2613,7 +2648,7 @@ function renderSec(idx){
     if(sopRows.length){
       html+='<div class="sop-panel">';
       html+='<div class="sop-hdr" onclick="toggleSOP(this)"><span class="sop-icon">📋</span><span>SOP Requirements &amp; Benchmarks</span><span class="sop-toggle-icon">▼</span></div>';
-      html+='<div class="sop-body">';
+      html+='<div class="sop-body" style="display:none">';
       sopRows.forEach(function(r,i){
         html+='<div class="sop-row"><div class="sop-metric-row"><span class="sop-num">'+(i+1)+'</span><span class="sop-metric">'+esc(r.metric)+'</span>';
         if(r.benchmark)html+='<span class="sop-bench">🎯 '+esc(r.benchmark)+'</span>';
@@ -2714,7 +2749,7 @@ function renderSec(idx){
           '<span class="sop-icon">📋</span>'+
           '<span>SOP Requirements &amp; Benchmarks</span>'+
           '<span class="sop-toggle-icon">▼</span></div>';
-    html+='<div class="sop-body">';
+    html+='<div class="sop-body" style="display:none">';
     sopRows.forEach(function(r,i){
       html+='<div class="sop-row">';
       // Metric title + badges
@@ -4277,11 +4312,13 @@ function switchAdmTab(id, el){
   }
   if(id==='naac'&&!window._naacBuilt){buildNAAC();window._naacBuilt=true;}
   if(id==='nacbench'&&!window._nacbenchBuilt){
-    if(db) db.ref(ROOT+'/admin_accreditation/naac_bench').once('value').then(snap=>{
-      if(snap.exists()) accState.naac_bench=snap.val()||{};
-      buildNAACBenchmarks();
-    }).catch(()=>buildNAACBenchmarks());
-    else buildNAACBenchmarks();
+    const _db2=getDB();
+    if(_db2){
+      _db2.ref(ROOT+'/admin_accreditation/naac_bench').once('value').then(snap=>{
+        if(snap.exists()) accState.naac_bench=snap.val()||{};
+        buildNAACBenchmarks();
+      }).catch(()=>buildNAACBenchmarks());
+    } else buildNAACBenchmarks();
     window._nacbenchBuilt=true;
   }
   if(id==='iso41'&&!window._iso41Built){buildISO41();window._iso41Built=true;}
@@ -5775,15 +5812,15 @@ function nbBuildMetricView(){
   }
   if(cpf==='entered') allM=allM.filter(m=>(accState.naac_bench[m.num]||'')!=='');
   if(cpf==='pending')  allM=allM.filter(m=>(accState.naac_bench[m.num]||'')==='');
-  const statsBar=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:12px 0">
+  const statsBar=`<div class="nb-stats-bar" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding:12px 0">
     <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
-      <div style="font-size:18px;font-weight:800;color:#2e7d32">${entM}</div>
+      <div data-stat="entered" style="font-size:18px;font-weight:800;color:#2e7d32">${entM}</div>
       <div style="font-size:10px;color:#555">✅ Entered</div></div>
     <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
-      <div style="font-size:18px;font-weight:800;color:#f57f17">${pendM}</div>
+      <div data-stat="pending" style="font-size:18px;font-weight:800;color:#f57f17">${pendM}</div>
       <div style="font-size:10px;color:#555">⏳ Pending</div></div>
     <div style="background:#e3f2fd;border:1px solid #90caf9;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
-      <div style="font-size:18px;font-weight:800;color:#1565c0">${compPct}%</div>
+      <div data-stat="completion" style="font-size:18px;font-weight:800;color:#1565c0">${compPct}%</div>
       <div style="font-size:10px;color:#555">Completion</div></div>
     <div style="background:#f3f4f6;border:1px solid #ddd;border-radius:8px;padding:8px 16px;text-align:center;min-width:100px">
       <div style="font-size:18px;font-weight:800;color:#444">${allM.length}</div>
@@ -5795,10 +5832,10 @@ function nbBuildMetricView(){
     const s=_nbScore(m,raw);
     const sc=_nbScoreColor(s); const sb=_nbScoreBg(s);
     const gap=(!m.ql&&raw)?_nbGapToNext(m,raw):null;
-    const gapHtml=gap?`<div style="font-size:10px;color:#e65100;margin-top:2px">+${gap.gap} ${gap.unit} to reach Score ${_nbScore(m,raw)+1}</div>`:'';
+    const gapHtml=gap?`<div data-role="gap-hint" style="font-size:10px;color:#e65100;margin-top:2px">+${gap.gap} ${gap.unit} to reach Score ${_nbScore(m,raw)+1}</div>`:`<div data-role="gap-hint"></div>`;
     const compBadge=isEntered
-      ? `<span style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap">✅ Entered</span>`
-      : `<span style="background:#fff8e1;color:#f57f17;border:1px solid #ffe082;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap">⏳ Pending</span>`;
+      ? `<span data-role="comp-badge" style="background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap">✅ Entered</span>`
+      : `<span data-role="comp-badge" style="background:#fff8e1;color:#f57f17;border:1px solid #ffe082;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700;white-space:nowrap">⏳ Pending</span>`;
     const inputHtml=m.ql
       ? `<select class="afi-sel" style="width:80px;font-size:12px" onchange="accState.naac_bench['${m.num}']=this.value;nbRefreshRow(this,'${m.num}')">
           <option value="">—</option>
@@ -5811,7 +5848,7 @@ function nbBuildMetricView(){
       : `<input type="text" class="afi-inp" value="${raw}" placeholder="Enter value"
            style="width:110px;font-size:12px"
            onchange="accState.naac_bench['${m.num}']=this.value;nbRefreshRow(this,'${m.num}');nbBuildCriterionView()">`;
-    return `<div id="nb-row-${m.num.replace('.','_')}" style="background:#fff;border:1px solid ${isEntered?'#c8e6c9':'#e0e8f0'};border-left:4px solid ${isEntered?'#2e7d32':'#ccc'};border-radius:8px;margin-bottom:8px;padding:14px 16px">
+    return `<div id="nb-row-${m.num.replace(/\./g,'_')}" style="background:#fff;border:1px solid ${isEntered?'#c8e6c9':'#e0e8f0'};border-left:4px solid ${isEntered?'#2e7d32':'#ccc'};border-radius:8px;margin-bottom:8px;padding:14px 16px">
       <div style="display:grid;grid-template-columns:auto 1fr auto auto auto;gap:12px;align-items:start">
         <div>
           <span style="background:${m.crColor};color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px">${m.crNum}</span>
@@ -5832,8 +5869,8 @@ function nbBuildMetricView(){
         </div>
         <div style="text-align:center;min-width:70px">
           <div style="font-size:10px;color:#888;margin-bottom:4px">Score</div>
-          <div style="font-size:22px;font-weight:800;color:${sc}">${s!==null?s:'—'}</div>
-          <div style="font-size:10px;color:${sc}">${s!==null?['Below','Needs Imp.','Developing','Proficient','Exemplary'][s]:'Not entered'}</div>
+          <div data-role="score-num" style="font-size:22px;font-weight:800;color:${sc}">${s!==null?s:'—'}</div>
+          <div data-role="score-lbl" style="font-size:10px;color:${sc}">${s!==null?['Below','Needs Imp.','Developing','Proficient','Exemplary'][s]:'Not entered'}</div>
         </div>
         <div style="text-align:center;min-width:50px">
           <div style="font-size:10px;color:#888;margin-bottom:4px">Weight</div>
@@ -5850,11 +5887,51 @@ function nbBuildMetricView(){
   NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>allM.push(m)));
   const metric=allM.find(m=>m.num===num);
   if(!metric) return;
-  const rowId='nb-row-'+num.replace('.','_');
+  /* Update score/status display within the specific row without full re-render */
+  const rowId='nb-row-'+num.replace(/\./g,'_');
   const row=document.getElementById(rowId);
-  if(!row) return;
-  nbBuildMetricView(); // re-render full view for simplicity
+  if(row){
+    const s=_nbScore(metric,raw);
+    const sc=_nbScoreColor(s); const sb=_nbScoreBg(s);
+    /* Update left-border and border colour */
+    const isEntered=(raw!=='');
+    row.style.border='1px solid '+(isEntered?'#c8e6c9':'#e0e8f0');
+    row.style.borderLeft='4px solid '+(isEntered?'#2e7d32':'#ccc');
+    /* Update score number */
+    const scoreDiv=row.querySelector('[data-role="score-num"]');
+    if(scoreDiv){scoreDiv.textContent=s!==null?s:'—';scoreDiv.style.color=sc;}
+    /* Update score label */
+    const scoreLbl=row.querySelector('[data-role="score-lbl"]');
+    if(scoreLbl){scoreLbl.textContent=s!==null?['Below','Needs Imp.','Developing','Proficient','Exemplary'][s]:'Not entered';scoreLbl.style.color=sc;}
+    /* Update status badge */
+    const badgeEl=row.querySelector('[data-role="comp-badge"]');
+    if(badgeEl){
+      if(isEntered){badgeEl.style.background='#e8f5e9';badgeEl.style.color='#2e7d32';badgeEl.style.border='1px solid #a5d6a7';badgeEl.textContent='✅ Entered';}
+      else{badgeEl.style.background='#fff8e1';badgeEl.style.color='#f57f17';badgeEl.style.border='1px solid #ffe082';badgeEl.textContent='⏳ Pending';}
+    }
+    /* Update gap-to-next hint */
+    const gapDiv=row.querySelector('[data-role="gap-hint"]');
+    if(gapDiv){
+      const gap=(!metric.ql&&raw)?_nbGapToNext(metric,raw):null;
+      gapDiv.textContent=gap?'+'+gap.gap+' '+gap.unit+' to reach Score '+(_nbScore(metric,raw)+1):'';
+    }
+  }
+  /* Rebuild criterion view (lightweight) and update stats bar without scroll jump */
   nbBuildCriterionView();
+  /* Re-render metric stats bar only (not the full list) */
+  const allM2=[]; NAAC_BENCHMARKS_DATA.forEach(cr=>cr.metrics.forEach(m=>allM2.push(m)));
+  const entM=allM2.filter(m=>(accState.naac_bench[m.num]||'')!=='').length;
+  const pendM=allM2.length-entM;
+  const compPct=allM2.length?Math.round(entM/allM2.length*100):0;
+  const statsBar=document.querySelector('#nb-metric-table .nb-stats-bar');
+  if(statsBar){
+    statsBar.querySelectorAll('[data-stat]').forEach(el=>{
+      const k=el.getAttribute('data-stat');
+      if(k==='entered')el.textContent=entM;
+      else if(k==='pending')el.textContent=pendM;
+      else if(k==='completion')el.textContent=compPct+'%';
+    });
+  }
 }
 function nbShowMetricForCriterion(crNum){
   const sel=document.getElementById('nb-metric-filter');
@@ -5889,7 +5966,7 @@ function nbBuildDeptView(){
           <span style="background:${m.crColor};color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;margin-right:4px">${m.crNum}</span>
           <strong style="font-size:12px;color:#1a3c5e">${m.num}</strong>
         </td>
-        <td style="padding:5px 10px;font-size:11px;color:#444;max-width:200px">${m.desc.substring(0,60)}…</td>
+        <td style="padding:5px 10px;font-size:11px;color:#444;max-width:200px">${m.desc.length>60?m.desc.substring(0,60)+'…':m.desc}</td>
         <td style="padding:5px 10px;text-align:center">${raw!==''?'<span style="background:#e8f5e9;color:#2e7d32;font-size:10px;padding:2px 6px;border-radius:8px">✅</span>':'<span style="background:#fff8e1;color:#f57f17;font-size:10px;padding:2px 6px;border-radius:8px">⏳</span>'}</td>
         <td style="padding:5px 10px;font-size:11px;color:#888;text-align:center">${m.weight}</td>
         <td style="padding:5px 10px;text-align:center">
@@ -5935,14 +6012,23 @@ function nbBuildDeptView(){
 
 // ── Save / Export ───────────────────────────────────────────────────────
 async function nbSaveBench(){
+  const db2=getDB();
   const msg=document.getElementById('nb-save-msg');
+  const btn=document.querySelector('[onclick="nbSaveBench()"]');
   if(msg) msg.textContent='Saving…';
+  if(btn){btn.disabled=true;btn.textContent='⏳ Saving…';}
   try{
-    if(db) await db.ref(ROOT+'/admin_accreditation/naac_bench').set(accState.naac_bench);
-    if(msg) msg.textContent='Saved to Firebase: '+new Date().toLocaleTimeString();
+    if(db2){
+      await db2.ref(ROOT+'/admin_accreditation/naac_bench').set(accState.naac_bench);
+      const t=new Date().toLocaleTimeString('en-IN');
+      if(msg) msg.innerHTML='<span style="color:#16a34a">✓ Saved at '+t+'</span>';
+    } else {
+      if(msg) msg.innerHTML='<span style="color:#dc2626">⚠ Firebase unavailable — data saved locally only</span>';
+    }
   }catch(e){
-    if(msg) msg.textContent='Save failed: '+e.message;
+    if(msg) msg.innerHTML='<span style="color:#dc2626">✗ Save failed: '+e.message+'</span>';
   }
+  if(btn){btn.disabled=false;btn.innerHTML='💾 Save Benchmark Values to Firebase';}
 }
 function nbExportCSV(){
   const hdr=['Criterion','Metric No','Description','Department','Weight','Unit','Score 4 Benchmark','Score 3','Score 2','Score 1','Score 0','Your Value','Your Score','Score Label'];
