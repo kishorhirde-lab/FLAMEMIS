@@ -230,10 +230,16 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .btn-gen-cert{background:#0d2452;color:#fff;border:none;border-radius:5px;
   padding:4px 8px;font-size:14px;cursor:pointer;line-height:1;transition:transform .1s}
 .btn-gen-cert:hover{background:#1a3a6b;transform:scale(1.12)}
-.btn-ai-validate{padding:7px 16px;background:#4f1d91;color:#fff;border:none;border-radius:6px;
-  font-size:12.5px;font-weight:700;cursor:pointer;letter-spacing:.02em;
+.btn-ai-validate{padding:7px 14px;background:#4f1d91;color:#fff;border:none;border-radius:6px;
+  font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.02em;
   box-shadow:0 2px 8px rgba(79,29,145,.3);transition:background .15s}
 .btn-ai-validate:hover{background:#6d28d9}
+.btn-import{padding:7px 14px;background:#0e7490;color:#fff;border:none;border-radius:6px;
+  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-import:hover{background:#0891b2}
+.btn-bulk-cert{padding:7px 14px;background:#1a3570;color:#fff;border:none;border-radius:6px;
+  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-bulk-cert:hover{background:#1e40af}
 .fixed-tbl .fix-lbl{font-size:12px;color:#4a5568;font-weight:500;padding:7px 10px}
 .flds{display:flex;flex-direction:column;gap:14px}
 .fg label,.flbl{display:block;font-size:11.5px;font-weight:600;color:#4a5568;margin-bottom:4px}
@@ -2771,7 +2777,8 @@ const DEPTS = [
  sections:[
   {id:'s1',sr:1,title:'Participant Registration — MDP Programs',mode:'table',fileUpload:false,certSection:true,
    cols:['Name of Participant','Name of Company','Designation','City','State',
-         'Name of the Program','Amount Paid','Email ID','Mobile Number',
+         'Name of the Program','Program Start Date','Program End Date',
+         'Amount Paid','Email ID','Mobile Number',
          'Certificate Status','Certificate ID']
   }
 ]}
@@ -2948,102 +2955,241 @@ function generateFILCert(secId,ri){
   _openFILCertWindow(row,certId);
 }
 
-function _openFILCertWindow(row,certId){
-  const name  = esc(row[san('Name of Participant')]||'');
-  const co    = esc(row[san('Name of Company')]||'');
-  const desig = esc(row[san('Designation')]||'');
-  const city  = esc(row[san('City')]||'');
-  const state = esc(row[san('State')]||'');
-  const prog  = esc(row[san('Name of the Program')]||'FLAME Investment Lab – MDP Program');
-  const now   = new Date();
-  const dateStr=now.toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
-  const logoSrc=(document.querySelector('.l-logo-img')||{src:''}).src||'';
+function _openFILCertWindow(row,certId,bulkMode){
+  var name_  = (row[san("Name of Participant")]||"").trim();
+  var co     = (row[san("Name of Company")]||"").trim();
+  var desig  = (row[san("Designation")]||"").trim();
+  var city   = (row[san("City")]||"").trim();
+  var state  = (row[san("State")]||"").trim();
+  var prog   = (row[san("Name of the Program")]||"FLAME Investment Lab MDP Program").trim();
+  var sDate  = (row[san("Program Start Date")]||"").trim();
+  var eDate  = (row[san("Program End Date")]||"").trim();
+  var logoSrc=(document.querySelector(".l-logo-img")||{src:""}).src||"";
+  var issueDate=new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"});
 
-  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>Certificate – ${name}</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#f0f4f8;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px;font-family:'Georgia',serif;}
-.toolbar{display:flex;gap:12px;margin-bottom:20px;}
-.btn{padding:10px 24px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;}
-.btn-print{background:#1a3a6b;color:#fff;}
-.btn-close{background:#e2e8f0;color:#334155;}
-.cert{width:900px;background:#fff;border:2px solid #1a3a6b;border-radius:4px;padding:0;position:relative;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.18);}
-.cert-border{position:absolute;inset:10px;border:1.5px solid #c8a84b;border-radius:3px;pointer-events:none;}
-.cert-top{background:linear-gradient(135deg,#0d2452 0%,#1a3a6b 60%,#0d2452 100%);padding:30px 50px 24px;display:flex;align-items:center;gap:24px;}
-.cert-top-logo{height:52px;width:auto;filter:brightness(0) invert(1);}
-.cert-top-txt{color:#fff;}
-.cert-top-txt h1{font-size:22px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
-.cert-top-txt p{font-size:12px;color:#c8d8f0;margin-top:2px;letter-spacing:.05em;}
-.cert-gold-bar{height:6px;background:linear-gradient(90deg,#8B6914,#c8a84b,#f0d060,#c8a84b,#8B6914);}
-.cert-body{padding:44px 64px 36px;}
-.cert-subtitle{text-align:center;font-size:13px;color:#64748b;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;}
-.cert-title{text-align:center;font-size:30px;font-weight:700;color:#0d2452;letter-spacing:.04em;margin-bottom:28px;}
-.cert-para{text-align:center;font-size:15px;color:#475569;line-height:1.8;margin-bottom:10px;}
-.cert-name{display:block;text-align:center;font-size:36px;font-weight:700;color:#0d2452;font-style:italic;margin:12px 0 6px;border-bottom:2px solid #c8a84b;padding-bottom:8px;max-width:520px;margin-left:auto;margin-right:auto;}
-.cert-detail{text-align:center;font-size:13px;color:#64748b;margin-bottom:4px;}
-.cert-prog-box{margin:22px auto;background:#f0f6ff;border-left:4px solid #1a3a6b;padding:14px 24px;max-width:560px;border-radius:0 6px 6px 0;}
-.cert-prog-label{font-size:11px;color:#64748b;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
-.cert-prog-name{font-size:18px;font-weight:700;color:#0d2452;}
-.cert-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;}
-.cert-sig{text-align:center;}
-.cert-sig-line{width:180px;border-top:1.5px solid #334155;margin-bottom:6px;}
-.cert-sig-name{font-size:12px;font-weight:700;color:#1a3a6b;}
-.cert-sig-title{font-size:11px;color:#64748b;}
-.cert-id-block{text-align:right;}
-.cert-id-label{font-size:10px;color:#94a3b8;letter-spacing:.1em;text-transform:uppercase;}
-.cert-id-val{font-size:12px;font-weight:600;color:#475569;font-family:monospace;}
-.cert-date{font-size:12px;color:#64748b;margin-top:4px;}
-@media print{body{background:#fff;padding:0;}
-.toolbar{display:none;}
-.cert{box-shadow:none;border:2px solid #1a3a6b;width:100%;}
+  var dateRange = sDate&&eDate ? sDate+" to "+eDate : (sDate||eDate||issueDate);
+  var detail = "";
+  if(desig&&co) detail=desig+", "+co;
+  else if(co)   detail=co;
+  if(city||state) detail+=(detail?" — ":"")+[city,state].filter(Boolean).join(", ");
+
+  var logoHtml = logoSrc
+    ? "<img src=\""+logoSrc+"\" class=\"cert-logo\" alt=\"FLAME University\">"
+    : "<span class=\"cert-logo-txt\">FLAME<br>UNIVERSITY</span>";
+
+  var descHtml = "on successful completion of the course &ldquo;<strong>"+prog+"</strong>&rdquo;";
+  if(dateRange) descHtml += "<br>held from <strong>"+dateRange+"</strong>.";
+  if(detail)    descHtml += "<br><span style=\"font-size:13px;color:#64748b;\">"+detail+"</span>";
+
+  return "<div class=\"cert\" id=\"cert-"+certId+"\">"
+    +"<svg style=\"position:absolute;top:0;right:0;width:280px;height:210px;pointer-events:none;z-index:0;\" viewBox=\"0 0 280 210\" xmlns=\"http://www.w3.org/2000/svg\">"
+    +"<polygon points=\"280,0 90,0 280,210\" fill=\"#1a3570\"/>"
+    +"<polygon points=\"280,0 200,0 280,80\" fill=\"#c8a030\" opacity=\".95\"/>"
+    +"<polygon points=\"90,0 103,0 280,195 280,210 267,210\" fill=\"#c8a030\" opacity=\".85\"/>"
+    +"</svg>"
+    +"<svg style=\"position:absolute;bottom:0;left:0;width:280px;height:210px;pointer-events:none;z-index:0;\" viewBox=\"0 0 280 210\" xmlns=\"http://www.w3.org/2000/svg\">"
+    +"<polygon points=\"0,210 190,210 0,0\" fill=\"#1a3570\"/>"
+    +"<polygon points=\"0,210 80,210 0,130\" fill=\"#c8a030\" opacity=\".95\"/>"
+    +"<polygon points=\"190,210 177,210 0,15 0,0 13,0\" fill=\"#c8a030\" opacity=\".85\"/>"
+    +"</svg>"
+    +"<div class=\"cert-hdr\">"
+    +logoHtml
+    +"<div class=\"cert-hdiv\"></div>"
+    +"<div class=\"cert-everlast\">"
+    +"<span class=\"cert-ever-top\">EVERLASTING</span>"
+    +"<span class=\"cert-ever-bot\">learning</span>"
+    +"</div></div>"
+    +"<div class=\"cert-title-wrap\">"
+    +"<div class=\"cert-main-title\">CERTIFICATE</div>"
+    +"<div class=\"cert-of-comp\">OF COMPLETION</div>"
+    +"</div>"
+    +"<div class=\"cert-presented\">This Certificate is Proudly Presented to</div>"
+    +"<div class=\"cert-pname\">"+name_+"</div>"
+    +"<div class=\"cert-desc\">"+descHtml+"</div>"
+    +"<div class=\"cert-sigs\">"
+    +"<div class=\"cert-sig\"><div class=\"cert-sig-space\"></div>"
+    +"<div class=\"cert-sig-line\"></div>"
+    +"<div class=\"cert-sig-name\">Dr. Santosh Kudtarkar</div>"
+    +"<div class=\"cert-sig-role\">Dean</div></div>"
+    +"<div class=\"cert-sig\"><div class=\"cert-sig-space\"></div>"
+    +"<div class=\"cert-sig-line\"></div>"
+    +"<div class=\"cert-sig-name\">Dr. Virender Sharma</div>"
+    +"<div class=\"cert-sig-role\">Registrar</div></div>"
+    +"</div>"
+    +"<div class=\"cert-ref\">Ref. No.: "+certId+"</div>"
+    +"</div>";
 }
-</style></head><body>
-<div class="toolbar">
-  <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
-  <button class="btn btn-close" onclick="window.close()">✕ Close</button>
-</div>
-<div class="cert">
-  <div class="cert-border"></div>
-  <div class="cert-top">
-    ${logoSrc?`<img src="${logoSrc}" class="cert-top-logo" alt="FLAME University">`:''}
-    <div class="cert-top-txt">
-      <h1>FLAME University Pune</h1>
-      <p>FLAME Investment Lab &nbsp;|&nbsp; Management Development Programs</p>
-    </div>
-  </div>
-  <div class="cert-gold-bar"></div>
-  <div class="cert-body">
-    <div class="cert-subtitle">Certificate of Participation</div>
-    <div class="cert-title">This is to certify that</div>
-    <span class="cert-name">${name}</span>
-    ${co?`<div class="cert-detail">${desig?desig+', ':''}${co}${(city||state)?' — '+(city?city+', ':'')+state:''}</div>`:''}
-    <div class="cert-para" style="margin-top:18px;">has successfully participated in the</div>
-    <div class="cert-prog-box">
-      <div class="cert-prog-label">Program Name</div>
-      <div class="cert-prog-name">${prog}</div>
-    </div>
-    <div class="cert-para">organized by <strong>FLAME Investment Lab</strong>, FLAME University Pune.</div>
-    <div class="cert-footer">
-      <div class="cert-sig">
-        <div class="cert-sig-line"></div>
-        <div class="cert-sig-name">Director, FLAME Investment Lab</div>
-        <div class="cert-sig-title">FLAME University Pune</div>
-      </div>
-      <div class="cert-id-block">
-        <div class="cert-id-label">Certificate ID</div>
-        <div class="cert-id-val">${certId}</div>
-        <div class="cert-date">Date: ${dateStr}</div>
-      </div>
-    </div>
-  </div>
-</div>
-</body></html>`;
 
-  const w=window.open('','_blank','width=980,height=720,scrollbars=yes');
+function _buildCertPageHtml(pages,isMulti){
+  return "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">"
+    +"<title>"+(isMulti?"Bulk Certificates — FLAME Investment Lab":"Certificate — FLAME Investment Lab")+"</title>"
+    +"<style>"
+    +"*{margin:0;padding:0;box-sizing:border-box;}"
+    +"body{background:#d4d8e0;display:flex;flex-direction:column;align-items:center;padding:28px 20px;font-family:\"Arial\",Helvetica,sans-serif;}"
+    +".toolbar{display:flex;gap:12px;margin-bottom:26px;flex-wrap:wrap;justify-content:center;}"
+    +".btn{padding:10px 26px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:700;letter-spacing:.02em;}"
+    +".btn-print{background:#1a3570;color:#fff;}"
+    +".btn-close{background:#64748b;color:#fff;}"
+    +".cert{width:1050px;min-height:742px;background:#fff;position:relative;overflow:hidden;"
+    +"box-shadow:0 8px 40px rgba(0,0,0,.22);margin-bottom:44px;page-break-after:always;}"
+    +".cert-hdr{display:flex;align-items:center;gap:18px;padding:28px 52px 0;position:relative;z-index:1;}"
+    +".cert-logo{height:58px;width:auto;}"
+    +".cert-logo-txt{font-size:18px;font-weight:900;color:#1a3570;line-height:1.15;letter-spacing:.04em;}"
+    +".cert-hdiv{width:2px;height:56px;background:#c0c8d8;margin:0 6px;}"
+    +".cert-everlast{display:flex;flex-direction:column;line-height:1.1;}"
+    +".cert-ever-top{font-size:15px;font-weight:900;color:#f59e0b;letter-spacing:.18em;text-transform:uppercase;}"
+    +".cert-ever-bot{font-size:24px;font-weight:800;color:#1a3570;font-style:italic;font-family:\"Georgia\",serif;}"
+    +".cert-title-wrap{text-align:center;padding:16px 80px 0;position:relative;z-index:1;}"
+    +".cert-main-title{font-size:80px;font-weight:900;color:#1a3570;letter-spacing:.06em;line-height:1;font-family:\"Arial Black\",Arial,sans-serif;}"
+    +".cert-of-comp{font-size:19px;letter-spacing:.3em;color:#1a3570;margin-top:4px;font-weight:400;}"
+    +".cert-presented{text-align:center;font-size:16px;color:#475569;margin-top:14px;position:relative;z-index:1;}"
+    +".cert-pname{text-align:center;font-size:60px;font-weight:900;color:#1a3570;"
+    +"font-family:\"Arial Black\",Georgia,sans-serif;margin:8px 0 4px;line-height:1.1;position:relative;z-index:1;}"
+    +".cert-desc{text-align:center;font-size:15px;color:#334155;line-height:1.85;"
+    +"padding:6px 110px 0;position:relative;z-index:1;}"
+    +".cert-sigs{display:flex;justify-content:space-between;align-items:flex-end;"
+    +"padding:22px 130px 18px;position:relative;z-index:1;}"
+    +".cert-sig{text-align:center;}"
+    +".cert-sig-space{height:44px;}"
+    +".cert-sig-line{width:210px;border-bottom:2.5px solid #c8a030;margin-bottom:8px;}"
+    +".cert-sig-name{font-size:14px;font-weight:700;color:#1a3570;}"
+    +".cert-sig-role{font-size:13px;color:#64748b;margin-top:2px;}"
+    +".cert-ref{position:absolute;bottom:18px;right:52px;font-size:11.5px;color:#64748b;"
+    +"text-decoration:underline;z-index:1;font-family:monospace;}"
+    +"@media print{"
+    +"body{background:#fff;padding:0;}"
+    +".toolbar{display:none;}"
+    +".cert{box-shadow:none;width:100%;margin-bottom:0;}"
+    +"}"
+    +"</style></head><body>"
+    +"<div class=\"toolbar\">"
+    +"<button class=\"btn btn-print\" onclick=\"window.print()\">\uD83D\uDDA8\uFE0F Print / Save as PDF</button>"
+    +"<button class=\"btn btn-close\" onclick=\"window.close()\">\u2715 Close</button>"
+    +"</div>"
+    +pages.join("\n")
+    +"</body></html>";
+}
+
+function generateFILCert(secId,ri){
+  saveCurrent();
+  var rows=S.rows[secId]||[];
+  var row=rows[ri];
+  if(!row){return;}
+  var name_=(row[san("Name of Participant")]||"").trim();
+  if(!name_){alert("Please enter Participant Name first.");return;}
+  var amount=(row[san("Amount Paid")]||"").trim();
+  if(!amount){alert("Please enter Amount Paid before generating a certificate.");return;}
+  var certId=row[san("Certificate ID")]||"";
+  if(!certId){
+    var yr=(S.year||String(new Date().getFullYear())).replace("-","").substring(0,4);
+    var seq=String(ri+1).padStart(4,"0");
+    var rand=Math.random().toString(36).substr(2,4).toUpperCase();
+    certId="FIL-"+yr+"-"+seq+"-"+rand;
+    S.rows[secId][ri][san("Certificate ID")]=certId;
+    S.rows[secId][ri][san("Certificate Status")]="Generated";
+    renderSec(S.secIdx);
+  }
+  var page=_openFILCertWindow(row,certId,false);
+  var html=_buildCertPageHtml([page],false);
+  var w=window.open("","_blank","width=1100,height=820,scrollbars=yes");
   if(w){w.document.write(html);w.document.close();}
-  else{alert('Pop-up blocked. Please allow pop-ups for this page and try again.');}
+  else{alert("Pop-up blocked. Please allow pop-ups for this page and try again.");}
 }
+
+function bulkGenerateFILCerts(secId){
+  saveCurrent();
+  var rows=S.rows[secId]||[];
+  var eligible=rows.filter(function(r){
+    return (r[san("Name of Participant")]||"").trim()&&(r[san("Amount Paid")]||"").trim();
+  });
+  if(eligible.length===0){alert("No eligible participants found. Name of Participant and Amount Paid are required.");return;}
+  if(!confirm("Generate certificates for all "+eligible.length+" eligible participant(s)?\n\nCertificate IDs will be assigned and status set to Generated."))return;
+  rows.forEach(function(row,ri){
+    if(!(row[san("Name of Participant")]||"").trim())return;
+    if(!(row[san("Amount Paid")]||"").trim())return;
+    if(!row[san("Certificate ID")]){
+      var yr=(S.year||String(new Date().getFullYear())).replace("-","").substring(0,4);
+      var seq=String(ri+1).padStart(4,"0");
+      var rand=Math.random().toString(36).substr(2,4).toUpperCase();
+      row[san("Certificate ID")]="FIL-"+yr+"-"+seq+"-"+rand;
+      row[san("Certificate Status")]="Generated";
+    }
+  });
+  renderSec(S.secIdx);
+  var pages=[];
+  rows.forEach(function(row){
+    if(!(row[san("Name of Participant")]||"").trim())return;
+    if(!row[san("Certificate ID")])return;
+    pages.push(_openFILCertWindow(row,row[san("Certificate ID")],true));
+  });
+  var html=_buildCertPageHtml(pages,true);
+  var w=window.open("","_blank","width=1100,height=820,scrollbars=yes");
+  if(w){w.document.write(html);w.document.close();}
+  else{alert("Pop-up blocked. Please allow pop-ups for this page and try again.");}
+}
+
+/* ======= UNIVERSAL TABLE IMPORT (SheetJS XLSX) ======= */
+function importTableData(secId){
+  var sec=S.dept.sections.find(function(s){return s.id===secId;});
+  if(!sec||!sec.cols){alert("Cannot import: section not found.");return;}
+  if(typeof XLSX==="undefined"){alert("SheetJS not loaded. Check internet connection.");return;}
+  var inp=document.createElement("input");
+  inp.type="file"; inp.accept=".xlsx,.xls,.csv"; inp.style.display="none";
+  document.body.appendChild(inp);
+  inp.onchange=function(e){
+    var file=e.target.files[0];
+    document.body.removeChild(inp);
+    if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(evt){
+      try{
+        var wb=XLSX.read(new Uint8Array(evt.target.result),{type:"array"});
+        var ws=wb.Sheets[wb.SheetNames[0]];
+        var data=XLSX.utils.sheet_to_json(ws,{defval:""});
+        if(!data||data.length===0){showMsg("f-msg","No data rows found in the file.","error");return;}
+        _processImportedData(secId,sec,data);
+      }catch(err){showMsg("f-msg","Error reading file: "+err.message,"error");}
+    };
+    reader.readAsArrayBuffer(file);
+  };
+  inp.click();
+}
+
+function _processImportedData(secId,sec,jsonData){
+  function mapKey(h){
+    var ih=h.toLowerCase().trim();
+    for(var i=0;i<sec.cols.length;i++){
+      var col=sec.cols[i]; var ck=col.toLowerCase().trim();
+      if(ck===ih)return san(col);
+      if(ck.replace(/[^a-z0-9]/g,"")===ih.replace(/[^a-z0-9]/g,""))return san(col);
+      if(ck.includes(ih)||ih.includes(ck))return san(col);
+      var fw=ck.split(" ")[0];
+      if(fw.length>3&&ih.startsWith(fw))return san(col);
+    }
+    return null;
+  }
+  var importedHeaders=Object.keys(jsonData[0]||{});
+  var headerMap={};
+  importedHeaders.forEach(function(h){var k=mapKey(h);if(k)headerMap[h]=k;});
+  var newRows=jsonData.map(function(r){
+    var row={};
+    sec.cols.forEach(function(c){row[san(c)]="";});
+    if(sec.certSection)row[san("Certificate Status")]="Pending";
+    Object.keys(r).forEach(function(h){var k=headerMap[h];if(k!==undefined)row[k]=String(r[h]||"");});
+    return row;
+  }).filter(function(r){return Object.values(r).some(function(v){return v!=="";});});
+  if(newRows.length===0){showMsg("f-msg","No matching columns found. Ensure file headers match section column names.","error");return;}
+  var existing=S.rows[secId]||[];
+  if(existing.length>0){
+    var choice=confirm("Import ready: "+newRows.length+" row(s) found.\n\nOK = APPEND to existing "+existing.length+" row(s)\nCancel = REPLACE all existing data");
+    S.rows[secId]=choice?[...existing,...newRows]:newRows;
+  }else{
+    S.rows[secId]=newRows;
+  }
+  renderSec(S.secIdx);
+  showMsg("f-msg","✅ Imported "+newRows.length+" row(s) successfully.","ok");
+}
+
 
 /* ═══════════════ AI VALIDATION AGENT ═══════════════ */
 const AI_AGENT_VERSION='v1.0';
@@ -3441,9 +3587,13 @@ function renderSec(idx){
       html+='<td><button type="button" class="del-r" onclick="delRow(\''+sec.id+'\','+ri+')">✕</button></td></tr>';
     });
     html+='</tbody></table></div>';
-    html+='<div style="display:flex;gap:10px;align-items:center;margin-top:10px;">';
+    html+='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;">';
     html+='<button type="button" class="btn-add-row" onclick="addRow(\''+sec.id+'\')">+ Add Row</button>';
-    if(isCert)html+='<button type="button" class="btn-ai-validate" onclick="runFILValidation()" title="Run AI Data Verification &amp; Validation">🤖 Run AI Validation</button>';
+    html+='<button type="button" class="btn-import" onclick="importTableData(\''+sec.id+'\')" title="Import data from Excel / CSV">📥 Import Excel/CSV</button>';
+    if(isCert){
+      html+='<button type="button" class="btn-bulk-cert" onclick="bulkGenerateFILCerts(\''+sec.id+'\')" title="Generate certificates for all eligible participants">🎓 Bulk Generate Certs</button>';
+      html+='<button type="button" class="btn-ai-validate" onclick="runFILValidation()" title="Run AI Data Verification &amp; Validation">🤖 AI Validate</button>';
+    }
     html+='</div>';
 
   }else if(sec.mode==='fixed'){
