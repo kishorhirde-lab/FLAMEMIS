@@ -1206,6 +1206,8 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 </style>
 <!-- SheetJS for Excel export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- EmailJS for automatic certificate email delivery -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -1461,6 +1463,10 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
         <div class="adm-nav-item" data-tab="pinreset" onclick="switchAdmTab('pinreset',this)">
           <span class="adm-nav-icon">🔄</span>
           <span class="adm-nav-label">Reset PINs</span>
+        </div>
+        <div class="adm-nav-item" data-tab="emailcfg" onclick="switchAdmTab('emailcfg',this)">
+          <span class="adm-nav-icon">📧</span>
+          <span class="adm-nav-label">Email Config</span>
         </div>
       </div>
 
@@ -2110,7 +2116,89 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
       </div>
     </div>
   </div>
-    </div><!-- end adm-content -->
+    <!-- ═══ TAB: EMAIL CONFIG (EmailJS) ═══ -->
+  <div class="adm-tab-content" id="adm-tab-emailcfg">
+    <div class="acc-body">
+      <div class="acc-card">
+        <div class="acc-card-title">📧 Automatic Email Configuration (EmailJS)</div>
+        <p style="font-size:12px;color:#6b7a99;margin-bottom:16px">
+          EmailJS lets you send emails directly from the browser — no server required.
+          Complete the 3 steps below to enable automatic certificate notification emails.
+        </p>
+
+        <!-- Step 1 -->
+        <div style="background:#f0f7ff;border-left:4px solid #2563eb;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:14px">
+          <div style="font-weight:700;color:#1e40af;font-size:13px;margin-bottom:6px">Step 1 — Create a free EmailJS account</div>
+          <ol style="margin:0 0 0 16px;font-size:12px;color:#374151;line-height:1.8">
+            <li>Go to <strong>emailjs.com</strong> → Sign Up (free)</li>
+            <li>Under <strong>Email Services</strong> → Add New Service → choose Gmail / Outlook → connect your sender email <strong>arc@flame.edu.in</strong></li>
+            <li>Note down your <strong>Service ID</strong> (e.g. <code>service_abc123</code>)</li>
+          </ol>
+        </div>
+
+        <!-- Step 2 -->
+        <div style="background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:14px">
+          <div style="font-weight:700;color:#15803d;font-size:13px;margin-bottom:6px">Step 2 — Create an Email Template</div>
+          <p style="font-size:12px;color:#374151;margin:0 0 6px">Under <strong>Email Templates</strong> → Create New Template. Use these exact variable names in your template:</p>
+          <div style="background:#fff;border:1px solid #d1fae5;border-radius:6px;padding:10px 12px;font-size:11px;font-family:monospace;color:#065f46;line-height:1.9">
+            <b>To Email:</b> {{to_email}}<br>
+            <b>Subject:</b> Your Certificate — {{program_name}} | FLAME Investment Lab<br><br>
+            Dear {{to_name}},<br><br>
+            We are pleased to inform you that your Certificate of Completion has been successfully generated.<br><br>
+            Programme: {{program_name}}<br>
+            Duration: {{duration}}<br>
+            Certificate Ref: {{cert_id}}<br>
+            Organisation: {{org_details}}<br>
+            Issue Date: {{issue_date}}<br><br>
+            Warm regards,<br>
+            Programme Coordinator<br>
+            FLAME Investment Lab, FLAME University Pune<br>
+            {{from_email}}
+          </div>
+          <p style="font-size:11px;color:#6b7a99;margin:8px 0 0">Note down your <strong>Template ID</strong> (e.g. <code>template_xyz789</code>)</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div style="background:#fef9ec;border-left:4px solid #d97706;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:18px">
+          <div style="font-weight:700;color:#b45309;font-size:13px;margin-bottom:6px">Step 3 — Enter your credentials below</div>
+          <p style="font-size:12px;color:#374151;margin:0">Go to <strong>Account → API Keys</strong> to find your Public Key.</p>
+        </div>
+
+        <!-- Credentials form -->
+        <div style="display:grid;gap:12px;max-width:520px">
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Public Key (Account API Key)</label>
+            <input id="ejs-public-key" type="text" placeholder="e.g. AbCdEfGhIjKlMnOpQr" class="fix-val"
+              style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:monospace">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Service ID</label>
+            <input id="ejs-service-id" type="text" placeholder="e.g. service_abc123" class="fix-val"
+              style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:monospace">
+          </div>
+          <div>
+            <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:4px">Template ID</label>
+            <input id="ejs-template-id" type="text" placeholder="e.g. template_xyz789" class="fix-val"
+              style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;font-family:monospace">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center">
+          <button onclick="saveEmailJSConfig()" style="background:#1a3a6b;color:#fff;border:none;border-radius:6px;padding:9px 20px;font-weight:700;font-size:13px;cursor:pointer">💾 Save Configuration</button>
+          <button onclick="testEmailJSSend()" style="background:#16a34a;color:#fff;border:none;border-radius:6px;padding:9px 20px;font-weight:700;font-size:13px;cursor:pointer">🧪 Send Test Email</button>
+          <button onclick="clearEmailJSConfig()" style="background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;border-radius:6px;padding:9px 20px;font-weight:600;font-size:13px;cursor:pointer">🗑 Clear</button>
+        </div>
+        <div id="ejs-msg" style="margin-top:12px;font-size:13px;min-height:20px"></div>
+
+        <!-- Status indicator -->
+        <div id="ejs-status-bar" style="margin-top:18px;padding:12px 16px;border-radius:8px;background:#f8fafc;border:1px solid #e2e8f0;font-size:12px;color:#64748b">
+          ⚙️ Configuration not saved yet. Enter your EmailJS credentials above and click Save.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- end adm-content -->
   </div><!-- end adm-layout -->
 
 </div>
@@ -2868,6 +2956,136 @@ function validateFiles(files,sec){
 /* ═══════════════ STATE ═══════════════ */
 let S={dept:null,admin:false,year:'',month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
 
+/* ═══════════════ EMAILJS CONFIG ═══════════════ */
+const EMAILJS_SENDER = 'arc@flame.edu.in';
+const EMAILJS_STORAGE_KEY = 'flame_emailjs_config';
+
+function _getEmailJSConfig(){
+  try{var c=localStorage.getItem(EMAILJS_STORAGE_KEY);if(c)return JSON.parse(c);}catch(e){}
+  return null;
+}
+
+function _initEmailJS(cfg){
+  if(typeof emailjs==='undefined')return false;
+  if(!cfg||!cfg.publicKey)return false;
+  try{emailjs.init({publicKey:cfg.publicKey});return true;}catch(e){return false;}
+}
+
+function saveEmailJSConfig(){
+  var pk=(document.getElementById('ejs-public-key')||{}).value||'';
+  var sid=(document.getElementById('ejs-service-id')||{}).value||'';
+  var tid=(document.getElementById('ejs-template-id')||{}).value||'';
+  var msg=document.getElementById('ejs-msg');
+  var bar=document.getElementById('ejs-status-bar');
+  if(!pk||!sid||!tid){
+    if(msg)msg.innerHTML='<span style="color:#dc2626">⚠️ All three fields are required.</span>';
+    return;
+  }
+  var cfg={publicKey:pk.trim(),serviceId:sid.trim(),templateId:tid.trim()};
+  try{
+    localStorage.setItem(EMAILJS_STORAGE_KEY,JSON.stringify(cfg));
+    _initEmailJS(cfg);
+    if(msg)msg.innerHTML='<span style="color:#16a34a">✅ Configuration saved successfully!</span>';
+    if(bar)bar.innerHTML='✅ EmailJS configured — automatic emails <strong>enabled</strong>. Sender: <strong>'+EMAILJS_SENDER+'</strong>';
+    if(bar){bar.style.background='#f0fdf4';bar.style.borderColor='#86efac';bar.style.color='#15803d';}
+  }catch(e){
+    if(msg)msg.innerHTML='<span style="color:#dc2626">Error saving: '+e.message+'</span>';
+  }
+}
+
+function clearEmailJSConfig(){
+  try{localStorage.removeItem(EMAILJS_STORAGE_KEY);}catch(e){}
+  ['ejs-public-key','ejs-service-id','ejs-template-id'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.value='';
+  });
+  var msg=document.getElementById('ejs-msg');
+  var bar=document.getElementById('ejs-status-bar');
+  if(msg)msg.innerHTML='<span style="color:#64748b">Configuration cleared.</span>';
+  if(bar){bar.innerHTML='⚙️ Configuration not saved yet. Enter your EmailJS credentials above and click Save.';
+    bar.style.background='#f8fafc';bar.style.borderColor='#e2e8f0';bar.style.color='#64748b';}
+}
+
+function _loadEmailJSConfigUI(){
+  var cfg=_getEmailJSConfig();
+  var bar=document.getElementById('ejs-status-bar');
+  if(cfg){
+    var el;
+    el=document.getElementById('ejs-public-key');if(el)el.value=cfg.publicKey||'';
+    el=document.getElementById('ejs-service-id');if(el)el.value=cfg.serviceId||'';
+    el=document.getElementById('ejs-template-id');if(el)el.value=cfg.templateId||'';
+    if(bar){bar.innerHTML='✅ EmailJS configured — automatic emails <strong>enabled</strong>. Sender: <strong>'+EMAILJS_SENDER+'</strong>';
+      bar.style.background='#f0fdf4';bar.style.borderColor='#86efac';bar.style.color='#15803d';}
+    _initEmailJS(cfg);
+  }
+}
+
+async function testEmailJSSend(){
+  var msg=document.getElementById('ejs-msg');
+  var cfg=_getEmailJSConfig();
+  if(!cfg){if(msg)msg.innerHTML='<span style="color:#dc2626">⚠️ Save configuration first.</span>';return;}
+  var testEmail=prompt('Enter your own email address to receive the test:','');
+  if(!testEmail)return;
+  if(msg)msg.innerHTML='<span style="color:#2563eb">⏳ Sending test email…</span>';
+  var params={
+    to_email:testEmail,to_name:'Test Participant',
+    program_name:'Leadership Excellence Programme (Test)',
+    cert_id:'FIL-TEST-0001-XXXX',
+    duration:'01/04/2025 to 03/04/2025',
+    org_details:'Manager, Test Organisation, Pune',
+    issue_date:new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'}),
+    from_email:EMAILJS_SENDER
+  };
+  try{
+    _initEmailJS(cfg);
+    await emailjs.send(cfg.serviceId,cfg.templateId,params);
+    if(msg)msg.innerHTML='<span style="color:#16a34a">✅ Test email sent to <strong>'+testEmail+'</strong>. Check your inbox!</span>';
+  }catch(e){
+    if(msg)msg.innerHTML='<span style="color:#dc2626">❌ Send failed: '+e.text+'<br><small>Check your Service ID, Template ID, and Public Key.</small></span>';
+  }
+}
+
+async function _sendCertEmailJS(row,certId){
+  var cfg=_getEmailJSConfig();
+  var email=(row[san('Email ID')]||'').trim();
+  if(!cfg||!email)return false;
+  var name_=(row[san('Name of Participant')]||'').trim();
+  var prog=(row[san('Name of the Program')]||'MDP Programme').trim();
+  var sDate=(row[san('Program Start Date')]||'').trim();
+  var eDate=(row[san('Program End Date')]||'').trim();
+  var co=(row[san('Name of Company')]||'').trim();
+  var desig=(row[san('Designation')]||'').trim();
+  var city=(row[san('City')]||'').trim();
+  var state=(row[san('State')]||'').trim();
+  var duration=sDate&&eDate?sDate+' to '+eDate:(sDate||eDate||'—');
+  var orgParts=[desig,co,[city,state].filter(Boolean).join(', ')].filter(Boolean);
+  var orgDetails=orgParts.join(', ')||'—';
+  var issueDate=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+  var params={
+    to_email:email,
+    to_name:name_,
+    program_name:prog,
+    cert_id:certId,
+    duration:duration,
+    org_details:orgDetails,
+    issue_date:issueDate,
+    from_email:EMAILJS_SENDER
+  };
+  try{
+    _initEmailJS(cfg);
+    await emailjs.send(cfg.serviceId,cfg.templateId,params);
+    return true;
+  }catch(e){
+    console.error('EmailJS send failed:',e);
+    return false;
+  }
+}
+
+/* Initialize EmailJS on page load if already configured */
+(function(){
+  var cfg=_getEmailJSConfig();
+  if(cfg)_initEmailJS(cfg);
+})();
+
 /* ═══════════════ DRAFT AUTO-SAVE ═══════════════ */
 var _draftSaveTimer=null;
 
@@ -3179,8 +3397,27 @@ function generateFILCert(secId,ri){
   /* Send notification email to participant */
   var email=(row[san("Email ID")]||"").trim();
   if(email){
-    setTimeout(function(){_triggerFILCertEmail(row,certId);},800);
-    showMsg("f-msg","🎓 Certificate generated (Ref: "+certId+"). Notification email opened for "+esc(email)+"","ok");
+    var _cfg=_getEmailJSConfig();
+    if(_cfg){
+      showMsg("f-msg","🎓 Certificate generated (Ref: "+certId+"). Sending email to "+esc(email)+"…","ok");
+      _sendCertEmailJS(row,certId).then(function(ok){
+        if(ok){
+          showMsg("f-msg","✅ Certificate generated & email sent to "+esc(email)+" (Ref: "+certId+").","ok");
+          /* Update status to Sent */
+          var rows=S.rows[secId]||[];
+          if(rows[ri])rows[ri][san("Certificate Status")]="Sent";
+          renderSec(S.secIdx);
+        }else{
+          showMsg("f-msg","🎓 Certificate generated (Ref: "+certId+"). Email delivery failed — check EmailJS config.","error");
+          /* Fallback to mailto */
+          _triggerFILCertEmail(row,certId);
+        }
+      });
+    }else{
+      /* EmailJS not configured — fall back to mailto */
+      _triggerFILCertEmail(row,certId);
+      showMsg("f-msg","🎓 Certificate generated (Ref: "+certId+"). Email client opened (configure EmailJS in Admin for auto-send).","ok");
+    }
   } else {
     showMsg("f-msg","🎓 Certificate generated (Ref: "+certId+"). No email on record — email not sent.","ok");
   }
@@ -3222,12 +3459,11 @@ function bulkGenerateFILCerts(secId){
 
   /* Send individual notification emails with staggered delay */
   if(withEmail.length>0){
-    _bulkSendFILCertEmails(rows,withEmail.length);
+    _bulkSendFILCertEmails(rows,secId);
   }
 }
 
-function _bulkSendFILCertEmails(rows,total){
-  /* Build email panel showing all mailto links — avoids browser popup blocker for bulk */
+async function _bulkSendFILCertEmails(rows,secId){
   var old=document.getElementById("fil-bulk-email-panel");
   if(old)old.remove();
 
@@ -3236,50 +3472,47 @@ function _bulkSendFILCertEmails(rows,total){
         && r[san("Certificate ID")]
         && (r[san("Email ID")]||"").trim();
   });
+  if(!emailRows.length)return;
 
-  var html='<div id="fil-bulk-email-panel" style="'
-    +'margin:16px 0;border-radius:10px;overflow:hidden;'
-    +'box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:system-ui,sans-serif;">';
+  var cfg=_getEmailJSConfig();
+  var useEmailJS=!!cfg;
 
-  /* Header */
+  /* Build status panel */
+  var html='<div id="fil-bulk-email-panel" style="margin:16px 0;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:system-ui,sans-serif;">';
   html+='<div style="background:#1a3a6b;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;">';
   html+='<span style="font-size:22px;">📧</span>';
-  html+='<div style="flex:1;">';
-  html+='<div style="font-weight:700;font-size:15px;">Certificate Notification Emails</div>';
-  html+='<div style="font-size:12px;opacity:.85;">'+emailRows.length+' participant(s) with registered email — click each link to open in your email client</div>';
-  html+='</div>';
-  html+='<button onclick="document.getElementById(\'fil-bulk-email-panel\').remove()" '
-       +'style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;'
-       +'padding:4px 10px;cursor:pointer;font-size:13px;">✕ Close</button>';
+  html+='<div style="flex:1;"><div style="font-weight:700;font-size:15px;">Certificate Emails — '+(useEmailJS?'Auto Sending…':'Manual Send Required')+'</div>';
+  html+='<div style="font-size:12px;opacity:.85;">'+emailRows.length+' participant(s) with registered email</div></div>';
+  html+='<button onclick="document.getElementById(\'fil-bulk-email-panel\').remove()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:13px;">✕ Close</button>';
   html+='</div>';
 
-  /* Email list */
-  html+='<div style="background:#fff;padding:12px 20px;max-height:300px;overflow-y:auto;">';
-  emailRows.forEach(function(row){
+  /* Row list with status placeholders */
+  html+='<div style="background:#fff;padding:12px 20px;max-height:320px;overflow-y:auto;" id="bulk-email-list">';
+  emailRows.forEach(function(row,i){
     var name_=(row[san("Name of Participant")]||"").trim();
     var email=(row[san("Email ID")]||"").trim();
     var certId=row[san("Certificate ID")]||"";
     var prog=(row[san("Name of the Program")]||"MDP Programme").trim();
-    var mailto=_composeFILCertEmail(row,certId);
-    html+='<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f1f5f9;">';
-    html+='<div style="flex:1;">';
-    html+='<div style="font-weight:600;font-size:13px;color:#1e293b;">'+esc(name_)+'</div>';
-    html+='<div style="font-size:11px;color:#64748b;">'+esc(email)+' &bull; '+esc(prog)+' &bull; Ref: '+esc(certId)+'</div>';
-    html+='</div>';
-    if(mailto){
-      html+='<a href="'+esc(mailto)+'" style="display:inline-flex;align-items:center;gap:6px;'
-           +'background:#1a3a6b;color:#fff;text-decoration:none;padding:6px 14px;'
-           +'border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap;">📧 Send Email</a>';
+    html+='<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f1f5f9;" id="berow-'+i+'">';
+    html+='<div style="flex:1;"><div style="font-weight:600;font-size:13px;color:#1e293b;">'+esc(name_)+'</div>';
+    html+='<div style="font-size:11px;color:#64748b;">'+esc(email)+' &bull; '+esc(prog)+'</div></div>';
+    if(useEmailJS){
+      html+='<span id="best-'+i+'" style="font-size:12px;color:#94a3b8;">⏳ Queued</span>';
+    }else{
+      var mailto=_composeFILCertEmail(row,certId);
+      html+='<a href="'+esc(mailto||'')+'" style="display:inline-flex;align-items:center;gap:6px;background:#1a3a6b;color:#fff;text-decoration:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;">📧 Open</a>';
     }
     html+='</div>';
   });
   html+='</div>';
 
-  /* Send all button */
-  html+='<div style="padding:12px 20px;background:#f8fafc;border-top:1px solid #e2e8f0;">';
-  html+='<div style="font-size:11px;color:#94a3b8;">Click individual "Send Email" buttons above, or use your email client after opening the first one.</div>';
-  html+='</div>';
-
+  if(!useEmailJS){
+    html+='<div style="padding:12px 20px;background:#fffbeb;border-top:1px solid #fde68a;font-size:12px;color:#92400e;">';
+    html+='⚠️ EmailJS not configured. Click each "Open" button to send via your email client. <strong>Go to Admin → Email Config to enable auto-send.</strong>';
+    html+='</div>';
+  }else{
+    html+='<div id="bulk-email-summary" style="padding:12px 20px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:12px;color:#64748b;">⏳ Sending emails…</div>';
+  }
   html+='</div>';
 
   var card=document.querySelector('#f-main .sc-card');
@@ -3289,7 +3522,43 @@ function _bulkSendFILCertEmails(rows,total){
   setTimeout(function(){
     var panel=document.getElementById("fil-bulk-email-panel");
     if(panel)panel.scrollIntoView({behavior:"smooth",block:"start"});
-  },600);
+  },400);
+
+  if(!useEmailJS)return;
+
+  /* Auto-send sequentially with 1.2s gap to respect EmailJS rate limits */
+  var sent=0,failed=0;
+  for(var i=0;i<emailRows.length;i++){
+    var row=emailRows[i];
+    var statusEl=document.getElementById("best-"+i);
+    if(statusEl)statusEl.innerHTML='<span style="color:#2563eb;">⏳ Sending…</span>';
+    var ok=await _sendCertEmailJS(row,row[san("Certificate ID")]);
+    if(ok){
+      sent++;
+      if(statusEl)statusEl.innerHTML='<span style="color:#16a34a;font-weight:600;">✅ Sent</span>';
+      /* Update Certificate Status to Sent in S.rows */
+      var allRows=S.rows[secId]||[];
+      var match=allRows.find(function(r){return r[san("Certificate ID")]===row[san("Certificate ID")];});
+      if(match)match[san("Certificate Status")]="Sent";
+    }else{
+      failed++;
+      if(statusEl)statusEl.innerHTML='<span style="color:#dc2626;">❌ Failed</span>';
+    }
+    /* 1.2 second gap between sends */
+    if(i<emailRows.length-1)await new Promise(function(r){setTimeout(r,1200);});
+  }
+
+  var summary=document.getElementById("bulk-email-summary");
+  if(summary){
+    if(failed===0){
+      summary.innerHTML='<span style="color:#16a34a;font-weight:600;">✅ All '+sent+' emails sent successfully from '+EMAILJS_SENDER+'</span>';
+      summary.style.background='#f0fdf4';
+    }else{
+      summary.innerHTML='<span style="color:#92400e;">⚠️ '+sent+' sent, '+failed+' failed. Check EmailJS dashboard for details.</span>';
+      summary.style.background='#fffbeb';
+    }
+  }
+  renderSec(S.secIdx); /* refresh status column */
 }
 
 /* ======= UNIVERSAL TABLE IMPORT (SheetJS XLSX) ======= */
@@ -5461,6 +5730,7 @@ const ADM_TAB_META = {
   comprep:   {title:'Compliance Report',    desc:'Cross-framework compliance summary',              section:'Reports & Analytics'},
   pindir:    {title:'PIN Directory',        desc:'View and manage department access PINs',          section:'System'},
   pinreset:  {title:'Reset PINs',           desc:'Reset department or admin PIN codes',             section:'System'},
+  emailcfg:  {title:'Email Configuration',  desc:'Set up EmailJS for automatic certificate emails', section:'System'},
 };
 
 function switchAdmTab(id, el){
@@ -5534,6 +5804,7 @@ function switchAdmTab(id, el){
   if(id==='comprep'&&!window._comprepBuilt){buildComplianceReport();window._comprepBuilt=true;}
   if(id==='pindir'&&!window._pindirBuilt){buildPinDirectory();window._pindirBuilt=true;}
   if(id==='pinreset'&&!window._pinresetBuilt){buildPinReset();window._pinresetBuilt=true;}
+  if(id==='emailcfg'){_loadEmailJSConfigUI();}
 }
 
 function toggleAdmSidebar(){
