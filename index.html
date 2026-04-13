@@ -2929,29 +2929,51 @@ function initLogin(){
 }
 
 /* ═══════════════ FIL CERTIFICATE ═══════════════ */
-function generateFILCert(secId,ri){
-  saveCurrent();
-  const rows=S.rows[secId]||[];
-  const row=rows[ri];
-  if(!row){alert('Row not found.');return;}
-  const name=(row[san('Name of Participant')]||'').trim();
-  if(!name){alert('Please enter the Participant Name before generating a certificate.');return;}
-  const amount=(row[san('Amount Paid')]||'').trim();
-  if(!amount){alert('Please enter Amount Paid before generating a certificate.');return;}
+function _composeFILCertEmail(row,certId){
+  var name_  =(row[san("Name of Participant")]||"").trim();
+  var prog   =(row[san("Name of the Program")]||"MDP Programme").trim();
+  var sDate  =(row[san("Program Start Date")]||"").trim();
+  var eDate  =(row[san("Program End Date")]||"").trim();
+  var co     =(row[san("Name of Company")]||"").trim();
+  var desig  =(row[san("Designation")]||"").trim();
+  var email  =(row[san("Email ID")]||"").trim();
+  if(!email)return null;
+  var duration=sDate&&eDate?sDate+" to "+eDate:(sDate||eDate||"");
+  var subject=encodeURIComponent("Certificate of Completion — "+prog+" | FLAME Investment Lab");
+  var body=encodeURIComponent(
+    "Dear "+name_+",\n\n"
+    +"We are pleased to inform you that your Certificate of Completion has been successfully generated "
+    +"for your participation in the following programme conducted by FLAME Investment Lab, FLAME University Pune.\n\n"
+    +"Programme Details\n"
+    +"─────────────────────────────────────\n"
+    +"Programme  : "+prog+"\n"
+    +(duration?"Duration   : "+duration+"\n":"")
+    +(desig&&co?"Participant: "+name_+" ("+desig+", "+co+")\n":"Participant: "+name_+"\n")
+    +"Certificate Reference No. : "+certId+"\n"
+    +"─────────────────────────────────────\n\n"
+    +"Your certificate is enclosed and reflects your dedication to continuous learning and professional growth. "
+    +"Should you require a hard copy or need the certificate in any specific format, please do not hesitate to contact us.\n\n"
+    +"We look forward to your continued association with FLAME Investment Lab.\n\n"
+    +"Warm regards,\n"
+    +"Programme Coordinator\n"
+    +"FLAME Investment Lab\n"
+    +"FLAME University Pune\n"
+    +"Email: fil.mdp@flame.edu.in\n"
+    +"Website: www.flame.edu.in"
+  );
+  return "mailto:"+encodeURIComponent(email)+"?subject="+subject+"&body="+body;
+}
 
-  // Generate unique certificate ID if not already present
-  let certId=row[san('Certificate ID')]||'';
-  if(!certId){
-    const yr=(S.year||String(new Date().getFullYear())).replace('-','').substring(0,4);
-    const seq=String(ri+1).padStart(4,'0');
-    const rand=Math.random().toString(36).substr(2,4).toUpperCase();
-    certId='FIL-'+yr+'-'+seq+'-'+rand;
-    S.rows[secId][ri][san('Certificate ID')]=certId;
-    S.rows[secId][ri][san('Certificate Status')]='Generated';
-    renderSec(S.secIdx);
-  }
-
-  _openFILCertWindow(row,certId);
+function _triggerFILCertEmail(row,certId){
+  var mailto=_composeFILCertEmail(row,certId);
+  if(!mailto)return;
+  /* Open via hidden anchor — avoids popup blocker for mailto */
+  var a=document.createElement("a");
+  a.href=mailto;
+  a.style.display="none";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){document.body.removeChild(a);},500);
 }
 
 function _openFILCertWindow(row,certId,bulkMode){
@@ -3079,6 +3101,7 @@ function generateFILCert(secId,ri){
   var amount=(row[san("Amount Paid")]||"").trim();
   if(!amount){alert("Please enter Amount Paid before generating a certificate.");return;}
   var certId=row[san("Certificate ID")]||"";
+  var isNew=!certId;
   if(!certId){
     var yr=(S.year||String(new Date().getFullYear())).replace("-","").substring(0,4);
     var seq=String(ri+1).padStart(4,"0");
@@ -3087,12 +3110,22 @@ function generateFILCert(secId,ri){
     S.rows[secId][ri][san("Certificate ID")]=certId;
     S.rows[secId][ri][san("Certificate Status")]="Generated";
     renderSec(S.secIdx);
+    row=S.rows[secId][ri]; /* refresh row reference after renderSec */
   }
   var page=_openFILCertWindow(row,certId,false);
   var html=_buildCertPageHtml([page],false);
   var w=window.open("","_blank","width=1100,height=820,scrollbars=yes");
   if(w){w.document.write(html);w.document.close();}
   else{alert("Pop-up blocked. Please allow pop-ups for this page and try again.");}
+
+  /* Send notification email to participant */
+  var email=(row[san("Email ID")]||"").trim();
+  if(email){
+    setTimeout(function(){_triggerFILCertEmail(row,certId);},800);
+    showMsg("f-msg","🎓 Certificate generated (Ref: "+certId+"). Notification email opened for "+esc(email)+"","ok");
+  } else {
+    showMsg("f-msg","🎓 Certificate generated (Ref: "+certId+"). No email on record — email not sent.","ok");
+  }
 }
 
 function bulkGenerateFILCerts(secId){
@@ -3102,7 +3135,10 @@ function bulkGenerateFILCerts(secId){
     return (r[san("Name of Participant")]||"").trim()&&(r[san("Amount Paid")]||"").trim();
   });
   if(eligible.length===0){alert("No eligible participants found. Name of Participant and Amount Paid are required.");return;}
-  if(!confirm("Generate certificates for all "+eligible.length+" eligible participant(s)?\n\nCertificate IDs will be assigned and status set to Generated."))return;
+  var withEmail=eligible.filter(function(r){return (r[san("Email ID")]||"").trim();});
+  var confirmMsg="Generate certificates for all "+eligible.length+" eligible participant(s)?\n\nCertificate IDs will be assigned and status set to Generated.";
+  if(withEmail.length)confirmMsg+="\n\n📧 Notification emails will be sent to "+withEmail.length+" participant(s) with registered email.";
+  if(!confirm(confirmMsg))return;
   rows.forEach(function(row,ri){
     if(!(row[san("Name of Participant")]||"").trim())return;
     if(!(row[san("Amount Paid")]||"").trim())return;
@@ -3125,6 +3161,77 @@ function bulkGenerateFILCerts(secId){
   var w=window.open("","_blank","width=1100,height=820,scrollbars=yes");
   if(w){w.document.write(html);w.document.close();}
   else{alert("Pop-up blocked. Please allow pop-ups for this page and try again.");}
+
+  /* Send individual notification emails with staggered delay */
+  if(withEmail.length>0){
+    _bulkSendFILCertEmails(rows,withEmail.length);
+  }
+}
+
+function _bulkSendFILCertEmails(rows,total){
+  /* Build email panel showing all mailto links — avoids browser popup blocker for bulk */
+  var old=document.getElementById("fil-bulk-email-panel");
+  if(old)old.remove();
+
+  var emailRows=rows.filter(function(r){
+    return (r[san("Name of Participant")]||"").trim()
+        && r[san("Certificate ID")]
+        && (r[san("Email ID")]||"").trim();
+  });
+
+  var html='<div id="fil-bulk-email-panel" style="'
+    +'margin:16px 0;border-radius:10px;overflow:hidden;'
+    +'box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:system-ui,sans-serif;">';
+
+  /* Header */
+  html+='<div style="background:#1a3a6b;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;">';
+  html+='<span style="font-size:22px;">📧</span>';
+  html+='<div style="flex:1;">';
+  html+='<div style="font-weight:700;font-size:15px;">Certificate Notification Emails</div>';
+  html+='<div style="font-size:12px;opacity:.85;">'+emailRows.length+' participant(s) with registered email — click each link to open in your email client</div>';
+  html+='</div>';
+  html+='<button onclick="document.getElementById(\'fil-bulk-email-panel\').remove()" '
+       +'style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;'
+       +'padding:4px 10px;cursor:pointer;font-size:13px;">✕ Close</button>';
+  html+='</div>';
+
+  /* Email list */
+  html+='<div style="background:#fff;padding:12px 20px;max-height:300px;overflow-y:auto;">';
+  emailRows.forEach(function(row){
+    var name_=(row[san("Name of Participant")]||"").trim();
+    var email=(row[san("Email ID")]||"").trim();
+    var certId=row[san("Certificate ID")]||"";
+    var prog=(row[san("Name of the Program")]||"MDP Programme").trim();
+    var mailto=_composeFILCertEmail(row,certId);
+    html+='<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f1f5f9;">';
+    html+='<div style="flex:1;">';
+    html+='<div style="font-weight:600;font-size:13px;color:#1e293b;">'+esc(name_)+'</div>';
+    html+='<div style="font-size:11px;color:#64748b;">'+esc(email)+' &bull; '+esc(prog)+' &bull; Ref: '+esc(certId)+'</div>';
+    html+='</div>';
+    if(mailto){
+      html+='<a href="'+esc(mailto)+'" style="display:inline-flex;align-items:center;gap:6px;'
+           +'background:#1a3a6b;color:#fff;text-decoration:none;padding:6px 14px;'
+           +'border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap;">📧 Send Email</a>';
+    }
+    html+='</div>';
+  });
+  html+='</div>';
+
+  /* Send all button */
+  html+='<div style="padding:12px 20px;background:#f8fafc;border-top:1px solid #e2e8f0;">';
+  html+='<div style="font-size:11px;color:#94a3b8;">Click individual "Send Email" buttons above, or use your email client after opening the first one.</div>';
+  html+='</div>';
+
+  html+='</div>';
+
+  var card=document.querySelector('#f-main .sc-card');
+  if(card)card.insertAdjacentHTML('afterbegin',html);
+  else document.getElementById('f-main').insertAdjacentHTML('afterbegin',html);
+
+  setTimeout(function(){
+    var panel=document.getElementById("fil-bulk-email-panel");
+    if(panel)panel.scrollIntoView({behavior:"smooth",block:"start"});
+  },600);
 }
 
 /* ======= UNIVERSAL TABLE IMPORT (SheetJS XLSX) ======= */
