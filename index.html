@@ -1331,6 +1331,7 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
       <ul id="sec-nav"></ul>
     </div>
     <div class="s-foot">
+      <div id="draft-saved-ind" style="font-size:10px;color:#16a34a;text-align:center;margin-bottom:6px;opacity:0;transition:opacity 0.4s;">✓ Draft saved</div>
       <button type="button" class="btn-out" id="btn-logout">⏏ Logout</button>
     </div>
   </aside>
@@ -2867,6 +2868,63 @@ function validateFiles(files,sec){
 /* ═══════════════ STATE ═══════════════ */
 let S={dept:null,admin:false,year:'',month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
 
+/* ═══════════════ DRAFT AUTO-SAVE ═══════════════ */
+var _draftSaveTimer=null;
+
+function _draftKey(dept,year,period){
+  dept=dept||S.dept;period=period||(S.dept&&S.dept.type==='monthly'?S.month:'Annual');year=year||S.year;
+  if(!dept)return null;
+  return 'flame_draft_'+dept.id+'_'+String(year).replace(/[^a-zA-Z0-9]/g,'_')+'_'+String(period).replace(/[^a-zA-Z0-9]/g,'_');
+}
+
+function _saveDraftLocal(){
+  var key=_draftKey();
+  if(!key)return;
+  try{
+    localStorage.setItem(key,JSON.stringify({rows:S.rows,form:S.fvals,ts:Date.now()}));
+  }catch(e){/* quota exceeded */}
+  /* Show brief "draft saved" indicator */
+  var ind=document.getElementById('draft-saved-ind');
+  if(ind){clearTimeout(ind._t);ind.style.opacity='1';ind._t=setTimeout(function(){ind.style.opacity='0';},2000);}
+  /* Also debounce-save to Firebase draft path */
+  clearTimeout(_draftSaveTimer);
+  _draftSaveTimer=setTimeout(_saveDraftFB,4000);
+}
+
+function _saveDraftFB(){
+  var db=getDB();if(!db||!S.dept)return;
+  var period=S.dept.type==='monthly'?S.month:'Annual';
+  try{
+    db.ref(dbPath(S.dept.id,S.year,period)+'/__draft').set({rows:S.rows,form:S.fvals,ts:new Date().toISOString()});
+  }catch(e){}
+}
+
+function _loadDraftLocal(dept,year,period){
+  var key=_draftKey(dept,year,period);
+  if(!key)return null;
+  try{var raw=localStorage.getItem(key);if(raw)return JSON.parse(raw);}catch(e){}
+  return null;
+}
+
+async function _loadDraftFB(dept,year,period){
+  var db=getDB();if(!db)return null;
+  try{
+    var snap=await db.ref(dbPath(dept.id,year,period)+'/__draft').once('value');
+    if(snap&&snap.exists())return snap.val();
+  }catch(e){}
+  return null;
+}
+
+async function _applyDraft(dept,year,period){
+  /* Try Firebase first (authoritative), fall back to localStorage */
+  var draft=await _loadDraftFB(dept,year,period);
+  if(!draft)draft=_loadDraftLocal(dept,year,period);
+  if(draft){
+    if(draft.rows)S.rows=draft.rows;
+    if(draft.form)S.fvals=draft.form;
+  }
+}
+
 /* ═══════════════ TINY HELPERS ═══════════════ */
 const $=id=>document.getElementById(id);
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -3303,6 +3361,7 @@ function _processImportedData(secId,sec,jsonData){
     S.rows[secId]=newRows;
   }
   renderSec(S.secIdx);
+  _saveDraftLocal();
   showMsg("f-msg","✅ Imported "+newRows.length+" row(s) successfully ("+matchedCols+" column(s) matched).","ok");
 }
 
@@ -3625,7 +3684,8 @@ async function doLogin(){
   S={dept:dept,admin:false,year:yr,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
   sessionStorage.setItem('flame_session',JSON.stringify({type:'dept',deptId:dept.id,year:yr}));
   showScreen('sc-form');
-  renderForm();
+  var _period=dept.type==='monthly'?'Apr':'Annual';
+  _applyDraft(dept,yr,_period).then(function(){renderForm();});
 }
 
 function doAdminLogin(){
@@ -3945,6 +4005,7 @@ function addRow(secId){
   if(sec.certSection)r[san('Certificate Status')]='Pending';
   S.rows[secId].push(r);
   renderSec(S.secIdx);
+  _saveDraftLocal();
 }
 
 function delRow(secId,ri){
@@ -3952,6 +4013,7 @@ function delRow(secId,ri){
   if(!S.rows[secId])return;
   S.rows[secId].splice(ri,1);
   renderSec(S.secIdx);
+  _saveDraftLocal();
 }
 
 function saveCurrent(){
@@ -3974,10 +4036,12 @@ function saveCurrent(){
       if(Object.keys(row).length)rows.push(row);
     });
     S.rows[sec.id]=rows;
+    _saveDraftLocal();
   }else if(sec.mode==='fixed'){
     const vals={};
     document.querySelectorAll('.fix-val').forEach(function(inp){vals[inp.dataset.key]=inp.value;});
     S.fvals[sec.id]=vals;
+    _saveDraftLocal();
   }else{
     const vals={};
     (sec.fields||[]).forEach(function(f){
@@ -3994,6 +4058,7 @@ function saveCurrent(){
       }
     });
     S.fvals[sec.id]=vals;
+    _saveDraftLocal();
   }
 }
 
@@ -4034,6 +4099,9 @@ async function submitForm(){
   }
   try{
     await db.ref(dbPath(d.id,S.year,period)).set(payload);
+    /* Clear draft — data is now permanently submitted */
+    try{var _dk=_draftKey();if(_dk)localStorage.removeItem(_dk);}catch(e){}
+    try{db.ref(dbPath(d.id,S.year,period)+'/__draft').remove();}catch(e){}
     $('f-main').innerHTML=
       '<div class="done-card"><div class="done-ico">✅</div>'+
       '<h2>Submitted Successfully!</h2>'+
@@ -4405,7 +4473,8 @@ window.onclick=function(e){if(e.target===$('modal'))$('modal').hidden=true;};
       if(!dept){sessionStorage.removeItem('flame_session');return;}
       S={dept:dept,admin:false,year:sess.year,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
       showScreen('sc-form');
-      renderForm();
+      var _rp=dept.type==='monthly'?'Apr':'Annual';
+      _applyDraft(dept,sess.year,_rp).then(function(){renderForm();});
     }
   }catch(e){sessionStorage.removeItem('flame_session');}
 })();
