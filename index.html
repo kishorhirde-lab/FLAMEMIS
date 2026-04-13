@@ -200,9 +200,11 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .f-content{flex:1;overflow-y:auto;background:#EFF4FA;padding:22px 26px}
 .dupe-banner{background:#fff7e6;border:2px solid #f59e0b;border-radius:8px;
   padding:12px 18px;margin-bottom:16px;font-size:12.5px;color:#78350f;
-  display:flex;align-items:flex-start;gap:12px;line-height:1.6;
+  align-items:flex-start;gap:12px;line-height:1.6;
   position:sticky;top:0;z-index:50;
   box-shadow:0 3px 12px rgba(245,158,11,.25)}
+.dupe-banner[hidden]{display:none !important}
+.dupe-banner:not([hidden]){display:flex}
 .sc-card{background:#fff;border-radius:12px;padding:24px;
   box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:18px}
 .sc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:18px;
