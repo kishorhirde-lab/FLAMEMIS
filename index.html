@@ -198,8 +198,11 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   font-size:12px;cursor:pointer;text-align:center;letter-spacing:.03em}
 .btn-out:hover{background:rgba(255,255,255,.12);color:#e2e8f0}
 .f-content{flex:1;overflow-y:auto;background:#EFF4FA;padding:22px 26px}
-.dupe-banner{background:#fff3cd;border:1px solid #f59e0b;border-radius:8px;
-  padding:10px 14px;margin-bottom:16px;font-size:12.5px;color:#856404}
+.dupe-banner{background:#fff7e6;border:2px solid #f59e0b;border-radius:8px;
+  padding:12px 18px;margin-bottom:16px;font-size:12.5px;color:#78350f;
+  display:flex;align-items:flex-start;gap:12px;line-height:1.6;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 3px 12px rgba(245,158,11,.25)}
 .sc-card{background:#fff;border-radius:12px;padding:24px;
   box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:18px}
 .sc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:18px;
@@ -4340,12 +4343,25 @@ async function checkDupe(){
     const d=S.dept;
     const period=d.type==='monthly'?S.month:'Annual';
     const snap=await db.ref(dbPath(d.id,S.year,period)).once('value');
-    if(snap&&snap.exists()){
-      const ts=(snap.val()||{}).__ts||'';
-      banner.innerHTML='⚠️ A submission already exists for <strong>'+S.year+' – '+period+'</strong>'+(ts?' (saved '+ts+')':'')+'. Submitting again will <u>overwrite</u> it.';
+    const val=snap&&snap.exists()?snap.val():null;
+    /* Only flag a real submission — must have __ts. Drafts (/__draft child) do not set __ts on parent. */
+    if(val&&val.__ts){
+      const ts=val.__ts;
+      banner.innerHTML=
+        '<span style="font-size:16px;">⚠️</span>'
+        +'<span><strong>Existing Submission Found</strong> — '
+        +esc(d.name)+' &nbsp;|&nbsp; '+esc(S.year)+' – '+esc(period)
+        +(ts?'&nbsp;|&nbsp; Last saved: <strong>'+esc(ts)+'</strong>':'')
+        +'<br><span style="font-size:11.5px;">Submitting again will <u>overwrite</u> the existing record. Review carefully before submitting.</span>'
+        +'</span>';
       banner.hidden=false;
-    }else{banner.hidden=true;}
-  }catch(e){banner.hidden=true;}
+      /* Ensure it stays visible — guard against any future hide calls */
+      banner.dataset.locked='1';
+    }else{
+      banner.hidden=true;
+      banner.dataset.locked='';
+    }
+  }catch(e){/* network error — leave banner as-is */}
 }
 
 async function submitForm(){
