@@ -204,6 +204,46 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   position:sticky;top:0;z-index:50;
   box-shadow:0 3px 12px rgba(245,158,11,.25)}
 .dupe-banner[hidden]{display:none !important}
+/* ══ MoM Generator Modal ══ */
+#mom-gen-overlay{position:fixed;inset:0;background:rgba(10,20,40,.65);z-index:9000;
+  display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:20px 10px}
+.mom-modal{background:#fff;border-radius:14px;width:100%;max-width:860px;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;margin:auto}
+.mom-modal-hdr{background:#0C3F6A;color:#fff;padding:18px 24px;
+  display:flex;align-items:center;justify-content:space-between}
+.mom-modal-hdr h2{font-size:16px;font-weight:700;margin:0}
+.mom-modal-body{padding:24px;max-height:72vh;overflow-y:auto}
+.mom-modal-ftr{padding:14px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;
+  display:flex;gap:10px;justify-content:flex-end}
+.mom-fld-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.mom-fld-full{grid-column:1/-1}
+.mom-fld label{display:block;font-size:11px;font-weight:700;color:#374151;
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.mom-fld input,.mom-fld textarea,.mom-fld select{width:100%;padding:8px 11px;
+  border:1px solid #d1d5db;border-radius:7px;font-size:13px;font-family:inherit;
+  box-sizing:border-box;background:#fff;color:#1e293b}
+.mom-fld textarea{resize:vertical;min-height:70px}
+.mom-fld input:focus,.mom-fld textarea:focus{outline:none;border-color:#0C3F6A;
+  box-shadow:0 0 0 3px rgba(12,63,106,.12)}
+.mom-section-sep{font-size:12px;font-weight:700;color:#0C3F6A;
+  text-transform:uppercase;letter-spacing:.08em;padding:10px 0 6px;
+  border-bottom:2px solid #e8eef6;margin-bottom:14px;margin-top:8px}
+.mom-agenda-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;
+  padding:14px 16px;margin-bottom:10px}
+.mom-agenda-card-hdr{font-size:12px;font-weight:700;color:#0C3F6A;margin-bottom:8px;
+  display:flex;align-items:center;gap:8px}
+.mom-agenda-no{background:#0C3F6A;color:#fff;border-radius:4px;padding:1px 8px;font-size:11px}
+.btn-mom-gen{padding:7px 16px;background:#0C3F6A;color:#fff;border:none;border-radius:6px;
+  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-mom-gen:hover{background:#1a5fa8}
+.btn-mom-preview{padding:7px 16px;background:#16a34a;color:#fff;border:none;border-radius:6px;
+  font-size:12px;font-weight:700;cursor:pointer}
+.btn-mom-cancel{padding:7px 16px;background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;
+  border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
+
+/* ══ MoM Print Document Styles (in new window) ══ */
+/* These are injected into the print window — defined as JS string */
+
 
 /* ══ Registrar Office — MoM Governance Dashboard ══ */
 .mom-wrap{padding:2px 0}
@@ -2281,6 +2321,22 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 </div>
 
 
+
+<!-- MoM Generator Modal -->
+<div id="mom-gen-overlay" style="display:none">
+  <div class="mom-modal">
+    <div class="mom-modal-hdr">
+      <h2>📄 Generate Minutes of Meeting</h2>
+      <button onclick="closeMoMModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:4px 12px;cursor:pointer;font-size:14px;">✕</button>
+    </div>
+    <div class="mom-modal-body" id="mom-modal-body"></div>
+    <div class="mom-modal-ftr">
+      <button class="btn-mom-cancel" onclick="closeMoMModal()">Cancel</button>
+      <button class="btn-mom-preview" onclick="generateMoMDocument()">📄 Generate &amp; Open MoM</button>
+    </div>
+  </div>
+</div>
+
 <!-- Firebase Compat — loaded last so DOM is fully ready -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -3983,6 +4039,362 @@ function _momStatusOrPrioClass(sel){
   return 'mom-sel';
 }
 
+
+/* ═══════════════ MoM DOCUMENT GENERATOR ═══════════════ */
+var _momGenSecId = null;
+
+var _MOM_BODY_NAMES = {
+  r_gb:'Board of Management', r_bom:'Board of Management',
+  r_ac:'Academic Council', r_bos:'Board of Studies',
+  r_boe:'Board of Examinations', r_iqac:'Internal Quality Assurance Cell (IQAC)'
+};
+var _MOM_BODY_SHORT = {
+  r_gb:'GB', r_bom:'BoM', r_ac:'AC',
+  r_bos:'BoS', r_boe:'BoE', r_iqac:'IQAC'
+};
+
+function openMoMGenerator(secId){
+  saveCurrent();
+  _momGenSecId=secId;
+  var rows=(S.rows[secId]||[]).filter(function(r){
+    return (r['Agenda_Title']||r[san('Agenda Title')]||'').trim();
+  });
+  var bodyName=_MOM_BODY_NAMES[secId]||'Governing Body';
+  var bodyShort=_MOM_BODY_SHORT[secId]||'';
+
+  /* Build modal content */
+  var h='';
+
+  /* Section 1 — Meeting Details */
+  h+='<div class="mom-section-sep">Meeting Details</div>';
+  h+='<div class="mom-fld-grid">';
+  h+='<div class="mom-fld"><label>Meeting Number (Ordinal)</label>'
+    +'<input id="mom-ordinal" placeholder="e.g. Sixty-seventh" value=""></div>';
+  h+='<div class="mom-fld"><label>Governing Body</label>'
+    +'<input id="mom-body" value="'+esc(bodyName)+'" readonly style="background:#f1f5f9"></div>';
+  h+='<div class="mom-fld"><label>Meeting Date</label>'
+    +'<input id="mom-date" type="date" value=""></div>';
+  h+='<div class="mom-fld"><label>Meeting Time</label>'
+    +'<input id="mom-time" placeholder="e.g. 11:00 AM" value=""></div>';
+  h+='<div class="mom-fld mom-fld-full"><label>Venue</label>'
+    +'<input id="mom-venue" placeholder="e.g. Shantiniketan Conference Room, FLAME University Pune" value=""></div>';
+  h+='<div class="mom-fld"><label>Chairperson</label>'
+    +'<input id="mom-chair" placeholder="e.g. Dr. Dishan Kamdar, Vice Chancellor" value=""></div>';
+  h+='<div class="mom-fld"><label>Member Secretary</label>'
+    +'<input id="mom-secretary" placeholder="e.g. Dr. Virender Sharma, Registrar" value=""></div>';
+  h+='</div>';
+
+  /* Section 2 — Attendance */
+  h+='<div class="mom-section-sep">Attendance</div>';
+  h+='<div class="mom-fld-grid">';
+  h+='<div class="mom-fld mom-fld-full"><label>Members Present (one per line — Name | Designation | Role)</label>'
+    +'<textarea id="mom-present" rows="5" placeholder="Dr. Dishan Kamdar | Vice Chancellor | Chair\nProf. John Smith | Dean | Member\nDr. Virender Sharma | Registrar | Member Secretary"></textarea></div>';
+  h+='<div class="mom-fld"><label>Members Could Not Attend (one per line — Name | Designation)</label>'
+    +'<textarea id="mom-absent" rows="3" placeholder="Mr. Tejas Trivedi | Member"></textarea></div>';
+  h+='<div class="mom-fld"><label>Special Invitees (one per line — Name | Designation)</label>'
+    +'<textarea id="mom-invitees" rows="3" placeholder="Prof. Amit Kundal | Dean – Faculty of Design"></textarea></div>';
+  h+='</div>';
+
+  /* Section 3 — Chair's Introduction */
+  h+='<div class="mom-section-sep">Introduction by the Chair</div>';
+  h+='<div class="mom-fld"><label>Chair\'s Opening Remarks</label>'
+    +'<textarea id="mom-intro" rows="4" placeholder="The [Ordinal] meeting of the [Body] commenced with a welcome address by [Chair]. He/She expressed gratitude to the Members..."></textarea></div>';
+
+  /* Section 4 — Agenda Discussion (per row) */
+  h+='<div class="mom-section-sep">Agenda Items — Discussion Details ('+rows.length+' items from table)</div>';
+  if(!rows.length){
+    h+='<div style="color:#94a3b8;font-size:12px;padding:10px 0;">No agenda items found in this section. Add rows to the table first.</div>';
+  }
+  rows.forEach(function(row,i){
+    var agNo=row['Agenda_No_']||row[san('Agenda No.')]||String(i+1);
+    var agTitle=row['Agenda_Title']||row[san('Agenda Title')]||'Agenda Item '+(i+1);
+    var resolution=row['Resolution___Decision']||row[san('Resolution / Decision')]||'';
+    var dri=row['DRI']||row[san('DRI')]||'';
+    h+='<div class="mom-agenda-card">'
+      +'<div class="mom-agenda-card-hdr"><span class="mom-agenda-no">'+esc(agNo)+'</span>'+esc(agTitle)+'</div>'
+      +'<div class="mom-fld" style="margin-bottom:8px"><label>Discussion</label>'
+      +'<textarea id="mom-disc-'+i+'" rows="3" placeholder="Summarise the discussion that took place on this agenda item..."></textarea></div>'
+      +'<div class="mom-fld-grid" style="grid-template-columns:1fr auto;">'
+      +'<div class="mom-fld"><label>Resolution / Decision (from table)</label>'
+      +'<input id="mom-res-'+i+'" value="'+esc(resolution)+'" placeholder="Resolution text..."></div>'
+      +'<div class="mom-fld" style="min-width:160px"><label>DRI</label>'
+      +'<input id="mom-dri-'+i+'" value="'+esc(dri)+'" placeholder="DRI"></div>'
+      +'</div>'
+      +'</div>';
+  });
+
+  document.getElementById('mom-modal-body').innerHTML=h;
+  document.getElementById('mom-gen-overlay').style.display='flex';
+}
+
+function closeMoMModal(){
+  document.getElementById('mom-gen-overlay').style.display='none';
+}
+
+function _momParseAttendance(text){
+  return (text||'').split('\n').map(function(ln){
+    var parts=ln.split('|').map(function(p){return p.trim();});
+    return {name:parts[0]||'',designation:parts[1]||'',role:parts[2]||''};
+  }).filter(function(p){return p.name;});
+}
+
+function _momFmtDate(v){
+  if(!v)return '';
+  var m=v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(m)return m[3]+' / '+m[2]+' / '+m[1];
+  return v;
+}
+
+function generateMoMDocument(){
+  var secId=_momGenSecId;
+  if(!secId)return;
+  var rows=(S.rows[secId]||[]).filter(function(r){
+    return (r['Agenda_Title']||r[san('Agenda Title')]||'').trim();
+  });
+
+  var meta={
+    ordinal: (document.getElementById('mom-ordinal')||{}).value||'',
+    body: (document.getElementById('mom-body')||{}).value||'',
+    date: _momFmtDate((document.getElementById('mom-date')||{}).value||''),
+    time: (document.getElementById('mom-time')||{}).value||'',
+    venue: (document.getElementById('mom-venue')||{}).value||'',
+    chair: (document.getElementById('mom-chair')||{}).value||'',
+    secretary: (document.getElementById('mom-secretary')||{}).value||'',
+    intro: (document.getElementById('mom-intro')||{}).value||'',
+    present: _momParseAttendance((document.getElementById('mom-present')||{}).value||''),
+    absent: _momParseAttendance((document.getElementById('mom-absent')||{}).value||''),
+    invitees: _momParseAttendance((document.getElementById('mom-invitees')||{}).value||''),
+    university: 'FLAME University Pune',
+    ref: 'MoM/'+(_MOM_BODY_SHORT[secId]||'GB')+'/'+((document.getElementById('mom-date')||{}).value||new Date().toISOString().slice(0,10))
+  };
+
+  var agendaItems=rows.map(function(row,i){
+    return {
+      no: row['Agenda_No_']||row[san('Agenda No.')]||String(i+1),
+      title: row['Agenda_Title']||row[san('Agenda Title')]||'',
+      discussion: (document.getElementById('mom-disc-'+i)||{}).value||'',
+      resolution: (document.getElementById('mom-res-'+i)||{}).value||(row['Resolution___Decision']||row[san('Resolution / Decision')]||''),
+      dri: (document.getElementById('mom-dri-'+i)||{}).value||(row['DRI']||row[san('DRI')]||''),
+      accTag: row['Accreditation_Tag']||row[san('Accreditation Tag')]||'',
+      target: row['Target_Date']||row[san('Target Date')]||''
+    };
+  });
+
+  var html=_buildMoMPrintHtml(meta, agendaItems);
+  var w=window.open('','_blank','width=1050,height=900,scrollbars=yes');
+  if(w){w.document.write(html);w.document.close();}
+  else{alert('Pop-up blocked. Please allow pop-ups for this page.');}
+  closeMoMModal();
+}
+
+function _buildMoMPrintHtml(meta, items){
+  var mtitle=(meta.ordinal?meta.ordinal.toUpperCase()+' ':'')+' MEETING OF '+meta.body.toUpperCase();
+  var dateDisplay=meta.date||'';
+  var fullTitle='MINUTES OF THE '+mtitle;
+  var heldLine='HELD ON '+(meta.date||'').replace(/\//g,' ').toUpperCase()+(meta.venue?' AT '+meta.venue.toUpperCase():'');
+
+  /* CSS */
+  var css = [
+    '*{box-sizing:border-box;margin:0;padding:0}',
+    'body{font-family:"Times New Roman",Georgia,serif;font-size:11pt;color:#1a1a1a;background:#fff;line-height:1.5}',
+    '@page{size:A4;margin:2cm 2.2cm 2cm 2.2cm}',
+    '@media print{.no-print{display:none!important}.page-break{page-break-before:always}}',
+    '.page{max-width:820px;margin:0 auto;padding:20px 30px}',
+    /* Header strip */
+    '.doc-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:3px solid #0C3F6A;margin-bottom:6px}',
+    '.doc-header-left{font-size:9pt;color:#0C3F6A;font-weight:700;line-height:1.4}',
+    '.doc-header-right{font-size:9pt;color:#6b7280;text-align:right;line-height:1.4}',
+    '.doc-conf-bar{background:#0C3F6A;color:#fff;text-align:center;font-size:8pt;font-weight:700;letter-spacing:.12em;padding:4px 0;margin-bottom:16px}',
+    /* Cover */
+    '.cover-block{text-align:center;padding:30px 0 20px}',
+    '.cover-flame{font-size:22pt;font-weight:900;color:#0C3F6A;letter-spacing:-.01em;margin-bottom:3px}',
+    '.cover-tagline{font-size:9pt;color:#6b7280;margin-bottom:28px;letter-spacing:.04em}',
+    '.cover-divider{height:3px;background:linear-gradient(90deg,#0C3F6A,#FDB515,#0C3F6A);margin:0 40px 20px}',
+    '.cover-title{font-size:14pt;font-weight:900;color:#0C3F6A;text-transform:uppercase;letter-spacing:.03em;line-height:1.4;margin-bottom:8px}',
+    '.cover-subtitle{font-size:10pt;color:#374151;margin-bottom:28px}',
+    '.cover-details{display:inline-block;border:2px solid #0C3F6A;border-radius:4px;padding:14px 30px;text-align:left;margin-bottom:28px;min-width:340px}',
+    '.cover-detail-row{display:flex;gap:10px;margin-bottom:6px;font-size:10.5pt}',
+    '.cover-detail-lbl{font-weight:700;color:#0C3F6A;min-width:60px}',
+    '.cover-detail-val{color:#1a1a1a}',
+    '.cover-held{font-size:9pt;color:#6b7280;font-style:italic}',
+    /* Section headings */
+    '.sec-title{background:#0C3F6A;color:#fff;font-size:10pt;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:7px 12px;margin:18px 0 0}',
+    /* Tables */
+    'table{width:100%;border-collapse:collapse;margin-bottom:16px}',
+    'th{background:#0C3F6A;color:#fff;font-size:9.5pt;font-weight:700;padding:8px 10px;text-align:left;border:1px solid #0C3F6A}',
+    'td{font-size:9.5pt;padding:7px 10px;border:1px solid #c5cdd8;vertical-align:top}',
+    'tr:nth-child(even) td{background:#f7f8fb}',
+    '.td-center{text-align:center}',
+    '.td-bold{font-weight:700}',
+    /* Agenda table — wider discussion col */
+    '.agt-no{width:5%;text-align:center;font-weight:700}',
+    '.agt-agenda{width:18%}',
+    '.agt-disc{width:38%}',
+    '.agt-res{width:28%}',
+    '.agt-dri{width:11%}',
+    /* Resolution formatting */
+    '.res-text{font-style:italic;color:#0C3F6A;font-weight:600}',
+    '.tag-pill{display:inline-block;background:#dbeafe;color:#1e40af;font-size:7.5pt;padding:1px 6px;border-radius:8px;margin:1px}',
+    /* Intro */
+    '.intro-block{background:#f7f8fb;border-left:4px solid #FDB515;padding:12px 16px;margin:12px 0;font-size:10.5pt;line-height:1.7}',
+    /* Signature */
+    '.sig-block{display:flex;justify-content:space-between;margin-top:50px;padding-top:20px;border-top:1px solid #c5cdd8}',
+    '.sig-col{text-align:center;width:45%}',
+    '.sig-line{border-bottom:1.5px solid #1a1a1a;width:80%;margin:0 auto 6px}',
+    '.sig-name{font-weight:700;font-size:10pt}',
+    '.sig-role{font-size:9pt;color:#6b7280}',
+    /* Footer */
+    '.doc-footer{border-top:2px solid #0C3F6A;margin-top:20px;padding-top:6px;display:flex;justify-content:space-between;align-items:center;font-size:8pt;color:#6b7280}',
+    '.footer-center{color:#0C3F6A;font-weight:700;font-size:7.5pt;letter-spacing:.06em}',
+    /* Print button */
+    '.print-btn-bar{background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:10px 16px;display:flex;gap:10px;position:sticky;top:0;z-index:100}',
+    '.print-btn{padding:7px 18px;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer}',
+    '.print-btn-blue{background:#0C3F6A;color:#fff}',
+    '.print-btn-gray{background:#f1f5f9;color:#374151;border:1px solid #e2e8f0}',
+  ].join('\n');
+
+  function hdr(){
+    return '<div class="doc-header">'
+      +'<div class="doc-header-left">FLAME UNIVERSITY PUNE<br><span style="font-weight:400;font-size:8pt;color:#6b7280">Governed by the FLAME University Act, 2014 (Maharashtra)</span></div>'
+      +'<div class="doc-header-right">Ref: '+esc(meta.ref)+'<br>'+esc(dateDisplay)+'</div>'
+      +'</div>'
+      +'<div class="doc-conf-bar">CONFIDENTIAL &mdash; FOR MEMBERS ONLY</div>';
+  }
+
+  function ftr(){
+    return '<div class="doc-footer">'
+      +'<span>'+esc(meta.university)+' &nbsp;|&nbsp; Minutes of Meeting &nbsp;|&nbsp; '+esc(meta.body)+'</span>'
+      +'<span class="footer-center">CONFIDENTIAL</span>'
+      +'<span>'+esc(dateDisplay)+'</span>'
+      +'</div>';
+  }
+
+  /* ── Cover / Index Page ── */
+  var cover='<div class="page">'+ hdr()
+    +'<div class="cover-block">'
+    +'<div class="cover-flame">FLAME UNIVERSITY</div>'
+    +'<div class="cover-tagline">PUNE, MAHARASHTRA &nbsp;|&nbsp; EST. 2015</div>'
+    +'<div class="cover-divider"></div>'
+    +'<div class="cover-title">'+esc(fullTitle)+'</div>'
+    +'<div class="cover-subtitle">'+esc(heldLine)+'</div>'
+    +'<div class="cover-details">'
+    +(meta.date?'<div class="cover-detail-row"><span class="cover-detail-lbl">Date</span><span class="cover-detail-val">'+esc(meta.date)+'</span></div>':'')
+    +(meta.time?'<div class="cover-detail-row"><span class="cover-detail-lbl">Time</span><span class="cover-detail-val">'+esc(meta.time)+'</span></div>':'')
+    +(meta.venue?'<div class="cover-detail-row"><span class="cover-detail-lbl">Venue</span><span class="cover-detail-val">'+esc(meta.venue)+'</span></div>':'')
+    +'</div>'
+    +'</div>'
+    /* Index table */
+    +'<div class="sec-title">Index of Agenda Items</div>'
+    +'<table><thead><tr><th style="width:8%">Sl. No.</th><th>Description</th><th style="width:12%;text-align:center">Page</th></tr></thead><tbody>';
+
+  items.forEach(function(ag,i){
+    cover+='<tr><td class="td-center td-bold">'+esc(ag.no)+'</td><td>'+esc(ag.title)+'</td><td class="td-center">2</td></tr>';
+  });
+  cover+='</tbody></table>';
+  cover+=ftr()+'</div>';
+
+  /* ── Main Document Page ── */
+  var main='<div class="page page-break">'+ hdr()
+    +'<div style="text-align:center;margin:12px 0 6px">'
+    +'<div style="font-size:12pt;font-weight:900;color:#0C3F6A;text-transform:uppercase;letter-spacing:.02em">'+esc(fullTitle)+'</div>'
+    +'<div style="font-size:9pt;color:#374151;margin-top:3px">'+esc(heldLine)+'</div>'
+    +'</div>';
+
+  /* Members Present */
+  if(meta.present.length){
+    main+='<div class="sec-title">Members Present</div>'
+      +'<table><thead><tr><th style="width:7%">Sl. No.</th><th>Name</th><th>Designation</th><th style="width:20%">Role</th></tr></thead><tbody>';
+    meta.present.forEach(function(m,i){
+      main+='<tr><td class="td-center">'+(i+1)+'</td><td class="td-bold">'+esc(m.name)+'</td><td>'+esc(m.designation)+'</td><td>'+esc(m.role)+'</td></tr>';
+    });
+    main+='</tbody></table>';
+  }
+
+  /* Members Absent */
+  if(meta.absent.length){
+    main+='<div class="sec-title">Members Who Could Not Attend the Meeting</div>'
+      +'<table><thead><tr><th style="width:7%">Sl. No.</th><th>Name</th><th>Designation</th></tr></thead><tbody>';
+    meta.absent.forEach(function(m,i){
+      main+='<tr><td class="td-center">'+(i+1)+'</td><td class="td-bold">'+esc(m.name)+'</td><td>'+esc(m.designation)+'</td></tr>';
+    });
+    main+='</tbody></table>';
+  }
+
+  /* Special Invitees */
+  if(meta.invitees.length){
+    main+='<div class="sec-title">Special Invitee(s)</div>'
+      +'<table><thead><tr><th style="width:7%">Sl. No.</th><th>Name</th><th>Designation</th></tr></thead><tbody>';
+    meta.invitees.forEach(function(m,i){
+      main+='<tr><td class="td-center">'+(i+1)+'</td><td class="td-bold">'+esc(m.name)+'</td><td>'+esc(m.designation)+'</td></tr>';
+    });
+    main+='</tbody></table>';
+  }
+
+  /* Introduction by Chair */
+  if(meta.intro){
+    main+='<div class="sec-title">Introduction by the Chair</div>'
+      +'<div class="intro-block">'+esc(meta.intro).replace(/\n/g,'<br>')+'</div>';
+  }
+
+  /* Agenda, Discussions & Resolutions */
+  if(items.length){
+    main+='<div class="sec-title">Agenda, Discussions &amp; Resolutions</div>'
+      +'<table><thead><tr>'
+      +'<th class="agt-no">Sl. No.</th>'
+      +'<th class="agt-agenda">Agenda</th>'
+      +'<th class="agt-disc">Discussion</th>'
+      +'<th class="agt-res">Resolution</th>'
+      +'<th class="agt-dri">DRI*</th>'
+      +'</tr></thead><tbody>';
+    items.forEach(function(ag,i){
+      var tags='';
+      if(ag.accTag){ag.accTag.split(/[,;]/).forEach(function(t){if(t.trim())tags+='<span class="tag-pill">'+esc(t.trim())+'</span>';});}
+      main+='<tr>'
+        +'<td class="td-center td-bold">'+esc(ag.no)+'</td>'
+        +'<td>'+esc(ag.title)+(tags?'<br><br>'+tags:'')+'</td>'
+        +'<td>'+(ag.discussion?esc(ag.discussion).replace(/\n/g,'<br>'):'<span style="color:#9ca3af;font-style:italic">—</span>')+'</td>'
+        +'<td class="res-text">'+(ag.resolution?'Resolved to '+esc(ag.resolution).replace(/^resolved to /i,'').replace(/\n/g,'<br>'):'<span style="color:#9ca3af;font-weight:400;font-style:italic">Pending</span>')+'</td>'
+        +'<td style="font-size:9pt">'+esc(ag.dri)+(ag.target?'<br><span style="color:#6b7280;font-size:8pt">By: '+esc(ag.target)+'</span>':'')+'</td>'
+        +'</tr>';
+    });
+    main+='</tbody></table>'
+      +'<div style="font-size:8.5pt;color:#6b7280;font-style:italic;margin-bottom:16px">*DRI — Designated Responsible Individual</div>';
+  }
+
+  /* Signature block */
+  var sigDate=meta.date||'_______________';
+  main+='<div style="margin-top:30px;font-size:9pt;color:#374151;font-style:italic;">'
+    +'Certified that the above constitutes a true and accurate record of the proceedings of the '+(meta.ordinal?meta.ordinal:'')+' Meeting of the '+esc(meta.body)+' held on '+esc(meta.date||'')+'.'
+    +'</div>'
+    +'<div class="sig-block">'
+    +'<div class="sig-col"><div class="sig-line"></div>'
+    +'<div class="sig-name">'+(meta.chair||'Chairperson')+'</div>'
+    +'<div class="sig-role">Chairperson, '+esc(meta.body)+'</div>'
+    +'<div class="sig-role" style="margin-top:4px">Date: '+esc(sigDate)+'</div>'
+    +'</div>'
+    +'<div class="sig-col"><div class="sig-line"></div>'
+    +'<div class="sig-name">'+(meta.secretary||'Member Secretary')+'</div>'
+    +'<div class="sig-role">Member Secretary / Registrar</div>'
+    +'<div class="sig-role" style="margin-top:4px">Date: '+esc(sigDate)+'</div>'
+    +'</div>'
+    +'</div>';
+
+  main+=ftr()+'</div>';
+
+  /* Full document */
+  return '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
+    +'<title>'+esc(fullTitle)+'</title>'
+    +'<style>'+css+'</style></head>'
+    +'<body>'
+    +'<div class="print-btn-bar no-print">'
+    +'<button class="print-btn print-btn-blue" onclick="window.print()">🖨️ Print / Save as PDF</button>'
+    +'<button class="print-btn print-btn-gray" onclick="window.close()">✕ Close</button>'
+    +'<span style="font-size:11px;color:#6b7280;align-self:center;margin-left:8px">Use browser Print → Save as PDF for best results. Set margins to "None" or "Minimum".</span>'
+    +'</div>'
+    + cover + main
+    +'</body></html>';
+}
+
 /* ======= UNIVERSAL TABLE IMPORT (SheetJS XLSX) ======= */
 function importTableData(secId){
   var sec=S.dept.sections.find(function(s){return s.id===secId;});
@@ -4553,7 +4965,10 @@ function renderSec(idx){
     if(isCert){
       html+='<button type="button" class="btn-bulk-cert" onclick="bulkGenerateFILCerts(\''+sec.id+'\')" title="Generate certificates for all eligible participants">🎓 Bulk Generate Certs</button>';
     }
-    html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
+    if(S.dept&&S.dept.id==='registrar'&&['r_gb','r_bom','r_ac','r_bos','r_boe','r_iqac'].includes(sec.id)){
+    html+='<button type="button" class="btn-mom-gen" onclick="openMoMGenerator(\''+sec.id+'\')">📄 Generate MoM</button>';
+  }
+  html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')"" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
     html+='</div>';
 
   }else if(sec.mode==='fixed'){
