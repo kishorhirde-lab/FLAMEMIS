@@ -204,6 +204,67 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   position:sticky;top:0;z-index:50;
   box-shadow:0 3px 12px rgba(245,158,11,.25)}
 .dupe-banner[hidden]{display:none !important}
+
+/* ══ Registrar Office — MoM Governance Dashboard ══ */
+.mom-wrap{padding:2px 0}
+.mom-hero{background:linear-gradient(135deg,#0C3F6A 0%,#1a5fa8 60%,#0891b2 100%);
+  border-radius:14px;padding:22px 28px;margin-bottom:20px;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.mom-hero-title{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.mom-hero-sub{font-size:12px;opacity:.8;margin-top:3px}
+.mom-hero-badge{background:rgba(253,181,21,.18);border:1px solid rgba(253,181,21,.5);
+  color:#FDB515;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700}
+.mom-kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin-bottom:20px}
+.mom-kpi{background:#fff;border-radius:12px;padding:18px 18px 14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:4px solid var(--kc,#1a3a6b);
+  display:flex;flex-direction:column;gap:6px;transition:transform .15s}
+.mom-kpi:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1)}
+.mom-kpi-icon{font-size:24px;line-height:1}
+.mom-kpi-val{font-size:32px;font-weight:900;color:var(--kc,#1a3a6b);line-height:1}
+.mom-kpi-lbl{font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.07em}
+.mom-charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.mom-chart-card{background:#fff;border-radius:12px;padding:20px 22px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid #e8eef6}
+.mom-chart-card.full{grid-column:1/-1}
+.mom-chart-ttl{font-size:13px;font-weight:700;color:#0C3F6A;margin-bottom:14px;
+  padding-bottom:10px;border-bottom:2px solid #f1f5f9;display:flex;align-items:center;gap:8px}
+.mom-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.mom-tbl th{background:#f0f4fa;padding:8px 10px;text-align:left;font-weight:700;
+  color:#374151;border:1px solid #e2e8f0;white-space:nowrap}
+.mom-tbl td{padding:7px 10px;border:1px solid #e2e8f0;color:#374151;vertical-align:top}
+.mom-tbl tr:hover td{background:#f8fafc}
+.mom-badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:10px;
+  font-size:10.5px;font-weight:700;white-space:nowrap}
+.mom-badge-red{background:#fee2e2;color:#991b1b}
+.mom-badge-amber{background:#fef3c7;color:#92400e}
+.mom-badge-blue{background:#dbeafe;color:#1e40af}
+.mom-badge-green{background:#dcfce7;color:#166534}
+.mom-badge-purple{background:#ede9fe;color:#5b21b6}
+.mom-badge-gray{background:#f1f5f9;color:#475569}
+.mom-heatmap-grid{display:grid;gap:4px;margin-top:8px}
+.mom-hcell{border-radius:5px;padding:6px 8px;text-align:center;font-size:10.5px;
+  font-weight:700;cursor:default;transition:transform .1s}
+.mom-hcell:hover{transform:scale(1.08)}
+.mom-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:11px}
+.mom-legend-item{display:flex;align-items:center;gap:5px}
+.mom-legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.mom-section-jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.mom-jump-btn{padding:6px 14px;border-radius:20px;border:1.5px solid #1a3a6b;
+  background:#fff;color:#1a3a6b;font-size:11px;font-weight:700;cursor:pointer;
+  transition:all .15s}
+.mom-jump-btn:hover{background:#1a3a6b;color:#fff}
+@media(max-width:720px){.mom-charts-grid{grid-template-columns:1fr}}
+/* Registrar special-select dropdowns */
+select.mom-sel{border:1px solid #d1d5db;border-radius:5px;padding:3px 6px;
+  font-size:12px;background:#fff;cursor:pointer;max-width:140px}
+select.mom-sel.status-pending{background:#fef3c7;color:#92400e;font-weight:600}
+select.mom-sel.status-done{background:#dcfce7;color:#166534;font-weight:600}
+select.mom-sel.status-progress{background:#dbeafe;color:#1e40af;font-weight:600}
+select.mom-sel.status-overdue{background:#fee2e2;color:#991b1b;font-weight:600}
+select.mom-sel.prio-high{background:#fee2e2;color:#991b1b;font-weight:700}
+select.mom-sel.prio-medium{background:#fef3c7;color:#92400e;font-weight:600}
+select.mom-sel.prio-low{background:#dcfce7;color:#166534;font-weight:600}
+
 .dupe-banner:not([hidden]){display:flex}
 .sc-card{background:#fff;border-radius:12px;padding:24px;
   box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:18px}
@@ -2883,6 +2944,35 @@ const DEPTS = [
   }
 ]}
 
+,
+/* ═══ REGISTRAR OFFICE ═══ */
+{id:'registrar',name:'Registrar Office',pin:'REG@FLAME2025',type:'annual',
+ poc:'registrar@flame.edu.in',
+ sections:[
+  {id:'r_dash',sr:0,title:'Governance Analytics Dashboard',mode:'mom_dashboard',fileUpload:false,cols:[]},
+  {id:'r_cal',sr:1,title:'Meetings Calendar & Schedule',mode:'table',fileUpload:false,
+   cols:['Meeting Body','Meeting Date','Venue','Meeting Type','Agenda Summary','Chairperson','Status','MoM Reference No.','Remarks']},
+  {id:'r_gb',sr:2,title:'Governing Board (GB) — Minutes & Resolutions',mode:'table',fileUpload:true,
+   cols:['Meeting Date','Agenda No.','Agenda Title','Resolution / Decision','DRI','Department','Target Date','Status','Accreditation Tag','Ranking Parameter','Priority','MoM Reference No.']},
+  {id:'r_bom',sr:3,title:'Board of Management (BoM) — Minutes & Resolutions',mode:'table',fileUpload:true,
+   cols:['Meeting Date','Agenda No.','Agenda Title','Resolution / Decision','DRI','Department','Target Date','Status','Accreditation Tag','Ranking Parameter','Priority','MoM Reference No.']},
+  {id:'r_ac',sr:4,title:'Academic Council (AC) — Minutes & Resolutions',mode:'table',fileUpload:true,
+   cols:['Meeting Date','Agenda No.','Agenda Title','Resolution / Decision','DRI','Department','Target Date','Status','Accreditation Tag','Ranking Parameter','Priority','MoM Reference No.']},
+  {id:'r_bos',sr:5,title:'Board of Studies (BoS) — Minutes & Resolutions',mode:'table',fileUpload:true,
+   cols:['Meeting Date','Agenda No.','Agenda Title','Resolution / Decision','DRI','Department','Target Date','Status','Accreditation Tag','Ranking Parameter','Priority','MoM Reference No.']},
+  {id:'r_boe',sr:6,title:'Board of Examinations (BoE) — Minutes & Resolutions',mode:'table',fileUpload:true,
+   cols:['Meeting Date','Agenda No.','Agenda Title','Resolution / Decision','DRI','Department','Target Date','Status','Accreditation Tag','Ranking Parameter','Priority','MoM Reference No.']},
+  {id:'r_iqac',sr:7,title:'IQAC — Minutes & Resolutions',mode:'table',fileUpload:true,
+   cols:['Meeting Date','Agenda No.','Agenda Title','Resolution / Decision','DRI','Department','Target Date','Status','Accreditation Tag','Ranking Parameter','Priority','MoM Reference No.']},
+  {id:'r_res',sr:8,title:'Resolutions & Action Items Tracker',mode:'table',fileUpload:false,
+   cols:['Resolution ID','Source Body','Meeting Date','Resolution Summary','DRI','Department','Target Date','Status','Compliance Tags','Evidence Uploaded','Priority','Remarks']},
+  {id:'r_acc',sr:9,title:'Accreditation Compliance Matrix',mode:'table',fileUpload:false,
+   cols:['Accreditation Body','Criterion / Standard','Linked Meeting Body','Resolution Reference','Status','Evidence Readiness','Gaps / Missing Items','Priority','Deadline']},
+  {id:'r_iso',sr:10,title:'ISO Compliance Tracker',mode:'table',fileUpload:false,
+   cols:['ISO Standard','Clause No.','Clause Title','Meeting Body','Resolution / Action','Responsible Person','Status','Last Audit Date','Non-Conformity','Remarks']},
+  {id:'r_pdf',sr:11,title:'MoM PDF Repository',mode:'table',fileUpload:true,
+   cols:['Meeting Body','Meeting Date','Document Title','Version No.','Uploaded By','Upload Date','Access Level','Remarks']}
+]}
 ]; // end DEPTS/* ═══════════════ DUPLICATE DETECTION ═══════════════ */
 const DUP_KEYS={
   'research papers': ['Title of Paper','ISSN Number'],
@@ -3566,6 +3656,333 @@ async function _bulkSendFILCertEmails(rows,secId){
   renderSec(S.secIdx); /* refresh status column */
 }
 
+
+/* ═══════════════ REGISTRAR — MoM GOVERNANCE DASHBOARD ═══════════════ */
+var _REG_BODIES={GB:'r_gb',BoM:'r_bom',AC:'r_ac',BoS:'r_bos',BoE:'r_boe',IQAC:'r_iqac'};
+var _REG_ACC=['NAAC','AACSB','NBA','AMBA-BGA','NECHE','ACBSP','NIRF','QS','THE','ISO 21001','ISO 41001','ISO 9001'];
+var _REG_ISO=['ISO 21001','ISO 41001','ISO 9001','ISO 14001','ISO 50001'];
+
+function _momAllResolutions(){
+  var all=[];
+  Object.entries(_REG_BODIES).forEach(function(pair){
+    var body=pair[0],sid=pair[1];
+    (S.rows[sid]||[]).forEach(function(row){all.push(Object.assign({},row,{_body:body}));});
+  });
+  return all;
+}
+
+function _momStatusClass(v){
+  var s=(v||'').toLowerCase();
+  if(s.includes('complet')||s==='done'||s==='closed') return 'status-done';
+  if(s.includes('progress')) return 'status-progress';
+  if(s.includes('defer')||s.includes('postpone')) return 'status-gray';
+  return 'status-pending';
+}
+
+function _momPrioClass(v){
+  var p=(v||'').toLowerCase();
+  if(p==='high') return 'prio-high';
+  if(p==='low')  return 'prio-low';
+  return 'prio-medium';
+}
+
+function _svgHBar(data, colors){
+  var entries=Object.entries(data).filter(function(e){return e[1]>0;});
+  if(!entries.length) return '<div style="color:#94a3b8;text-align:center;padding:30px 0;font-size:12px;">No data recorded yet</div>';
+  var maxV=Math.max.apply(null,entries.map(function(e){return e[1];}));
+  var bH=26,gap=8,lW=90,cW=160,tW=lW+cW+48;
+  var svgH=entries.length*(bH+gap)+12;
+  var svg='<svg width="100%" viewBox="0 0 '+tW+' '+svgH+'" style="font-family:system-ui,sans-serif;overflow:visible">';
+  entries.forEach(function(e,i){
+    var label=e[0],val=e[1];
+    var y=i*(bH+gap)+4;
+    var bW=maxV>0?Math.round((val/maxV)*cW):0;
+    var col=colors[i%colors.length];
+    svg+='<text x="'+(lW-6)+'" y="'+(y+bH/2+4)+'" text-anchor="end" font-size="11" fill="#4b5563">'+label+'</text>';
+    svg+='<rect x="'+lW+'" y="'+y+'" width="'+bW+'" height="'+bH+'" fill="'+col+'" rx="4" opacity=".9"/>';
+    svg+='<text x="'+(lW+bW+6)+'" y="'+(y+bH/2+4)+'" font-size="12" fill="#1e293b" font-weight="700">'+val+'</text>';
+  });
+  svg+='</svg>';
+  return svg;
+}
+
+function _svgDonut(segs){
+  var total=segs.reduce(function(s,g){return s+g.v;},0);
+  if(!total) return '<div style="color:#94a3b8;text-align:center;padding:30px 0;font-size:12px;">No data recorded yet</div>';
+  var cx=80,cy=80,r=62,ir=40;
+  var paths='',angle=-Math.PI/2;
+  segs.forEach(function(seg){
+    if(!seg.v) return;
+    var a=(seg.v/total)*2*Math.PI;
+    var x1=cx+r*Math.cos(angle),y1=cy+r*Math.sin(angle);
+    var x2=cx+r*Math.cos(angle+a),y2=cy+r*Math.sin(angle+a);
+    var ix1=cx+ir*Math.cos(angle),iy1=cy+ir*Math.sin(angle);
+    var ix2=cx+ir*Math.cos(angle+a),iy2=cy+ir*Math.sin(angle+a);
+    var lg=a>Math.PI?1:0;
+    paths+='<path d="M'+ix1+','+iy1+' L'+x1+','+y1+' A'+r+','+r+' 0 '+lg+',1 '+x2+','+y2+' L'+ix2+','+iy2+' A'+ir+','+ir+' 0 '+lg+',0 '+ix1+','+iy1+' Z" fill="'+seg.c+'"/>';
+    angle+=a;
+  });
+  var legend=segs.map(function(s){
+    return '<div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">'
+      +'<div style="width:11px;height:11px;border-radius:3px;background:'+s.c+';flex-shrink:0"></div>'
+      +'<span style="font-size:11px;color:#374151">'+esc(s.l)+': <strong>'+s.v+'</strong> '
+      +'<span style="color:#94a3b8;font-size:10px;">('+Math.round(s.v/total*100)+'%)</span></span></div>';
+  }).join('');
+  return '<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">'
+    +'<svg width="160" height="160" viewBox="0 0 160 160">'+paths
+    +'<text x="'+cx+'" y="'+(cy+6)+'" text-anchor="middle" font-size="20" font-weight="900" fill="#1e293b">'+total+'</text>'
+    +'<text x="'+cx+'" y="'+(cy+18)+'" text-anchor="middle" font-size="9" fill="#64748b" font-weight="600">TOTAL</text>'
+    +'</svg><div>'+legend+'</div></div>';
+}
+
+function _momComplianceHeatmap(allRes){
+  var bodies=Object.keys(_REG_BODIES);
+  var accTag=san('Accreditation_Tag');
+  var bodyKey=san('_body');
+  /* Count per (acc x body) */
+  var matrix={};
+  _REG_ACC.forEach(function(a){matrix[a]={};bodies.forEach(function(b){matrix[a][b]=0;});});
+  allRes.forEach(function(r){
+    var tags=(r[san('Accreditation_Tag')]||r['Accreditation_Tag']||'').split(/[,;]/).map(function(t){return t.trim();});
+    var body=r._body||'';
+    tags.forEach(function(t){
+      if(matrix[t]&&body)matrix[t][body]++;
+    });
+  });
+  var colors=['#bbf7d0','#fef08a','#fed7aa','#fecaca','#f1f5f9'];
+  var html='<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:11px;min-width:600px;width:100%">';
+  html+='<thead><tr><th style="padding:7px 10px;background:#0C3F6A;color:#fff;text-align:left;white-space:nowrap;border:1px solid #1a5fa8">Framework / Body</th>';
+  bodies.forEach(function(b){html+='<th style="padding:7px 10px;background:#0C3F6A;color:#fff;text-align:center;white-space:nowrap;border:1px solid #1a5fa8">'+b+'</th>';});
+  html+='</tr></thead><tbody>';
+  _REG_ACC.forEach(function(acc,ai){
+    html+='<tr><td style="padding:7px 10px;font-weight:700;border:1px solid #e2e8f0;color:#1e293b;background:#f8fafc;white-space:nowrap">'+esc(acc)+'</td>';
+    bodies.forEach(function(b){
+      var cnt=matrix[acc][b]||0;
+      var bg=cnt>=5?'#bbf7d0':cnt>=3?'#fef08a':cnt>=1?'#fed7aa':'#f8fafc';
+      var tc=cnt>=5?'#065f46':cnt>=3?'#78350f':cnt>=1?'#9a3412':'#94a3b8';
+      html+='<td style="padding:7px 10px;text-align:center;border:1px solid #e2e8f0;background:'+bg+';color:'+tc+';font-size:11px;font-weight:'+(cnt>0?'700':'400')+';">'+(cnt>0?cnt+'':'—')+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table></div>';
+  html+='<div class="mom-legend" style="margin-top:10px">'
+    +'<div class="mom-legend-item"><div class="mom-legend-dot" style="background:#bbf7d0"></div>5+ Active</div>'
+    +'<div class="mom-legend-item"><div class="mom-legend-dot" style="background:#fef08a"></div>3–4 Partial</div>'
+    +'<div class="mom-legend-item"><div class="mom-legend-dot" style="background:#fed7aa"></div>1–2 Minimal</div>'
+    +'<div class="mom-legend-item"><div class="mom-legend-dot" style="background:#f8fafc;border:1px solid #e2e8f0"></div>No data</div>'
+    +'</div>';
+  return html;
+}
+
+function _renderMoMDashboard(sec){
+  var allRes=_momAllResolutions();
+  var calRows=S.rows['r_cal']||[];
+  var today=new Date();
+
+  /* ── KPIs ── */
+  var totalMeetings=calRows.length;
+  var totalRes=allRes.length;
+  var statusKey='Status';
+  var pending=allRes.filter(function(r){var s=(r[statusKey]||r['Status']||'').toLowerCase();return !s.includes('complet')&&!s.includes('done')&&!s.includes('defer');}).length;
+  var overdueList=allRes.filter(function(r){
+    var td=r['Target_Date']||r[san('Target Date')]||'';
+    if(!td)return false;
+    var p=td.split('/');if(p.length!==3)return false;
+    var d=new Date(p[2],p[1]-1,p[0]);
+    var s=(r[statusKey]||r['Status']||'').toLowerCase();
+    return d<today&&!s.includes('complet')&&!s.includes('done');
+  });
+  var overdue=overdueList.length;
+
+  /* ── Body counts ── */
+  var bodyCounts={};
+  Object.keys(_REG_BODIES).forEach(function(b){bodyCounts[b]=(S.rows[_REG_BODIES[b]]||[]).length;});
+
+  /* ── Status split ── */
+  var stCounts={Completed:0,'In Progress':0,Pending:0,Deferred:0};
+  allRes.forEach(function(r){
+    var s=(r[statusKey]||r['Status']||'').toLowerCase();
+    if(s.includes('complet')||s.includes('done')) stCounts.Completed++;
+    else if(s.includes('progress')) stCounts['In Progress']++;
+    else if(s.includes('defer')||s.includes('postpone')) stCounts.Deferred++;
+    else stCounts.Pending++;
+  });
+
+  /* ── Accreditation tag counts ── */
+  var accCounts={};
+  allRes.forEach(function(r){
+    var tags=(r['Accreditation_Tag']||r[san('Accreditation Tag')]||'').split(/[,;]/).map(function(t){return t.trim();}).filter(Boolean);
+    tags.forEach(function(t){accCounts[t]=(accCounts[t]||0)+1;});
+  });
+
+  /* ── Priority ── */
+  var prioCounts={High:0,Medium:0,Low:0};
+  allRes.forEach(function(r){
+    var p=r['Priority']||r[san('Priority')]||'Medium';
+    if(prioCounts[p]!==undefined) prioCounts[p]++;
+    else prioCounts.Medium++;
+  });
+
+  /* ── Build HTML ── */
+  var html='<div class="mom-wrap">';
+
+  /* Hero header */
+  html+='<div class="mom-hero">'
+    +'<div><div class="mom-hero-title">\uD83C\uDFDB\uFE0F Governance Analytics Dashboard</div>'
+    +'<div class="mom-hero-sub">Minutes of Meeting — Institutional Governance & Compliance Intelligence</div>'
+    +'<div class="mom-hero-sub" style="margin-top:3px;opacity:.65">'+esc(S.dept.name)+' \u2022 Academic Year '+esc(S.year)+'</div>'
+    +'</div>'
+    +'<div class="mom-hero-badge">FLAME University Pune</div>'
+    +'</div>';
+
+  /* KPI cards */
+  var kpis=[
+    {icon:'\uD83D\uDCC5',label:'Total Meetings',val:totalMeetings,color:'#1a3a6b'},
+    {icon:'\uD83D\uDCCB',label:'Total Resolutions',val:totalRes,color:'#0891b2'},
+    {icon:'\u23F3',label:'Pending Actions',val:pending,color:'#d97706'},
+    {icon:'\uD83D\uDEA8',label:'Overdue Items',val:overdue,color:'#dc2626'},
+    {icon:'\u2705',label:'Completed',val:stCounts.Completed,color:'#16a34a'},
+    {icon:'\uD83D\uDD04',label:'In Progress',val:stCounts['In Progress'],color:'#2563eb'},
+  ];
+  html+='<div class="mom-kpi-row">';
+  kpis.forEach(function(k){
+    html+='<div class="mom-kpi" style="--kc:'+k.color+'">'
+      +'<div class="mom-kpi-icon">'+k.icon+'</div>'
+      +'<div class="mom-kpi-val">'+k.val+'</div>'
+      +'<div class="mom-kpi-lbl">'+esc(k.label)+'</div>'
+      +'</div>';
+  });
+  html+='</div>';
+
+  /* Charts row 1 */
+  html+='<div class="mom-charts-grid">';
+
+  /* Bar chart — resolutions by body */
+  html+='<div class="mom-chart-card"><div class="mom-chart-ttl">\uD83D\uDCCA Resolutions by Governance Body</div>';
+  html+=_svgHBar(bodyCounts,['#1a3a6b','#2563eb','#0891b2','#059669','#d97706','#dc2626']);
+  html+='</div>';
+
+  /* Donut — status */
+  html+='<div class="mom-chart-card"><div class="mom-chart-ttl">\uD83D\uDD04 Resolution Status Distribution</div>';
+  html+=_svgDonut([
+    {l:'Completed',v:stCounts.Completed,c:'#16a34a'},
+    {l:'In Progress',v:stCounts['In Progress'],c:'#2563eb'},
+    {l:'Pending',v:stCounts.Pending,c:'#d97706'},
+    {l:'Deferred',v:stCounts.Deferred,c:'#9333ea'},
+  ]);
+  html+='</div>';
+  html+='</div>';
+
+  /* Charts row 2 */
+  html+='<div class="mom-charts-grid">';
+
+  /* Bar chart — accreditation tags */
+  html+='<div class="mom-chart-card"><div class="mom-chart-ttl">\uD83C\uDF93 Accreditation Tag Distribution</div>';
+  html+=_svgHBar(accCounts,['#1a3a6b','#0891b2','#059669','#d97706','#dc2626','#9333ea','#0f766e','#b45309']);
+  html+='</div>';
+
+  /* Donut — priority */
+  html+='<div class="mom-chart-card"><div class="mom-chart-ttl">\u26A1 Priority Distribution</div>';
+  html+=_svgDonut([
+    {l:'High',v:prioCounts.High,c:'#dc2626'},
+    {l:'Medium',v:prioCounts.Medium,c:'#d97706'},
+    {l:'Low',v:prioCounts.Low,c:'#16a34a'},
+  ]);
+  html+='</div>';
+  html+='</div>';
+
+  /* Compliance heatmap — full width */
+  html+='<div class="mom-chart-card full">'
+    +'<div class="mom-chart-ttl">\uD83C\uDFAF Compliance Heatmap — Accreditation \xD7 Governance Body</div>';
+  html+=_momComplianceHeatmap(allRes);
+  html+='</div>';
+
+  /* Overdue items table — conditional */
+  if(overdueList.length){
+    html+='<div class="mom-chart-card full" style="margin-top:16px">'
+      +'<div class="mom-chart-ttl">\uD83D\uDEA8 Overdue Action Items ('+(overdueList.length)+')</div>'
+      +'<table class="mom-tbl"><thead><tr>'
+      +'<th>Body</th><th>Agenda / Resolution</th><th>DRI</th><th>Department</th><th>Target Date</th><th>Status</th><th>Priority</th>'
+      +'</tr></thead><tbody>';
+    overdueList.slice(0,15).forEach(function(r){
+      var st=r['Status']||r[san('Status')]||'Pending';
+      var pr=r['Priority']||r[san('Priority')]||'Medium';
+      var stBadge='mom-badge '+({'High':'mom-badge-red','Medium':'mom-badge-amber','Low':'mom-badge-green'}[pr]||'mom-badge-amber');
+      html+='<tr>'
+        +'<td><span class="mom-badge mom-badge-blue">'+esc(r._body||'')+'</span></td>'
+        +'<td>'+esc((r['Agenda_Title']||r[san('Agenda Title')]||r['Resolution_Summary']||r[san('Resolution Summary')]||'').substring(0,80))+'</td>'
+        +'<td><strong>'+esc(r['DRI']||r[san('DRI')]||'—')+'</strong></td>'
+        +'<td>'+esc(r['Department']||r[san('Department')]||'—')+'</td>'
+        +'<td style="color:#dc2626;font-weight:700">'+esc(r['Target_Date']||r[san('Target Date')]||'—')+'</td>'
+        +'<td><span class="mom-badge mom-badge-red">'+esc(st)+'</span></td>'
+        +'<td><span class="'+stBadge+'">'+esc(pr)+'</span></td>'
+        +'</tr>';
+    });
+    html+='</tbody></table></div>';
+  }
+
+  /* Section quick-jump */
+  html+='<div class="mom-chart-card full" style="margin-top:16px">'
+    +'<div class="mom-chart-ttl">\uD83D\uDD17 Quick Navigation — Jump to Section</div>'
+    +'<div class="mom-section-jump">';
+  S.dept.sections.forEach(function(s,i){
+    if(s.mode==='mom_dashboard') return;
+    html+='<button class="mom-jump-btn" onclick="saveCurrent();renderSec('+i+')">'+esc(s.title)+'</button>';
+  });
+  html+='</div></div>';
+
+  html+='</div>';
+
+  var fMain=document.getElementById('f-main');
+  if(fMain) fMain.innerHTML='<div class="sc-card">'+html+'</div>';
+  buildNav();
+}
+
+/* ── Registrar special dropdowns in table render ── */
+var _REG_DROPDOWNS={
+  'Status':['Pending','In Progress','Completed','Deferred','Escalated','On Hold'],
+  'Priority':['High','Medium','Low'],
+  'Meeting_Type':['Regular','Special','Emergency','Extra-ordinary'],
+  'Meeting_Body':['GB','BoM','AC','BoS','BoE','IQAC','Other'],
+  'Accreditation_Tag':['NAAC','AACSB','NBA','AMBA-BGA','NECHE','ACBSP','NIRF','QS','THE','ISO 21001','ISO 41001','ISO 9001','ISO 14001','ISO 50001'],
+  'Accreditation_Body':['NAAC','AACSB','NBA','AMBA-BGA','NECHE','ACBSP'],
+  'ISO_Standard':['ISO 21001','ISO 41001','ISO 9001','ISO 14001','ISO 50001'],
+  'Evidence_Readiness':['Ready','Partial','Not Ready'],
+  'Access_Level':['Public','Restricted','Confidential'],
+  'Source_Body':['GB','BoM','AC','BoS','BoE','IQAC'],
+};
+
+function _momDropdownCell(key, curVal){
+  var opts=_REG_DROPDOWNS[key]||null;
+  if(!opts) return null;
+  var cls='mom-sel';
+  if(key==='Status'){
+    var s=(curVal||'').toLowerCase();
+    cls+=' '+(s.includes('complet')||s.includes('done')?'status-done':s.includes('progress')?'status-progress':s.includes('defer')?'status-gray':'status-pending');
+  }
+  if(key==='Priority'){
+    var p=(curVal||'').toLowerCase();
+    cls+=' '+(p==='high'?'prio-high':p==='low'?'prio-low':'prio-medium');
+  }
+  var sel='<select class="ci '+cls+'" data-key="'+key+'" onchange="this.className=\'ci mom-sel \'+_momStatusOrPrioClass(this)">';
+  sel+='<option value="">— select —</option>';
+  opts.forEach(function(o){sel+='<option'+(o===curVal?' selected':'')+'>'+esc(o)+'</option>';});
+  sel+='</select>';
+  return sel;
+}
+
+function _momStatusOrPrioClass(sel){
+  var key=sel.dataset.key;var v=sel.value;
+  if(key==='Status'){
+    var s=v.toLowerCase();
+    return 'mom-sel '+(s.includes('complet')||s.includes('done')?'status-done':s.includes('progress')?'status-progress':s.includes('defer')?'status-gray':'status-pending');
+  }
+  if(key==='Priority'){
+    return 'mom-sel '+(v==='High'?'prio-high':v==='Low'?'prio-low':'prio-medium');
+  }
+  return 'mom-sel';
+}
+
 /* ======= UNIVERSAL TABLE IMPORT (SheetJS XLSX) ======= */
 function importTableData(secId){
   var sec=S.dept.sections.find(function(s){return s.id===secId;});
@@ -4045,6 +4462,9 @@ function renderSec(idx){
   S.secIdx=idx;
   const sec=S.dept.sections[idx];
 
+  /* ── MoM Governance Dashboard ── */
+  if(sec.mode==='mom_dashboard'){_renderMoMDashboard(sec);return;}
+
   /* ── Faculty Master Sheet mode ── */
   if(sec.mode==='faculty'){
     if(!window.FAC[sec.id]) window.FAC[sec.id]=S.rows[sec.id]||[];
@@ -4102,6 +4522,11 @@ function renderSec(idx){
           const cv=row[k]||'';
           html+='<td><span class="cert-id-chip">'+(cv?esc(cv):'—')+'</span></td>';
         }else{
+          /* Registrar Office — smart dropdowns */
+          if(S.dept&&S.dept.id==='registrar'){
+            var _dd=_momDropdownCell(k,row[k]||'');
+            if(_dd){html+='<td>'+_dd+'</td>';continue;}
+          }
           const _ct=_detectColType(c);
           if(_ct==='date'){
             html+='<td><input type="date" class="ci ci-date" data-key="'+k+'" value="'+esc(_toDateInput(row[k]||''))+'"></td>';
