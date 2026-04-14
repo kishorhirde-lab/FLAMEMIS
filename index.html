@@ -4525,7 +4525,7 @@ function renderSec(idx){
           /* Registrar Office — smart dropdowns */
           if(S.dept&&S.dept.id==='registrar'){
             var _dd=_momDropdownCell(k,row[k]||'');
-            if(_dd){html+='<td>'+_dd+'</td>';continue;}
+            if(_dd){html+='<td>'+_dd+'</td>';return;}
           }
           const _ct=_detectColType(c);
           if(_ct==='date'){
