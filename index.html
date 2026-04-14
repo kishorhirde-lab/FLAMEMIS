@@ -5537,7 +5537,9 @@ function renderForm(){
 function buildNav(){
   const ul=$('sec-nav');
   ul.innerHTML='';
+  var _vis=S._visibleSecs||null;
   S.dept.sections.forEach(function(sec,i){
+    if(_vis&&!_vis.includes(sec.id))return; /* hide restricted sections */
     const li=document.createElement('li');
     li.className='ni'+(i===S.secIdx?' active':'');
     li.innerHTML='<span class="sr-b">'+sec.sr+'</span>'+sec.title;
@@ -5617,7 +5619,7 @@ function renderSec(idx){
           /* Registrar Office — smart dropdowns */
           if(S.dept&&S.dept.id==='registrar'){
             var _dd=_momDropdownCell(k,row[k]||'');
-            if(_dd){html+='<td>'+_dd+'</td>';continue;}
+            if(_dd){html+='<td>'+_dd+'</td>';return;}
           }
           const _ct=_detectColType(c);
           if(_ct==='date'){
