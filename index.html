@@ -435,13 +435,14 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 /* ── SIDEBAR ─────────────────────────────────────────── */
 .adm-sidebar{
   width:240px;min-width:240px;background:#0C3F6A;
-  display:flex;flex-direction:column;overflow-y:auto;
+  display:block;overflow-y:auto;overflow-x:hidden;
   flex-shrink:0;transition:width 0.25s ease,min-width 0.25s ease;
   scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.15) transparent}
+.adm-sidebar.collapsed{overflow-x:hidden}
 .adm-sidebar.collapsed{width:62px;min-width:62px}
 .adm-sidebar-profile{
   padding:20px 16px 16px;display:flex;align-items:center;gap:10px;
-  border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0}
+  border-bottom:1px solid rgba(255,255,255,0.08)}
 .adm-sidebar-avatar{
   width:36px;height:36px;min-width:36px;border-radius:50%;
   background:linear-gradient(135deg,#F58220,#FDB515);
@@ -479,7 +480,7 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 .adm-sidebar.collapsed .adm-nav-badge{display:none}
 .adm-sidebar-footer{
   padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);
-  margin-top:auto;flex-shrink:0}
+  margin-top:24px}
 .adm-sidebar-footer-text{
   font-size:9px;color:rgba(255,255,255,0.25);text-align:center;
   line-height:1.5;overflow:hidden}
@@ -502,7 +503,7 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 #adm-tab-dept{flex-direction:column}
 
 /* ── DEPT FILTERS BAR ─────────────────────────────────── */
-.adm-filters{
+.adm-filters{flex-wrap:wrap;
   background:#fff;padding:11px 24px;
   display:flex;gap:12px;align-items:center;
   border-bottom:1px solid #E2E8F0;flex-shrink:0;flex-wrap:wrap}
@@ -1472,6 +1473,9 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
     </div>
     <div class="adm-header-actions">
       <span style="font-size:10px;color:rgba(255,255,255,0.4);display:none" id="export-progress">⏳ Preparing…</span>
+      <button class="adm-btn adm-btn-outline" onclick="switchAdmTab('accrep',document.querySelector('[data-tab=accrep]'))">📄 Accreditation Report</button>
+      <button class="adm-btn adm-btn-outline" onclick="switchAdmTab('comprep',document.querySelector('[data-tab=comprep]'))">📑 Compliance Report</button>
+      <button class="adm-btn adm-btn-outline" onclick="switchAdmTab('analytics',document.querySelector('[data-tab=analytics]'))">📈 Analytics</button>
       <button class="adm-btn adm-btn-outline" id="btn-export-xl" onclick="exportToExcel()">📊 Export Excel</button>
       <button class="adm-btn adm-btn-orange" id="btn-adm-out">⏏ Logout</button>
     </div>
@@ -1499,6 +1503,25 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
         <div class="adm-nav-item" data-tab="dashboard" onclick="switchAdmTab('dashboard',this)">
           <span class="adm-nav-icon">📊</span>
           <span class="adm-nav-label">Dashboard</span>
+        </div>
+      </div>
+
+      <div class="adm-nav-divider"></div>
+
+      <!-- Reports & Analytics — moved up so always visible -->
+      <div class="adm-nav-section">
+        <div class="adm-nav-section-label">Reports &amp; Analytics</div>
+        <div class="adm-nav-item" data-tab="analytics" onclick="switchAdmTab('analytics',this)">
+          <span class="adm-nav-icon">📉</span>
+          <span class="adm-nav-label">Analytics</span>
+        </div>
+        <div class="adm-nav-item" data-tab="accrep" onclick="switchAdmTab('accrep',this)">
+          <span class="adm-nav-icon">📄</span>
+          <span class="adm-nav-label">Accreditation Report</span>
+        </div>
+        <div class="adm-nav-item" data-tab="comprep" onclick="switchAdmTab('comprep',this)">
+          <span class="adm-nav-icon">📑</span>
+          <span class="adm-nav-label">Compliance Report</span>
         </div>
       </div>
 
@@ -1540,21 +1563,7 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 
       <div class="adm-nav-divider"></div>
 
-      <!-- Reports -->
-      <div class="adm-nav-section">
-        <div class="adm-nav-section-label">Reports &amp; Analytics</div>
-        <div class="adm-nav-item" data-tab="analytics" onclick="switchAdmTab('analytics',this)">
-          <span class="adm-nav-icon">📉</span>
-          <span class="adm-nav-label">Analytics</span>
-        </div>
-        <div class="adm-nav-item" data-tab="accrep" onclick="switchAdmTab('accrep',this)">
-          <span class="adm-nav-icon">📄</span>
-          <span class="adm-nav-label">Accreditation Report</span>
-        </div>
-        <div class="adm-nav-item" data-tab="comprep" onclick="switchAdmTab('comprep',this)">
-          <span class="adm-nav-icon">📑</span>
-          <span class="adm-nav-label">Compliance Report</span>
-        </div>
+      <!-- Reports placeholder (now above) --><div class="adm-nav-section" style="display:none">
       </div>
 
       <div class="adm-nav-divider"></div>
@@ -1725,6 +1734,15 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
         <option value="monthly">Monthly</option>
         <option value="annual">Annual</option>
       </select>
+      <button type="button" onclick="switchAdmTab('accrep',document.querySelector('[data-tab=accrep]'))"
+        style="margin-left:auto;padding:6px 14px;background:#0C3F6A;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">
+        📄 Accreditation Report</button>
+      <button type="button" onclick="switchAdmTab('comprep',document.querySelector('[data-tab=comprep]'))"
+        style="padding:6px 14px;background:#F58220;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">
+        📑 Compliance Report</button>
+      <button type="button" onclick="window.print()"
+        style="padding:6px 14px;background:#fff;color:#374151;border:1.5px solid #e0e8f0;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">
+        🖨️ Print</button>
     </div>
     <div class="adm-body" id="adm-body"></div>
   </div>
