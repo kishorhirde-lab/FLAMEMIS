@@ -236,6 +236,27 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .btn-mom-gen{padding:7px 16px;background:#0C3F6A;color:#fff;border:none;border-radius:6px;
   font-size:12px;font-weight:700;cursor:pointer;transition:background .15s}
 .btn-mom-gen:hover{background:#1a5fa8}
+/* ── NAAC Compliance Panel ── */
+.naac-comp-panel{margin-top:14px;border:1px solid #e0e8f0;border-radius:10px;overflow:hidden;background:#fff}
+.naac-comp-hdr{display:flex;align-items:center;gap:10px;padding:10px 16px;background:#f0f4fa;cursor:pointer;border-bottom:1px solid #e0e8f0;user-select:none}
+.naac-comp-hdr:hover{background:#e8edf5}
+.naac-comp-title{font-size:13px;font-weight:700;color:#0C3F6A;flex:1}
+.naac-comp-count{background:#0C3F6A;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+.naac-comp-toggle{font-size:11px;color:#94a3b8;transition:transform .2s}
+.naac-comp-body{display:none;padding:14px 16px}
+.naac-comp-body.open{display:block}
+.naac-crit-group{margin-bottom:12px}
+.naac-crit-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:6px}
+.naac-metric-row{display:flex;align-items:flex-start;gap:10px;padding:7px 10px;border:1px solid #e8edf5;border-radius:7px;margin-bottom:5px;background:#fafbfd}
+.naac-metric-row.primary{border-left:3px solid #0C3F6A;background:#f0f6ff}
+.naac-metric-row.secondary{border-left:3px solid #94a3b8}
+.naac-m-num{font-size:11px;font-weight:800;color:#0C3F6A;white-space:nowrap;min-width:38px}
+.naac-m-desc{font-size:11.5px;color:#334155;flex:1;line-height:1.45}
+.naac-m-meta{display:flex;gap:5px;align-items:center;flex-shrink:0}
+.naac-m-wt{font-size:9.5px;background:#e0e7ff;color:#4338ca;padding:2px 6px;border-radius:5px;font-weight:700}
+.naac-m-type{font-size:9.5px;background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:5px;font-weight:700}
+.naac-m-pri{font-size:9px;background:#dcfce7;color:#166534;padding:2px 6px;border-radius:5px;font-weight:700}
+.naac-m-sec{font-size:9px;background:#f1f5f9;color:#64748b;padding:2px 6px;border-radius:5px;font-weight:700}
 .btn-mom-preview{padding:7px 16px;background:#16a34a;color:#fff;border:none;border-radius:6px;
   font-size:12px;font-weight:700;cursor:pointer}
 .btn-mom-cancel{padding:7px 16px;background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;
@@ -3734,6 +3755,192 @@ async function _bulkSendFILCertEmails(rows,secId){
 /* ═══════════════ REGISTRAR — MoM GOVERNANCE DASHBOARD ═══════════════ */
 var _REG_BODIES={GB:'r_gb',BoM:'r_bom',AC:'r_ac',BoS:'r_bos',BoE:'r_boe',IQAC:'r_iqac'};
 var _REG_ACC=['NAAC','AACSB','NBA','AMBA-BGA','NECHE','ACBSP','NIRF','QS','THE','ISO 21001','ISO 41001','ISO 9001'];
+
+/* ── NAAC Metric → Governance Body Mapping (85 metrics) ──────────────
+   Array order: first element = PRIMARY responsible body, rest = secondary
+   Body IDs: r_gb (Governing Board), r_bom (BoM), r_ac (Academic Council),
+             r_bos (Board of Studies), r_boe (Board of Examinations), r_iqac (IQAC)
+────────────────────────────────────────────────────────────────────── */
+const _NAAC_BODY_MAP={
+  /* C1 – Curricular Aspects */
+  '1.1.1':['r_bos','r_ac'],
+  '1.1.2':['r_bos','r_ac'],
+  '1.1.3':['r_bos'],
+  '1.2.1':['r_bos','r_ac'],
+  '1.2.2':['r_bos','r_ac'],
+  '1.3.1':['r_bos','r_ac'],
+  '1.3.2':['r_bos','r_ac'],
+  '1.3.3':['r_bos','r_ac'],
+  '1.4.1':['r_iqac','r_ac'],
+  /* C2 – Teaching-Learning & Evaluation */
+  '2.1.1':['r_ac','r_bom'],
+  '2.1.2':['r_ac','r_bom'],
+  '2.2.1':['r_ac','r_iqac'],
+  '2.2.2':['r_ac','r_bom'],
+  '2.3.1':['r_ac','r_iqac'],
+  '2.4.1':['r_bom','r_ac'],
+  '2.4.2':['r_bom','r_ac'],
+  '2.4.3':['r_ac','r_bom'],
+  '2.5.1':['r_boe'],
+  '2.5.2':['r_boe'],
+  '2.5.3':['r_boe','r_bom'],
+  '2.6.1':['r_bos','r_ac','r_boe'],
+  '2.6.2':['r_boe'],
+  '2.7.1':['r_iqac','r_ac'],
+  /* C3 – Research, Innovations & Extension */
+  '3.1.1':['r_bom','r_ac'],
+  '3.1.2':['r_bom','r_gb'],
+  '3.1.3':['r_bom','r_ac'],
+  '3.1.4':['r_bom'],
+  '3.2.1':['r_bom','r_gb'],
+  '3.2.2':['r_bom'],
+  '3.3.1':['r_bom','r_ac'],
+  '3.3.2':['r_bom'],
+  '3.4.1':['r_iqac','r_bom'],
+  '3.4.2':['r_bom','r_gb'],
+  '3.4.3':['r_bom'],
+  '3.4.4':['r_bom'],
+  '3.4.5':['r_bom'],
+  '3.4.6':['r_bom','r_ac'],
+  '3.4.7':['r_bom'],
+  '3.4.8':['r_bom'],
+  '3.5.1':['r_bom','r_gb'],
+  '3.6.1':['r_bom','r_ac'],
+  '3.6.2':['r_bom','r_ac'],
+  '3.7.1':['r_bom','r_gb'],
+  /* C4 – Infrastructure & Learning Resources */
+  '4.1.1':['r_bom','r_gb'],
+  '4.1.2':['r_bom','r_gb'],
+  '4.2.1':['r_bom'],
+  '4.2.2':['r_bom'],
+  '4.3.1':['r_bom'],
+  '4.3.2':['r_bom','r_ac'],
+  '4.3.3':['r_bom','r_ac'],
+  '4.4.1':['r_bom','r_gb'],
+  /* C5 – Student Support & Progression */
+  '5.1.1':['r_bom','r_gb'],
+  '5.1.2':['r_ac','r_bom'],
+  '5.1.3':['r_ac','r_iqac'],
+  '5.1.4':['r_iqac','r_bom'],
+  '5.2.1':['r_ac','r_bom'],
+  '5.2.2':['r_ac'],
+  '5.2.3':['r_ac'],
+  '5.3.1':['r_ac','r_bom'],
+  '5.3.2':['r_ac'],
+  '5.3.3':['r_ac','r_iqac'],
+  '5.4.1':['r_bom','r_gb'],
+  /* C6 – Governance, Leadership & Management */
+  '6.1.1':['r_gb','r_bom'],
+  '6.1.2':['r_gb','r_bom','r_iqac'],
+  '6.2.1':['r_bom','r_iqac'],
+  '6.2.2':['r_bom','r_gb'],
+  '6.3.1':['r_bom'],
+  '6.3.2':['r_bom'],
+  '6.3.3':['r_bom','r_ac'],
+  '6.4.1':['r_bom','r_gb'],
+  '6.4.2':['r_bom','r_gb'],
+  '6.5.1':['r_iqac'],
+  '6.5.2':['r_iqac','r_bom'],
+  '6.5.3':['r_iqac','r_bom'],
+  /* C7 – Institutional Values & Best Practices */
+  '7.1.1':['r_bom','r_iqac'],
+  '7.1.2':['r_bom'],
+  '7.1.3':['r_bom'],
+  '7.1.4':['r_bom'],
+  '7.1.5':['r_bom'],
+  '7.1.6':['r_iqac','r_bom'],
+  '7.1.7':['r_bom','r_iqac'],
+  '7.1.8':['r_bom','r_iqac'],
+  '7.1.9':['r_bom','r_iqac'],
+  '7.1.10':['r_bom','r_iqac'],
+  '7.2.1':['r_iqac','r_bom'],
+  '7.3.1':['r_iqac','r_bom'],
+  '7.3.2':['r_iqac','r_bom']
+};
+
+/* Criterion metadata for colours */
+var _NAAC_CRIT_META={
+  '1':{name:'Curricular Aspects',color:'#1a3c5e',bg:'#e8f0fa'},
+  '2':{name:'Teaching-Learning & Evaluation',color:'#1565c0',bg:'#e3f2fd'},
+  '3':{name:'Research, Innovations & Extension',color:'#4a148c',bg:'#f3e5f5'},
+  '4':{name:'Infrastructure & Learning Resources',color:'#004d40',bg:'#e0f2f1'},
+  '5':{name:'Student Support & Progression',color:'#bf360c',bg:'#fbe9e7'},
+  '6':{name:'Governance, Leadership & Management',color:'#1b5e20',bg:'#e8f5e9'},
+  '7':{name:'Institutional Values & Best Practices',color:'#e65100',bg:'#fff3e0'}
+};
+
+/* Build a lookup: metricNum → {desc, type, weight} from NAAC_TEMPLATE_METRICS */
+var _naacMetricLookup=null;
+function _getNaacMetricInfo(num){
+  if(!_naacMetricLookup){
+    _naacMetricLookup={};
+    (window.NAAC_TEMPLATE_METRICS||[]).forEach(function(m){_naacMetricLookup[m.num]=m;});
+  }
+  return _naacMetricLookup[num]||{desc:num,type:'',weight:''};
+}
+
+/* Render NAAC compliance panel for a governance body section */
+function _renderNaacCompliancePanel(secId){
+  /* Collect metrics for this section */
+  var metrics=[];
+  Object.keys(_NAAC_BODY_MAP).forEach(function(num){
+    var bodies=_NAAC_BODY_MAP[num];
+    if(bodies.indexOf(secId)!==-1){
+      metrics.push({num:num,primary:(bodies[0]===secId)});
+    }
+  });
+  if(!metrics.length)return '';
+
+  /* Sort by metric number */
+  metrics.sort(function(a,b){
+    var ap=a.num.split('.').map(Number),bp=b.num.split('.').map(Number);
+    for(var i=0;i<Math.max(ap.length,bp.length);i++){if((ap[i]||0)!==(bp[i]||0))return (ap[i]||0)-(bp[i]||0);}
+    return 0;
+  });
+
+  var primaryCount=metrics.filter(function(m){return m.primary;}).length;
+  var total=metrics.length;
+
+  var h='<div class="naac-comp-panel">';
+  h+='<div class="naac-comp-hdr" onclick="this.nextElementSibling.classList.toggle(\'open\');this.querySelector(\'.naac-comp-toggle\').style.transform=this.nextElementSibling.classList.contains(\'open\')?\'rotate(180deg)\':\'\';">';
+  h+='<span style="font-size:16px">📊</span>';
+  h+='<span class="naac-comp-title">NAAC Metrics — Compliance Responsibility</span>';
+  h+='<span class="naac-comp-count">'+primaryCount+' Primary &nbsp;·&nbsp; '+(total-primaryCount)+' Secondary</span>';
+  h+='<span class="naac-comp-toggle">▼</span>';
+  h+='</div>';
+  h+='<div class="naac-comp-body">';
+
+  /* Group by criterion */
+  var groups={};
+  metrics.forEach(function(m){
+    var crit=m.num.split('.')[0];
+    if(!groups[crit])groups[crit]=[];
+    groups[crit].push(m);
+  });
+
+  Object.keys(groups).sort().forEach(function(crit){
+    var cm=_NAAC_CRIT_META[crit]||{name:'Criterion '+crit,color:'#334155',bg:'#f1f5f9'};
+    h+='<div class="naac-crit-group">';
+    h+='<div class="naac-crit-label" style="background:'+cm.bg+';color:'+cm.color+'">C'+crit+' — '+esc(cm.name)+'</div>';
+    groups[crit].forEach(function(m){
+      var info=_getNaacMetricInfo(m.num);
+      var shortDesc=(info.desc||'').length>120?(info.desc||'').substring(0,117)+'…':info.desc;
+      h+='<div class="naac-metric-row '+(m.primary?'primary':'secondary')+'">';
+      h+='<span class="naac-m-num">'+esc(m.num)+'</span>';
+      h+='<span class="naac-m-desc">'+esc(shortDesc)+'</span>';
+      h+='<span class="naac-m-meta">';
+      if(info.weight)h+='<span class="naac-m-wt">Wt: '+esc(String(info.weight))+'</span>';
+      if(info.type)h+='<span class="naac-m-type">'+esc(info.type)+'</span>';
+      h+=m.primary?'<span class="naac-m-pri">Primary</span>':'<span class="naac-m-sec">Secondary</span>';
+      h+='</span></div>';
+    });
+    h+='</div>';
+  });
+
+  h+='<div style="font-size:10.5px;color:#94a3b8;margin-top:8px;font-style:italic">QlM = Qualitative Metric &nbsp;·&nbsp; QnM = Quantitative Metric &nbsp;·&nbsp; Wt = NAAC weight points</div>';
+  h+='</div></div>';
+  return h;
+}
 var _REG_ISO=['ISO 21001','ISO 41001','ISO 9001','ISO 14001','ISO 50001'];
 
 function _momAllResolutions(){
@@ -5017,6 +5224,11 @@ function renderSec(idx){
   }
   html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')"" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
     html+='</div>';
+
+  /* ── NAAC Compliance Panel (Registrar governance body sections) ── */
+  if(S.dept&&S.dept.id==='registrar'&&['r_gb','r_bom','r_ac','r_bos','r_boe','r_iqac'].includes(sec.id)){
+    html+=_renderNaacCompliancePanel(sec.id);
+  }
 
   }else if(sec.mode==='fixed'){
     html+='<div class="tbl-wrap"><table class="dtbl fixed-tbl"><thead><tr><th>Item</th><th>'+esc(sec.valueLabel||'Value')+'</th></tr></thead><tbody>';
