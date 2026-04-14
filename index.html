@@ -4110,15 +4110,26 @@ function openMoMGenerator(secId){
     var agTitle=row['Agenda_Title']||row[san('Agenda Title')]||'Agenda Item '+(i+1);
     var resolution=row['Resolution___Decision']||row[san('Resolution / Decision')]||'';
     var dri=row['DRI']||row[san('DRI')]||'';
+    var dept=row['Department']||row[san('Department')]||'';
+    var target=row['Target_Date']||row[san('Target Date')]||'';
+    var accTag=row['Accreditation_Tag']||row[san('Accreditation Tag')]||row['Compliance_Tags']||row[san('Compliance Tags')]||row['Reporting_Framework']||row[san('Reporting Framework')]||'';
     h+='<div class="mom-agenda-card">'
       +'<div class="mom-agenda-card-hdr"><span class="mom-agenda-no">'+esc(agNo)+'</span>'+esc(agTitle)+'</div>'
       +'<div class="mom-fld" style="margin-bottom:8px"><label>Discussion</label>'
       +'<textarea id="mom-disc-'+i+'" rows="3" placeholder="Summarise the discussion that took place on this agenda item..."></textarea></div>'
-      +'<div class="mom-fld-grid" style="grid-template-columns:1fr auto;">'
+      +'<div class="mom-fld-grid" style="grid-template-columns:1fr 1fr;">'
       +'<div class="mom-fld"><label>Resolution / Decision (from table)</label>'
       +'<input id="mom-res-'+i+'" value="'+esc(resolution)+'" placeholder="Resolution text..."></div>'
-      +'<div class="mom-fld" style="min-width:160px"><label>DRI</label>'
-      +'<input id="mom-dri-'+i+'" value="'+esc(dri)+'" placeholder="DRI"></div>'
+      +'<div class="mom-fld"><label>DRI</label>'
+      +'<input id="mom-dri-'+i+'" value="'+esc(dri)+'" placeholder="Designated Responsible Individual"></div>'
+      +'</div>'
+      +'<div class="mom-fld-grid" style="grid-template-columns:1fr 1fr 1fr;">'
+      +'<div class="mom-fld"><label>Department</label>'
+      +'<input id="mom-dept-'+i+'" value="'+esc(dept)+'" placeholder="e.g. Academic Affairs"></div>'
+      +'<div class="mom-fld"><label>Timeline</label>'
+      +'<input id="mom-timeline-'+i+'" value="'+esc(target)+'" placeholder="e.g. 31/03/2026"></div>'
+      +'<div class="mom-fld"><label>Reporting Framework</label>'
+      +'<input id="mom-fw-'+i+'" value="'+esc(accTag)+'" placeholder="e.g. NAAC, NBA, NIRF"></div>'
       +'</div>'
       +'</div>';
   });
@@ -4175,7 +4186,10 @@ function generateMoMDocument(){
       discussion: (document.getElementById('mom-disc-'+i)||{}).value||'',
       resolution: (document.getElementById('mom-res-'+i)||{}).value||(row['Resolution___Decision']||row[san('Resolution / Decision')]||''),
       dri: (document.getElementById('mom-dri-'+i)||{}).value||(row['DRI']||row[san('DRI')]||''),
-      accTag: row['Accreditation_Tag']||row[san('Accreditation Tag')]||'',
+      department: (document.getElementById('mom-dept-'+i)||{}).value||(row['Department']||row[san('Department')]||''),
+      timeline: (document.getElementById('mom-timeline-'+i)||{}).value||(row['Target_Date']||row[san('Target Date')]||''),
+      reportingFw: (document.getElementById('mom-fw-'+i)||{}).value||(row['Accreditation_Tag']||row[san('Accreditation Tag')]||row['Compliance_Tags']||row[san('Compliance Tags')]||row['Reporting_Framework']||row[san('Reporting Framework')]||''),
+      accTag: row['Accreditation_Tag']||row[san('Accreditation Tag')]||row['Compliance_Tags']||row[san('Compliance Tags')]||'',
       target: row['Target_Date']||row[san('Target Date')]||''
     };
   });
@@ -4227,11 +4241,17 @@ function _buildMoMPrintHtml(meta, items){
     '.td-center{text-align:center}',
     '.td-bold{font-weight:700}',
     /* Agenda table — wider discussion col */
-    '.agt-no{width:5%;text-align:center;font-weight:700}',
-    '.agt-agenda{width:18%}',
-    '.agt-disc{width:38%}',
-    '.agt-res{width:28%}',
-    '.agt-dri{width:11%}',
+    '.agt-no{width:4%;text-align:center;font-weight:700}',
+    '.agt-agno{width:6%;text-align:center}',
+    '.agt-agenda{width:13%}',
+    '.agt-disc{width:20%}',
+    '.agt-res{width:19%}',
+    '.agt-dri{width:9%}',
+    '.agt-dept{width:9%}',
+    '.agt-tl{width:9%;text-align:center}',
+    '.agt-fw{width:11%}',
+    '.agt-tbl td{font-size:8pt}',
+    '.agt-tbl th{font-size:8pt}',
     /* Resolution formatting */
     '.res-text{font-style:italic;color:#0C3F6A;font-weight:600}',
     '.tag-pill{display:inline-block;background:#dbeafe;color:#1e40af;font-size:7.5pt;padding:1px 6px;border-radius:8px;margin:1px}',
@@ -4285,10 +4305,10 @@ function _buildMoMPrintHtml(meta, items){
     +'</div>'
     /* Index table */
     +'<div class="sec-title">Index of Agenda Items</div>'
-    +'<table><thead><tr><th style="width:8%">Sl. No.</th><th>Description</th><th style="width:12%;text-align:center">Page</th></tr></thead><tbody>';
+    +'<table><thead><tr><th style="width:6%">Sl. No.</th><th style="width:10%">Agenda No.</th><th>Agenda Description</th><th style="width:12%">DRI</th><th style="width:12%">Timeline</th><th style="width:10%;text-align:center">Page</th></tr></thead><tbody>';
 
   items.forEach(function(ag,i){
-    cover+='<tr><td class="td-center td-bold">'+esc(ag.no)+'</td><td>'+esc(ag.title)+'</td><td class="td-center">2</td></tr>';
+    cover+='<tr><td class="td-center td-bold">'+(i+1)+'</td><td class="td-center">'+esc(ag.no)+'</td><td>'+esc(ag.title)+'</td><td>'+esc(ag.dri||'')+'</td><td class="td-center">'+esc(ag.timeline||ag.target||'')+'</td><td class="td-center">2</td></tr>';
   });
   cover+='</tbody></table>';
   cover+=ftr()+'</div>';
@@ -4339,26 +4359,35 @@ function _buildMoMPrintHtml(meta, items){
   /* Agenda, Discussions & Resolutions */
   if(items.length){
     main+='<div class="sec-title">Agenda, Discussions &amp; Resolutions</div>'
-      +'<table><thead><tr>'
-      +'<th class="agt-no">Sl. No.</th>'
-      +'<th class="agt-agenda">Agenda</th>'
+      +'<table class="agt-tbl"><thead><tr>'
+      +'<th class="agt-no">Sl.<br>No.</th>'
+      +'<th class="agt-agno">Agenda<br>No.</th>'
+      +'<th class="agt-agenda">Agenda Description</th>'
       +'<th class="agt-disc">Discussion</th>'
       +'<th class="agt-res">Resolution</th>'
       +'<th class="agt-dri">DRI*</th>'
+      +'<th class="agt-dept">Department</th>'
+      +'<th class="agt-tl">Timeline</th>'
+      +'<th class="agt-fw">Reporting Framework</th>'
       +'</tr></thead><tbody>';
     items.forEach(function(ag,i){
-      var tags='';
-      if(ag.accTag){ag.accTag.split(/[,;]/).forEach(function(t){if(t.trim())tags+='<span class="tag-pill">'+esc(t.trim())+'</span>';});}
+      var fwTags='';
+      var fwSrc=ag.reportingFw||ag.accTag||'';
+      if(fwSrc){fwSrc.split(/[,;]/).forEach(function(t){if(t.trim())fwTags+='<span class="tag-pill">'+esc(t.trim())+'</span>';});}
       main+='<tr>'
-        +'<td class="td-center td-bold">'+esc(ag.no)+'</td>'
-        +'<td>'+esc(ag.title)+(tags?'<br><br>'+tags:'')+'</td>'
+        +'<td class="td-center td-bold">'+(i+1)+'</td>'
+        +'<td class="td-center">'+esc(ag.no)+'</td>'
+        +'<td>'+esc(ag.title)+'</td>'
         +'<td>'+(ag.discussion?esc(ag.discussion).replace(/\n/g,'<br>'):'<span style="color:#9ca3af;font-style:italic">—</span>')+'</td>'
         +'<td class="res-text">'+(ag.resolution?'Resolved to '+esc(ag.resolution).replace(/^resolved to /i,'').replace(/\n/g,'<br>'):'<span style="color:#9ca3af;font-weight:400;font-style:italic">Pending</span>')+'</td>'
-        +'<td style="font-size:9pt">'+esc(ag.dri)+(ag.target?'<br><span style="color:#6b7280;font-size:8pt">By: '+esc(ag.target)+'</span>':'')+'</td>'
+        +'<td>'+esc(ag.dri)+'</td>'
+        +'<td>'+esc(ag.department||'')+'</td>'
+        +'<td class="td-center">'+esc(ag.timeline||ag.target||'')+'</td>'
+        +'<td>'+(fwTags||'<span style="color:#9ca3af;font-style:italic">—</span>')+'</td>'
         +'</tr>';
     });
     main+='</tbody></table>'
-      +'<div style="font-size:8.5pt;color:#6b7280;font-style:italic;margin-bottom:16px">*DRI — Designated Responsible Individual</div>';
+      +'<div style="font-size:8pt;color:#6b7280;font-style:italic;margin-bottom:16px">*DRI — Designated Responsible Individual</div>';
   }
 
   /* Signature block */
