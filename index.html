@@ -257,6 +257,60 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .naac-m-type{font-size:9.5px;background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:5px;font-weight:700}
 .naac-m-pri{font-size:9px;background:#dcfce7;color:#166534;padding:2px 6px;border-radius:5px;font-weight:700}
 .naac-m-sec{font-size:9px;background:#f1f5f9;color:#64748b;padding:2px 6px;border-radius:5px;font-weight:700}
+/* ── Role Badge ── */
+.role-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.04em}
+.role-arc{background:#0C3F6A;color:#fff}.role-dean{background:#1b5e20;color:#fff}.role-board{background:#7b1fa2;color:#fff}
+/* ── Sub-role login ── */
+.subrole-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.subrole-btn{padding:12px 10px;border:2px solid #e2e8f0;border-radius:10px;background:#fff;cursor:pointer;text-align:center;transition:.2s;font-size:12px;font-weight:600;color:#334155}
+.subrole-btn:hover{border-color:#0C3F6A;background:#f0f6ff;color:#0C3F6A}
+.subrole-btn.active{border-color:#0C3F6A;background:#0C3F6A;color:#fff}
+.subrole-icon{font-size:20px;display:block;margin-bottom:3px}
+/* ── MoM Review ── */
+.momrev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-top:4px}
+.momrev-card{background:#fff;border:1px solid #e0e8f0;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.momrev-card-hdr{color:#fff;padding:11px 15px;display:flex;align-items:center;justify-content:space-between}
+.momrev-card-title{font-size:12.5px;font-weight:700}
+.momrev-card-count{background:rgba(255,255,255,.2);font-size:10px;padding:2px 8px;border-radius:8px;font-weight:700}
+.momrev-body{max-height:320px;overflow-y:auto}
+.momrev-row{padding:9px 13px;border-bottom:1px solid #f1f5f9;font-size:12px;display:flex;align-items:flex-start;gap:9px;cursor:pointer}
+.momrev-row:hover{background:#f7faff}
+.momrev-row-date{color:#0C3F6A;font-weight:700;white-space:nowrap;font-size:10.5px;min-width:64px}
+.momrev-row-title{flex:1;color:#334155;line-height:1.4}
+.momrev-empty{padding:22px;text-align:center;color:#94a3b8;font-size:12px}
+/* ── SSR Builder ── */
+.ssr-wrap{background:#f1f5f9;min-height:100%;padding-bottom:40px}
+.ssr-toolbar{background:#fff;padding:10px 18px;border-bottom:1px solid #e0e8f0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;z-index:10;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.ssr-crit-tabs{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+.ssr-crit-tab{padding:5px 11px;border:1px solid #e0e8f0;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:#334155;transition:.2s;white-space:nowrap}
+.ssr-crit-tab.active{color:#fff}
+.ssr-body{padding:14px 18px;display:grid;gap:12px}
+.ssr-metric-card{background:#fff;border:1px solid #e0e8f0;border-radius:12px;overflow:hidden}
+.ssr-metric-hdr{display:flex;align-items:center;gap:9px;padding:11px 15px;cursor:pointer;user-select:none}
+.ssr-metric-hdr:hover{background:#f7faff}
+.ssr-metric-num{background:#0C3F6A;color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:5px;min-width:42px;text-align:center}
+.ssr-metric-desc{flex:1;font-size:12px;font-weight:600;color:#1a2942;line-height:1.35}
+.ssr-metric-meta{display:flex;gap:5px;align-items:center;flex-shrink:0}
+.ssr-wt-badge{background:#e0e7ff;color:#4338ca;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:5px}
+.ssr-response-badge{background:#dcfce7;color:#166534;font-size:11px;font-weight:800;padding:3px 9px;border-radius:6px;min-width:56px;text-align:center}
+.ssr-response-badge.empty{background:#f1f5f9;color:#94a3b8}
+.ssr-body-panel{display:none;padding:13px 15px;border-top:1px solid #f1f5f9}
+.ssr-body-panel.open{display:block}
+.ssr-tbl{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:11.5px}
+.ssr-tbl th{background:#f0f4fa;color:#0C3F6A;font-size:10px;font-weight:700;padding:6px 9px;border:1px solid #dde3ed;text-align:left}
+.ssr-tbl td{padding:5px 7px;border:1px solid #e8edf5;vertical-align:middle}
+.ssr-tbl input,.ssr-tbl select{width:100%;border:1px solid #d1d9e6;border-radius:4px;padding:3px 6px;font-size:11px;background:#fff;outline:none}
+.ssr-tbl input:focus,.ssr-tbl select:focus{border-color:#0C3F6A;background:#f7fbff}
+.ssr-tbl td.calc-cell{background:#f7f8fb;color:#0C3F6A;font-weight:700;font-size:10.5px}
+.ssr-formula{font-size:10px;color:#64748b;font-style:italic;margin:5px 0 9px;padding:4px 10px;background:#f8fafc;border-left:3px solid #94a3b8;border-radius:3px}
+.ssr-response-block{background:linear-gradient(135deg,#0C3F6A,#1a5fa8);color:#fff;border-radius:8px;padding:10px 15px;margin:8px 0 12px;display:flex;align-items:center;gap:12px}
+.ssr-response-value{font-size:22px;font-weight:900;min-width:70px}
+.ssr-response-label{font-size:10.5px;opacity:.8;line-height:1.4}
+.ssr-btn-add{padding:5px 12px;background:#f0f6ff;color:#0C3F6A;border:1px solid #c7d9f5;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+.ssr-btn-save{padding:5px 12px;background:#0C3F6A;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+.ssr-btn-export{padding:7px 16px;background:#F58220;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer}
+.ssr-progress{height:5px;background:#e0e8f0;border-radius:3px;flex:1}
+.ssr-progress-bar{height:100%;background:linear-gradient(90deg,#0C3F6A,#F58220);border-radius:3px;transition:width .4s}
 .btn-mom-preview{padding:7px 16px;background:#16a34a;color:#fff;border:none;border-radius:6px;
   font-size:12px;font-weight:700;cursor:pointer}
 .btn-mom-cancel{padding:7px 16px;background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;
@@ -3066,7 +3120,14 @@ const DEPTS = [
   {id:'r_iso',sr:10,title:'ISO Compliance Tracker',mode:'table',fileUpload:false,
    cols:['ISO Standard','Clause No.','Clause Title','Meeting Body','Resolution / Action','Responsible Person','Status','Last Audit Date','Non-Conformity','Remarks']},
   {id:'r_pdf',sr:11,title:'MoM PDF Repository',mode:'table',fileUpload:true,
-   cols:['Meeting Body','Meeting Date','Document Title','Version No.','Uploaded By','Upload Date','Access Level','Remarks']}
+   cols:['Meeting Body','Meeting Date','Document Title','Version No.','Uploaded By','Upload Date','Access Level','Remarks']},
+  {id:'r_momreview',sr:12,title:'MoM Review Panel',mode:'mom_review',fileUpload:false,cols:[]},
+  {id:'r_ssr',sr:13,title:'NAAC SSR — Live Data Templates (55 QnM)',mode:'ssr_builder',fileUpload:false,cols:[]}
+],
+subRoles:[
+  {id:'arc',name:'ARC — Registrar Office',pin:'ARC@FLAME2025',access:'full'},
+  {id:'dean',name:'Dean',pin:'DEAN@FLAME2026',access:'review'},
+  {id:'board',name:'Board Member',pin:'BOARD@FLAME2026',access:'readonly'}
 ]}
 ]; // end DEPTS/* ═══════════════ DUPLICATE DETECTION ═══════════════ */
 const DUP_KEYS={
@@ -3755,6 +3816,351 @@ async function _bulkSendFILCertEmails(rows,secId){
 /* ═══════════════ REGISTRAR — MoM GOVERNANCE DASHBOARD ═══════════════ */
 var _REG_BODIES={GB:'r_gb',BoM:'r_bom',AC:'r_ac',BoS:'r_bos',BoE:'r_boe',IQAC:'r_iqac'};
 var _REG_ACC=['NAAC','AACSB','NBA','AMBA-BGA','NECHE','ACBSP','NIRF','QS','THE','ISO 21001','ISO 41001','ISO 9001'];
+
+/* ════════════════════════════════════════════════════════════
+   MOM REVIEW PANEL
+════════════════════════════════════════════════════════════ */
+function _renderMoMReview(sec){
+  var wrap=document.getElementById('sc-form');if(!wrap)return;
+  var bodies=[
+    {id:'r_gb',name:'Governing Board',color:'#0C3F6A'},
+    {id:'r_bom',name:'Board of Management',color:'#1b5e20'},
+    {id:'r_ac',name:'Academic Council',color:'#4a148c'},
+    {id:'r_bos',name:'Board of Studies',color:'#bf360c'},
+    {id:'r_boe',name:'Board of Examinations',color:'#e65100'},
+    {id:'r_iqac',name:'IQAC',color:'#1565c0'}
+  ];
+  var role=S.role||{id:'main',access:'full'};
+  var roleLabel=role.id==='arc'?'ARC — Registrar':role.id==='dean'?'Dean (Read-only)':role.id==='board'?'Board Member (Read-only)':'Registrar';
+  var roleCls='role-'+(role.id==='dean'?'dean':role.id==='board'?'board':'arc');
+  var h='<div class="sc-card">';
+  h+='<div class="sc-hdr"><span class="sr-badge">'+sec.sr+'</span><h2 class="sc-ttl">'+esc(sec.title)+'</h2>';
+  h+='<span class="role-badge '+roleCls+'" style="margin-left:10px">'+esc(roleLabel)+'</span></div>';
+  h+='<div style="font-size:12px;color:#64748b;margin:0 0 14px;padding:0 4px">Consolidated read-only view of all governance body meetings and resolutions. Click any row for full details.</div>';
+  h+='<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">';
+  h+='<input type="text" id="momrev-search" placeholder="🔍 Search agenda, resolution, DRI…" oninput="_momRevFilter()" style="flex:1;min-width:200px;padding:7px 11px;border:1.5px solid #e0e8f0;border-radius:8px;font-size:12px">';
+  h+='<select id="momrev-filter-body" onchange="_momRevFilter()" style="padding:7px 11px;border:1.5px solid #e0e8f0;border-radius:8px;font-size:12px"><option value="">All Bodies</option>';
+  bodies.forEach(function(b){h+='<option value="'+b.id+'">'+esc(b.name)+'</option>';});
+  h+='</select>';
+  h+='<button onclick="window.print()" class="ssr-btn-export" style="background:#0C3F6A">🗘️ Print</button>';
+  h+='</div>';
+  h+='<div class="momrev-grid" id="momrev-grid">';
+  bodies.forEach(function(body){
+    var rows=(S.rows[body.id]||[]).filter(function(r){return r&&Object.keys(r).length>1;});
+    h+='<div class="momrev-card" data-body="'+body.id+'">';
+    h+='<div class="momrev-card-hdr" style="background:linear-gradient(135deg,'+body.color+','+body.color+'bb)">';
+    h+='<span class="momrev-card-title">'+esc(body.name)+'</span>';
+    h+='<span class="momrev-card-count">'+rows.length+' record'+(rows.length!==1?'s':'')+'</span>';
+    h+='</div><div class="momrev-body">';
+    if(!rows.length){h+='<div class="momrev-empty">No meetings recorded yet</div>';}
+    else{rows.forEach(function(row,i){
+      var agTitle=row['Agenda_Title']||row[san('Agenda Title')]||row['Agenda_No_']||row[san('Agenda No.')]||'Record '+(i+1);
+      var meetDate=row['Meeting_Date']||row[san('Meeting Date')]||'';
+      var status=row['Status']||row[san('Status')]||'';
+      var sc=status==='Completed'||status==='Approved'?'background:#dcfce7;color:#166534':status==='Pending'?'background:#fef3c7;color:#92400e':'background:#f1f5f9;color:#64748b';
+      h+='<div class="momrev-row" onclick="_momRevExpand(''+body.id+'','+i+')">';
+      h+='<span class="momrev-row-date">'+esc(meetDate||'—')+'</span>';
+      h+='<span class="momrev-row-title">'+esc(agTitle)+'</span>';
+      if(status)h+='<span style="font-size:9.5px;padding:2px 7px;border-radius:5px;font-weight:700;white-space:nowrap;'+sc+'">'+esc(status)+'</span>';
+      h+='</div>';
+    });}
+    h+='</div></div>';
+  });
+  h+='</div></div>';
+  wrap.innerHTML=h;
+}
+function _momRevFilter(){
+  var q=(document.getElementById('momrev-search').value||'').toLowerCase();
+  var bf=(document.getElementById('momrev-filter-body')||{}).value||'';
+  document.querySelectorAll('.momrev-card').forEach(function(card){
+    var show=(!bf||card.dataset.body===bf);
+    if(show&&q)show=card.textContent.toLowerCase().indexOf(q)!==-1;
+    card.style.display=show?'':'none';
+  });
+}
+function _momRevExpand(bodyId,rowIdx){
+  var existing=document.getElementById('momrev-detail');if(existing)existing.remove();
+  var row=(S.rows[bodyId]||[])[rowIdx];if(!row)return;
+  var div=document.createElement('div');
+  div.id='momrev-detail';
+  div.style='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:8000;display:flex;align-items:center;justify-content:center;';
+  var keys=Object.keys(row).filter(function(k){return row[k]!==undefined&&row[k]!==''&&k!=='__idx';});
+  var inner='<div style="background:#fff;border-radius:14px;width:90%;max-width:680px;max-height:82vh;overflow-y:auto;padding:22px;position:relative">';
+  inner+='<button onclick="document.getElementById('momrev-detail').remove()" style="position:absolute;top:10px;right:10px;background:#f1f5f9;border:none;border-radius:6px;padding:4px 11px;cursor:pointer">✕</button>';
+  inner+='<div style="font-size:15px;font-weight:800;color:#0C3F6A;margin-bottom:14px">Meeting Record Details</div>';
+  inner+='<table style="width:100%;border-collapse:collapse;font-size:12px">';
+  keys.forEach(function(k){
+    inner+='<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:6px 10px;font-weight:700;color:#64748b;width:38%;vertical-align:top">'+esc(k.replace(/_/g,' '))+'</td><td style="padding:6px 10px;color:#1a2942">'+esc(String(row[k]))+'</td></tr>';
+  });
+  inner+='</table></div>';
+  div.innerHTML=inner;
+  div.onclick=function(e){if(e.target===div)div.remove();};
+  document.body.appendChild(div);
+}
+
+/* ════════════════════════════════════════════════════════════
+   NAAC SSR LIVE DATA BUILDER — 55 QnM Metric Templates
+════════════════════════════════════════════════════════════ */
+const _SSR_TEMPLATES={
+'1.2.1':{w:30,cols:['Academic Year','New Courses Introduced','Total Courses','% (auto)'],keys:['yr','new_c','tot_c','pct'],auto:[null,null,null,function(r){return r.tot_c>0?((r.new_c/r.tot_c)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.new_c&&r.tot_c){s+=(r.new_c/r.tot_c)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(New Courses ÷ Total Courses) × 100, average over 5 years'},
+'1.3.2':{w:30,cols:['Academic Year','Certificate/Value-added Courses Offered','Students Enrolled','Students Completed'],keys:['yr','courses','enrolled','completed'],auto:[],resp:function(rows){var t=0;rows.forEach(function(r){t+=Number(r.courses)||0;});return t?t+' courses':'—';},formula:'Count of certificate/value-added courses and successful completions (5 years)'},
+'1.3.3':{w:5,cols:['Academic Year','Total Programmes','With Field Projects','With Research Projects','With Internships','Total With Components','% (auto)'],keys:['yr','tot_p','field','research','intern','comp','pct'],auto:[null,null,null,null,null,function(r){return (Number(r.field)||0)+(Number(r.research)||0)+(Number(r.intern)||0);},function(r){return r.tot_p>0?((r.comp/r.tot_p)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.comp&&r.tot_p){s+=(r.comp/r.tot_p)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Programmes with experiential components ÷ Total programmes) × 100'},
+'1.4.1':{w:20,cols:['Stakeholder Type','Feedback Mechanism','Frequency','Response Rate (%)','Actions Taken'],keys:['stake','mech','freq','rate','actions'],auto:[],resp:function(rows){return rows.length?rows.length+' stakeholder categories':'—';},formula:'Structured feedback from students, teachers, employers, alumni, peers'},
+'2.1.1':{w:5,cols:['Academic Year','Programme','Sanctioned Seats','Enrolled Students','Enrollment % (auto)'],keys:['yr','prog','sanc','enrl','pct'],auto:[null,null,null,null,function(r){return r.sanc>0?((r.enrl/r.sanc)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.enrl&&r.sanc){s+=(r.enrl/r.sanc)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Enrolled Students ÷ Sanctioned Seats) × 100'},
+'2.1.2':{w:5,cols:['Academic Year','Category (SC/ST/OBC)','Reserved Seats','Seats Filled','% (auto)'],keys:['yr','cat','reserved','filled','pct'],auto:[null,null,null,null,function(r){return r.reserved>0?((r.filled/r.reserved)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.filled&&r.reserved){s+=(r.filled/r.reserved)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Seats Filled in Reserved Category ÷ Reserved Seats) × 100'},
+'2.2.2':{w:15,cols:['Department','Full-time Faculty','Total Students','Ratio (auto)'],keys:['dept','faculty','students','ratio'],auto:[null,null,null,function(r){return r.faculty>0?(r.students/r.faculty).toFixed(1)+':1':'';}],resp:function(rows){var tf=0,ts=0;rows.forEach(function(r){tf+=Number(r.faculty)||0;ts+=Number(r.students)||0;});return tf?(ts/tf).toFixed(1)+':1':'—';},formula:'Total Students ÷ Total Full-time Faculty'},
+'2.4.1':{w:10,cols:['Academic Year','Sanctioned Posts','FT Teachers Appointed','% (auto)'],keys:['yr','sanc','appointed','pct'],auto:[null,null,null,function(r){return r.sanc>0?((r.appointed/r.sanc)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.appointed&&r.sanc){s+=(r.appointed/r.sanc)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(FT Teachers Appointed ÷ Sanctioned Posts) × 100, averaged over 5 years'},
+'2.4.2':{w:40,cols:['Academic Year','Teachers with PhD / Equivalent','Total FT Teachers','% (auto)'],keys:['yr','doctoral','tot_ft','pct'],auto:[null,null,null,function(r){return r.tot_ft>0?((r.doctoral/r.tot_ft)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.doctoral&&r.tot_ft){s+=(r.doctoral/r.tot_ft)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(FT Teachers with PhD/DM/MCh/DNB ÷ Total FT Teachers) × 100'},
+'2.4.3':{w:10,cols:['Teacher Name','Department','Years of Teaching Experience'],keys:['name','dept','exp'],auto:[],resp:function(rows){var s=0,n=rows.length;rows.forEach(function(r){s+=Number(r.exp)||0;});return n?(s/n).toFixed(1)+' yrs':'—';},formula:'Sum of all FT teachers’ experience ÷ Total FT teachers (latest AY only)'},
+'2.5.1':{w:10,cols:['Academic Year','Semester','Last Exam Date (YYYY-MM-DD)','Result Date (YYYY-MM-DD)','Days (auto)'],keys:['yr','sem','exam_dt','res_dt','days'],auto:[null,null,null,null,function(r){if(r.exam_dt&&r.res_dt){var d1=new Date(r.exam_dt),d2=new Date(r.res_dt);var diff=Math.round((d2-d1)/86400000);return diff>=0?diff:'';}return '';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){var d=Number(r.days);if(d>0){s+=d;n++;}});return n?(s/n).toFixed(1)+' days':'—';},formula:'Average (Result Date − Last Exam Date) over 5 years'},
+'2.5.2':{w:10,cols:['Academic Year','Total Students Appeared','Evaluation Complaints','% (auto)'],keys:['yr','appeared','complaints','pct'],auto:[null,null,null,function(r){return r.appeared>0?((r.complaints/r.appeared)*100).toFixed(4):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.appeared){s+=(r.complaints/r.appeared)*100;n++;}});return n?(s/n).toFixed(4)+'%':'—';},formula:'(Evaluation Complaints ÷ Total Students Appeared) × 100'},
+'2.5.3':{w:10,cols:['Automation Module','Status','Year Implemented','Evidence / Remarks'],keys:['module','status','yr_impl','remarks'],auto:[],resp:function(rows){var y=rows.filter(function(r){return /fully|implemented|automated/i.test(r.status||'');}).length;return rows.length?y+'/'+rows.length+' modules automated':'—';},formula:'A=100%, B=Registration+Hall+Result, C=Registration+Result, D=Result Only, E=Manual'},
+'2.6.2':{w:15,cols:['Academic Year','Programme','Students Appeared','Backlog Students','Students Passed','Pass % (auto)'],keys:['yr','prog','appeared','backlog','passed','pct'],auto:[null,null,null,null,null,function(r){var e=r.appeared-r.backlog;return e>0?((r.passed/e)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){var e=r.appeared-r.backlog;if(e>0&&r.passed){s+=(r.passed/e)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Passed ÷ Appeared excluding backlog) × 100 (latest AY)'},
+'2.7.1':{w:30,cols:['Category','Score (out of 10)','Response Rate (%)','Academic Year'],keys:['category','score','rate','yr'],auto:[],resp:function(rows){var s=0,n=0;rows.forEach(function(r){var sc=Number(r.score);if(sc>0){s+=sc;n++;}});return n?(s/n).toFixed(2)+'/10':'—';},formula:'Online Student Satisfaction Survey via NAAC portal — overall score'},
+'3.1.2':{w:3,cols:['Academic Year','Total Seed Money (INR Lakhs)','Teachers Benefited','Avg/Teacher (auto)'],keys:['yr','total_sm','teachers','avg'],auto:[null,null,null,function(r){return r.teachers>0?(r.total_sm/r.teachers).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.total_sm){s+=Number(r.total_sm);n++;}});return n?(s/n).toFixed(2)+' L/yr avg':'—';},formula:'Total seed money ÷ Number of years (average per year)'},
+'3.1.3':{w:5,cols:['Academic Year','Teachers with Fellowship/Support','Total FT Teachers','% (auto)'],keys:['yr','with_fellow','tot_ft','pct'],auto:[null,null,null,function(r){return r.tot_ft>0?((r.with_fellow/r.tot_ft)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.with_fellow&&r.tot_ft){s+=(r.with_fellow/r.tot_ft)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Teachers with National/International Fellowship ÷ Total FT) × 100'},
+'3.1.4':{w:10,cols:['Academic Year','Total PhD Scholars','JRF Scholars','SRF Scholars','% (auto)'],keys:['yr','phd_tot','jrf','srf','pct'],auto:[null,null,null,null,function(r){return r.phd_tot>0?(((Number(r.jrf)+Number(r.srf))/r.phd_tot)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.phd_tot){s+=((Number(r.jrf)+Number(r.srf))/r.phd_tot)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(JRFs + SRFs ÷ Total PhD Scholars enrolled) × 100'},
+'3.2.1':{w:25,cols:['Academic Year','Govt Grants (INR L)','Industry (INR L)','Corporate (INR L)','International (INR L)','Total (auto)'],keys:['yr','govt','industry','corp','intl','total'],auto:[null,null,null,null,null,function(r){return (Number(r.govt)||0)+(Number(r.industry)||0)+(Number(r.corp)||0)+(Number(r.intl)||0);}],resp:function(rows){var s=0;rows.forEach(function(r){s+=Number(r.total)||0;});return s?s.toFixed(2)+' INR L total':'—';},formula:'Total research funding from Govt + Non-Govt sources over 5 years'},
+'3.2.2':{w:15,cols:['Academic Year','Total Funded Research Projects','Total FT Teachers','Projects/Teacher (auto)'],keys:['yr','projects','teachers','ratio'],auto:[null,null,null,function(r){return r.teachers>0?(r.projects/r.teachers).toFixed(2):'';}],resp:function(rows){var tp=0,tt=0;rows.forEach(function(r){tp+=Number(r.projects)||0;tt=Math.max(tt,Number(r.teachers)||0);});return tt?(tp/tt).toFixed(2)+'/teacher':'—';},formula:'Total funded projects ÷ Total FT teachers'},
+'3.3.2':{w:5,cols:['Academic Year','Award Name','Type (National/Intl)','Recipient Category','Count'],keys:['yr','award','type','recipient','count'],auto:[],resp:function(rows){var t=0;rows.forEach(function(r){t+=Number(r.count)||1;});return t?t+' awards':'—';},formula:'Count of awards for research/innovation (institution/faculty/scholars/students)'},
+'3.4.1':{w:5,cols:['Code of Ethics Component','Status (Yes/No)','Approval Date','Monitoring Mechanism'],keys:['component','status','date','mechanism'],auto:[],resp:function(rows){var y=rows.filter(function(r){return (r.status||'').toLowerCase()==='yes';}).length;return rows.length?y+'/'+rows.length+' components':'—';},formula:'Implementation of stated Code of Ethics for research'},
+'3.4.2':{w:15,cols:['Academic Year','Patent Title','Patent No.','Grant Date','Status','Inventors'],keys:['yr','title','patent_no','grant_dt','status','inventors'],auto:[],resp:function(rows){return rows.length?rows.length+' patents':'—';},formula:'Total patents awarded in last 5 years'},
+'3.4.3':{w:15,cols:['Academic Year','Guide Name','Department','PhD Scholars Guided','PhDs Awarded'],keys:['yr','guide','dept','scholars','awarded'],auto:[],resp:function(rows){var ta=0,tg=new Set();rows.forEach(function(r){ta+=Number(r.awarded)||0;if(r.guide)tg.add(r.guide);});return tg.size?(ta/tg.size).toFixed(2)+' PhDs/guide':'—';},formula:'Total PhDs awarded ÷ Total recognized guides (5 years)'},
+'3.4.4':{w:20,cols:['Academic Year','Paper Title','Journal (UGC CARE listed)','Authors','No. of Papers','Total FT Teachers','Per Teacher (auto)'],keys:['yr','title','journal','authors','papers','teachers','ratio'],auto:[null,null,null,null,null,null,function(r){return r.teachers>0?(r.papers/r.teachers).toFixed(2):'';}],resp:function(rows){var tp=0,tt=0;rows.forEach(function(r){tp+=Number(r.papers)||0;if(Number(r.teachers)>tt)tt=Number(r.teachers);});return tt?(tp/tt).toFixed(2)+'/teacher':'—';},formula:'Total UGC CARE listed papers ÷ Total FT teachers'},
+'3.4.5':{w:10,cols:['Academic Year','Type (Book/Chapter)','Title','Author','Publisher / ISBN','Count'],keys:['yr','type','title','author','isbn','count'],auto:[],resp:function(rows){var t=0;rows.forEach(function(r){t+=Number(r.count)||1;});return t?t+' publications':'—';},formula:'(Books + Book Chapters) published per teacher'},
+'3.4.6':{w:15,cols:['Academic Year','Content Type','Subject / Course','Duration (mins)','Platform','Access Level'],keys:['yr','type','subject','duration','platform','access'],auto:[],resp:function(rows){return rows.length?rows.length+' e-content items':'—';},formula:'E-content developed on LMS/NPTEL/SWAYAM/institutional portals'},
+'3.4.7':{w:20,cols:['Academic Year','Paper Title','Scopus/WoS ID','Citations','Total Publications','Avg Citation Index (auto)'],keys:['yr','title','scopus_id','citations','tot_pub','avg_ci'],auto:[null,null,null,null,null,function(r){return r.tot_pub>0?(r.citations/r.tot_pub).toFixed(2):'';}],resp:function(rows){var tc=0,tp=0;rows.forEach(function(r){tc+=Number(r.citations)||0;tp+=Number(r.tot_pub)||0;});return tp?(tc/tp).toFixed(2)+' avg citations':'—';},formula:'Sum of all citations ÷ Number of Scopus/WoS publications'},
+'3.4.8':{w:20,cols:['Data Source (Scopus/WoS)','h-Index','Total Publications','Total Citations','Date of Calculation'],keys:['source','h_index','pub_count','cit_count','calc_date'],auto:[],resp:function(rows){var h=rows[0]?Number(rows[0].h_index):0;return h?h+' h-Index':'—';},formula:'University h-Index from Scopus / Web of Science'},
+'3.5.1':{w:20,cols:['Academic Year','Consultancy Revenue (INR L)','Corporate Training Revenue (INR L)','Total Revenue (auto)','No. of Projects'],keys:['yr','consult','corp','total','projects'],auto:[null,null,null,function(r){return (Number(r.consult)||0)+(Number(r.corp)||0);},null],resp:function(rows){var s=0;rows.forEach(function(r){s+=Number(r.total)||0;});return s?s.toFixed(2)+' INR L':'—';},formula:'Revenue from consultancy + corporate training (5 years)'},
+'3.6.2':{w:10,cols:['Academic Year','Program Name','Forum (NSS/NCC/Other)','Community Involvement','Beneficiaries Count'],keys:['yr','program','forum','community','beneficiaries'],auto:[],resp:function(rows){return rows.length?rows.length+' programs':'—';},formula:'Extension & outreach programs via NSS/NCC/organized forums with community'},
+'3.7.1':{w:10,cols:['Academic Year','MoU Type','Partner Name','Location (India/Abroad)','Date','Active','Outcome'],keys:['yr','mou_type','partner','location','date','active','outcome'],auto:[],resp:function(rows){var a=rows.filter(function(r){return /yes|active/i.test(r.active||'');}).length;return rows.length?rows.length+' MoUs ('+a+' active)':'—';},formula:'Functional MoUs for internship, OJT, project, exchange, collaborative research'},
+'4.1.2':{w:10,cols:['Academic Year','Total Non-Salary Expenditure (INR L)','Infrastructure Dev. Expenditure (INR L)','% (auto)'],keys:['yr','tot_exp','infra_exp','pct'],auto:[null,null,null,function(r){return r.tot_exp>0?((r.infra_exp/r.tot_exp)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.infra_exp&&r.tot_exp){s+=(r.infra_exp/r.tot_exp)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Infrastructure expenditure ÷ Total non-salary expenditure) × 100'},
+'4.2.2':{w:5,cols:['Academic Year','Books (INR L)','E-Books (INR L)','Journals/E-Journals (INR L)','Total Library Budget (INR L)','% (auto)'],keys:['yr','books','ebooks','journals','total','pct'],auto:[null,null,null,null,null,function(r){var sp=(Number(r.books)||0)+(Number(r.ebooks)||0)+(Number(r.journals)||0);return r.total>0?((sp/r.total)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){var sp=(Number(r.books)||0)+(Number(r.ebooks)||0)+(Number(r.journals)||0);if(sp&&r.total){s+=(sp/r.total)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Books + E-books + Journals ÷ Total Library Budget) × 100'},
+'4.3.2':{w:10,cols:['Department','Total Students (latest AY)','Total Computers (Academic)','Ratio (auto)'],keys:['dept','students','computers','ratio'],auto:[null,null,null,function(r){return r.computers>0?(r.students/r.computers).toFixed(1)+':1':'';}],resp:function(rows){var ts=0,tc=0;rows.forEach(function(r){ts+=Number(r.students)||0;tc+=Number(r.computers)||0;});return tc?(ts/tc).toFixed(1)+':1':'—';},formula:'Total students ÷ Total computers for academic use (latest AY)'},
+'4.3.3':{w:5,cols:['Facility Type','Available (Yes/No)','Year Established','Equipment / Capacity Details'],keys:['facility','available','yr_est','details'],auto:[],resp:function(rows){var y=rows.filter(function(r){return /yes/i.test(r.available||'');}).length;return rows.length?y+'/'+rows.length+' available':'—';},formula:'E-content facilities: studio, editing suite, animation lab, LMS'},
+'4.4.1':{w:10,cols:['Academic Year','Total Non-Salary Expenditure (INR L)','Maintenance Expenditure (INR L)','% (auto)'],keys:['yr','tot_exp','maint_exp','pct'],auto:[null,null,null,function(r){return r.tot_exp>0?((r.maint_exp/r.tot_exp)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.maint_exp&&r.tot_exp){s+=(r.maint_exp/r.tot_exp)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Maintenance expenditure ÷ Total non-salary expenditure) × 100'},
+'5.1.1':{w:15,cols:['Academic Year','Total Students','Institution Scholarships','Govt Scholarships','Non-Govt Scholarships','Total Benefited (auto)','% (auto)'],keys:['yr','total','inst','govt','ngo','total_ben','pct'],auto:[null,null,null,null,null,function(r){return (Number(r.inst)||0)+(Number(r.govt)||0)+(Number(r.ngo)||0);},function(r){return r.total>0?((r.total_ben/r.total)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.total_ben&&r.total){s+=(r.total_ben/r.total)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Students with scholarships ÷ Total students) × 100'},
+'5.1.3':{w:5,cols:['Academic Year','Initiative Type','Duration (Hours)','Students Participated','Conducted By'],keys:['yr','type','hours','students','by'],auto:[],resp:function(rows){return rows.length?rows.length+' initiatives':'—';},formula:'Capacity development & skills enhancement (soft skills, technical, leadership, entrepreneurship)'},
+'5.1.4':{w:5,cols:['Academic Year','Grievance Type','Total Filed','Resolved','Pending','Avg Resolution (Days)'],keys:['yr','type','filed','resolved','pending','days'],auto:[],resp:function(rows){var tf=0,tr=0;rows.forEach(function(r){tf+=Number(r.filed)||0;tr+=Number(r.resolved)||0;});return tf?tr+'/'+tf+' resolved':'—';},formula:'Grievance redressal: Anti-Ragging, ICC, Academic — resolution rate'},
+'5.2.1':{w:15,cols:['Academic Year','Programme','Total Outgoing Students','Students Placed','Placement Type','% (auto)'],keys:['yr','prog','outgoing','placed','type','pct'],auto:[null,null,null,null,null,function(r){return r.outgoing>0?((r.placed/r.outgoing)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.placed&&r.outgoing){s+=(r.placed/r.outgoing)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Placed students ÷ Total outgoing students) × 100'},
+'5.2.2':{w:15,cols:['Academic Year','Total Graduated','Pursuing Higher Education','Level','Country','% (auto)'],keys:['yr','graduated','higher_edu','level','country','pct'],auto:[null,null,null,null,null,function(r){return r.graduated>0?((r.higher_edu/r.graduated)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.higher_edu&&r.graduated){s+=(r.higher_edu/r.graduated)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Students progressed to higher education ÷ Total graduated) × 100'},
+'5.2.3':{w:15,cols:['Academic Year','Exam Name','Level (State/Natl/Intl)','Total Graduated','Students Qualified','% (auto)'],keys:['yr','exam','level','graduated','qualified','pct'],auto:[null,null,null,null,null,function(r){return r.graduated>0?((r.qualified/r.graduated)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.qualified&&r.graduated){s+=(r.qualified/r.graduated)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Students qualifying state/national/international exams ÷ Total graduated) × 100'},
+'5.3.1':{w:5,cols:['Academic Year','Event Name','Type (Sports/Cultural)','Level','Award Type','Count'],keys:['yr','event','type','level','award','count'],auto:[],resp:function(rows){var t=0;rows.forEach(function(r){t+=Number(r.count)||1;});return t?t+' awards':'—';},formula:'Awards at inter-university/state/national/international level (team = 1)'},
+'5.3.3':{w:5,cols:['Academic Year','Activity Type','No. of Events','Participation Count','Scope (Internal/External)'],keys:['yr','type','events','participation','scope'],auto:[],resp:function(rows){var t=0;rows.forEach(function(r){t+=Number(r.events)||0;});return t?t+' events':'—';},formula:'Activities/events conducted or organized by the institution'},
+'5.4.1':{w:5,cols:['Academic Year','Contribution Type','Amount (INR Lakhs)','No. of Alumni Contributors','Fund Utilized For'],keys:['yr','type','amount','alumni','utilized'],auto:[],resp:function(rows){var s=0;rows.forEach(function(r){s+=Number(r.amount)||0;});return s?s.toFixed(2)+' INR L':'—';},formula:'Alumni contributions via registered Alumni Association (funds, in-kind, time)'},
+'6.2.2':{w:5,cols:['e-Governance Module','Status','Year Implemented','Integration Status'],keys:['module','status','yr_impl','integration'],auto:[],resp:function(rows){var y=rows.filter(function(r){return /impl|auto|yes/i.test(r.status||'');}).length;return rows.length?y+'/'+rows.length+' modules':'—';},formula:'e-Governance in admin, finance, student services, examination, HR'},
+'6.3.2':{w:15,cols:['Academic Year','Total FT Teachers','Teachers with Financial Support','Support Type','Amount (INR)','% (auto)'],keys:['yr','tot_ft','with_support','type','amount','pct'],auto:[null,null,null,null,null,function(r){return r.tot_ft>0?((r.with_support/r.tot_ft)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.with_support&&r.tot_ft){s+=(r.with_support/r.tot_ft)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Teachers with support for conferences/memberships ÷ Total FT) × 100'},
+'6.3.3':{w:6,cols:['Academic Year','Total FT Teachers','FDP Participants','MDP Participants','Total (auto)','Type','% (auto)'],keys:['yr','tot_ft','fdp','mdp','total','type','pct'],auto:[null,null,null,null,function(r){return (Number(r.fdp)||0)+(Number(r.mdp)||0);},null,function(r){return r.tot_ft>0?((r.total/r.tot_ft)*100).toFixed(2):'';}],resp:function(rows){var s=0,n=0;rows.forEach(function(r){if(r.total&&r.tot_ft){s+=(r.total/r.tot_ft)*100;n++;}});return n?(s/n).toFixed(2)+'%':'—';},formula:'(Teachers attending FDP/MDP ÷ Total FT teachers) × 100'},
+'6.4.2':{w:12,cols:['Academic Year','Source Type (Govt/Corporate/NGO)','Source Name','Grant Amount (INR L)','Purpose'],keys:['yr','source_type','source','amount','purpose'],auto:[],resp:function(rows){var s=0;rows.forEach(function(r){s+=Number(r.amount)||0;});return s?s.toFixed(2)+' INR L':'—';},formula:'Grants from Govt/Non-Govt for infrastructure (excl. C3 and C5)'},
+'6.5.2':{w:10,cols:['QA Mechanism','Year Implemented','Review Frequency','Coverage','Actions Initiated'],keys:['mechanism','yr_impl','freq','coverage','actions'],auto:[],resp:function(rows){return rows.length?rows.length+' QA mechanisms':'—';},formula:'IQAC activities, academic audits, peer review, NBA/NAAC processes'},
+'7.1.2':{w:5,cols:['Facility Type','Available (Yes/No)','Capacity / kW','Annual Usage / Saving'],keys:['facility','available','capacity','usage'],auto:[],resp:function(rows){var y=rows.filter(function(r){return /yes/i.test(r.available||'');}).length;return rows.length?y+'/'+rows.length+' available':'—';},formula:'Alternate energy: solar, rainwater harvest, energy-efficient systems, LED'},
+'7.1.4':{w:5,cols:['Conservation Type','Available (Yes/No)','Capacity (Litres)','Annual Consumption (L)','Reduction (%)'],keys:['type','available','capacity','consumption','reduction'],auto:[],resp:function(rows){var y=rows.filter(function(r){return /yes/i.test(r.available||'');}).length;return rows.length?y+'/'+rows.length+' measures':'—';},formula:'Water conservation: rainwater harvest, recycling plant, water-saving fixtures'},
+'7.1.6':{w:5,cols:['Academic Year','Audit Type','Audit Agency (Internal/External)','No. of Audits','Key Findings','Implementation Status'],keys:['yr','type','agency','count','findings','status'],auto:[],resp:function(rows){var t=0;rows.forEach(function(r){t+=Number(r.count)||0;});return t?t+' audits':'—';},formula:'Quality audits on environment & energy (year-wise, internal + external)'},
+'7.1.10':{w:5,cols:['Academic Year','Program Type','Target Category','No. of Programs','Participants Count'],keys:['yr','type','category','programs','participants'],auto:[],resp:function(rows){var t=0;rows.forEach(function(r){t+=Number(r.programs)||0;});return t?t+' programs':'—';},formula:'Periodic programs on code of conduct for students, faculty, staff, administrators'},
+'7.3.2':{w:10,cols:['Academic Year','Recognition Type','Level (State/Natl/Intl)','Recognizing Body','Domain','Description'],keys:['yr','type','level','body','domain','desc'],auto:[],resp:function(rows){return rows.length?rows.length+' recognitions':'—';},formula:'Recognition at state/national/international level for best practices'}
+};
+
+const _SSR_CRITERIA={
+  'C1':{name:'Curricular Aspects',color:'#1a3c5e',metrics:['1.2.1','1.3.2','1.3.3','1.4.1']},
+  'C2':{name:'Teaching-Learning & Evaluation',color:'#1565c0',metrics:['2.1.1','2.1.2','2.2.2','2.4.1','2.4.2','2.4.3','2.5.1','2.5.2','2.5.3','2.6.2','2.7.1']},
+  'C3':{name:'Research, Innovations & Extension',color:'#4a148c',metrics:['3.1.2','3.1.3','3.1.4','3.2.1','3.2.2','3.3.2','3.4.1','3.4.2','3.4.3','3.4.4','3.4.5','3.4.6','3.4.7','3.4.8','3.5.1','3.6.2','3.7.1']},
+  'C4':{name:'Infrastructure & Learning Resources',color:'#004d40',metrics:['4.1.2','4.2.2','4.3.2','4.3.3','4.4.1']},
+  'C5':{name:'Student Support & Progression',color:'#bf360c',metrics:['5.1.1','5.1.3','5.1.4','5.2.1','5.2.2','5.2.3','5.3.1','5.3.3','5.4.1']},
+  'C6':{name:'Governance, Leadership & Management',color:'#1b5e20',metrics:['6.2.2','6.3.2','6.3.3','6.4.2','6.5.2']},
+  'C7':{name:'Institutional Values & Best Practices',color:'#e65100',metrics:['7.1.2','7.1.4','7.1.6','7.1.10','7.3.2']}
+};
+var _ssrActiveCrit='C1';
+
+function _renderSSRBuilder(sec){
+  var wrap=document.getElementById('sc-form');if(!wrap)return;
+  var role=S.role||{access:'full'};
+  var h='<div class="sc-card"><div class="sc-hdr"><span class="sr-badge">'+sec.sr+'</span><h2 class="sc-ttl">'+esc(sec.title)+'</h2></div></div>';
+  h+='<div class="ssr-wrap"><div class="ssr-toolbar"><div class="ssr-crit-tabs">';
+  Object.keys(_SSR_CRITERIA).forEach(function(ck){
+    var c=_SSR_CRITERIA[ck];
+    var isA=ck===_ssrActiveCrit;
+    h+='<button class="ssr-crit-tab'+(isA?' active':'')+'" onclick="_ssrSwitchCrit(''+ck+'')" style="'+(isA?'background:'+c.color+';border-color:'+c.color+';color:#fff;':'')+'">'+ck+'</button>';
+  });
+  h+='</div>';
+  if(role.access==='full')h+='<button class="ssr-btn-export" onclick="_exportSSR()">📥 Export SSR</button>';
+  h+='</div>';
+  var filled=0,total=0;
+  Object.keys(_SSR_CRITERIA).forEach(function(ck){_SSR_CRITERIA[ck].metrics.forEach(function(m){total++;var d=_ssrGetData(m);if(d&&d.length)filled++;});});
+  h+='<div style="padding:7px 18px;background:#fff;border-bottom:1px solid #e0e8f0;display:flex;align-items:center;gap:10px">';
+  h+='<span style="font-size:11px;font-weight:700;color:#64748b">SSR Completion</span>';
+  h+='<div class="ssr-progress"><div class="ssr-progress-bar" style="width:'+(total?Math.round(filled/total*100):0)+'%"></div></div>';
+  h+='<span style="font-size:11px;font-weight:700;color:#0C3F6A">'+filled+' / '+total+' metrics</span>';
+  h+='</div>';
+  h+='<div class="ssr-body" id="ssr-metric-body">'+_ssrRenderCritMetrics(_ssrActiveCrit)+'</div></div>';
+  wrap.innerHTML=h;
+}
+
+function _ssrSwitchCrit(ck){
+  _ssrActiveCrit=ck;
+  var body=document.getElementById('ssr-metric-body');
+  if(body)body.innerHTML=_ssrRenderCritMetrics(ck);
+  document.querySelectorAll('.ssr-crit-tab').forEach(function(btn){
+    var isA=btn.textContent.trim()===ck;
+    btn.classList.toggle('active',isA);
+    if(isA){var c=_SSR_CRITERIA[ck];btn.style.background=c.color;btn.style.borderColor=c.color;btn.style.color='#fff';}
+    else{btn.style.background='';btn.style.borderColor='';btn.style.color='';}
+  });
+}
+
+function _ssrRenderCritMetrics(ck){
+  var c=_SSR_CRITERIA[ck],h='';
+  var role=S.role||{access:'full'};
+  c.metrics.forEach(function(mNum){
+    var tpl=_SSR_TEMPLATES[mNum];if(!tpl)return;
+    var rows=_ssrGetData(mNum);
+    var rv=rows.length?tpl.resp(rows):'—';
+    var isEmpty=rv==='—';
+    var info=_getNaacMetricInfo(mNum);
+    var sd=(info.desc||mNum);if(sd.length>88)sd=sd.substring(0,85)+'…';
+    h+='<div class="ssr-metric-card"><div class="ssr-metric-hdr" onclick="_ssrToggle(this)">';
+    h+='<span class="ssr-metric-num">'+esc(mNum)+'</span>';
+    h+='<span class="ssr-metric-desc">'+esc(sd)+'</span>';
+    h+='<span class="ssr-metric-meta"><span class="ssr-wt-badge">Wt '+tpl.w+'</span>';
+    h+='<span class="ssr-response-badge'+(isEmpty?' empty':'')+'">'+esc(rv)+'</span></span>';
+    h+='<span style="font-size:10px;color:#94a3b8;margin-left:5px">▼</span></div>';
+    var pid='ssr-panel-'+mNum.replace(/\./g,'_');
+    h+='<div class="ssr-body-panel" id="'+pid+'">';
+    h+='<div class="ssr-response-block"><div class="ssr-response-value" id="ssr-rv-'+mNum.replace(/\./g,'_')+'">'+esc(rv)+'</div>';
+    h+='<div class="ssr-response-label">Calculated Response Value<br><span style="font-size:9px;opacity:.7">Auto-updates as you enter data</span></div></div>';
+    h+='<div class="ssr-formula">📐 '+esc(tpl.formula)+'</div>';
+    h+='<table class="ssr-tbl"><thead><tr>';
+    tpl.cols.forEach(function(col){h+='<th>'+esc(col)+'</th>';});
+    if(role.access==='full')h+='<th style="width:40px"></th>';
+    h+='</tr></thead><tbody id="ssr-tb-'+mNum.replace(/\./g,'_')+'">';
+    rows.forEach(function(row,ri){h+=_ssrRowHtml(mNum,row,ri,tpl,role.access==='full');});
+    h+='</tbody></table>';
+    if(role.access==='full'){
+      h+='<div style="display:flex;gap:8px;margin-top:7px">';
+      h+='<button class="ssr-btn-add" onclick="_ssrAddRow(''+mNum+'')">+ Add Row</button>';
+      h+='<button class="ssr-btn-save" onclick="_ssrSave(''+mNum+'',this)">💾 Save</button>';
+      h+='</div>';
+    }
+    h+='</div></div>';
+  });
+  return h;
+}
+
+function _ssrToggle(hdr){
+  var p=hdr.nextElementSibling;if(!p)return;
+  p.classList.toggle('open');
+  var arr=hdr.querySelector('span:last-child');
+  if(arr)arr.style.transform=p.classList.contains('open')?'rotate(180deg)':'';
+}
+
+function _ssrRowHtml(mNum,row,ri,tpl,canEdit){
+  var h='<tr>';
+  tpl.keys.forEach(function(k,ki){
+    var autoFn=tpl.auto&&tpl.auto[ki];
+    var isCalc=typeof autoFn==='function';
+    var val=row[k]!==undefined?row[k]:'';
+    if(isCalc){
+      h+='<td class="calc-cell" id="ssr-c-'+mNum.replace(/\./g,'_')+'-'+ri+'-'+k+'">'+esc(String(val||''))+'</td>';
+    } else if(canEdit){
+      h+='<td><input type="text" value="'+esc(String(val||''))+'" onchange="_ssrUpdate(''+mNum+'','+ri+',''+k+'',this.value)" placeholder="'+esc(tpl.cols[ki])+'"></td>';
+    } else {
+      h+='<td>'+esc(String(val||'—'))+'</td>';
+    }
+  });
+  if(canEdit)h+='<td><button onclick="_ssrDelRow(''+mNum+'','+ri+')" style="background:none;border:none;color:#e53e3e;cursor:pointer;font-size:13px">✕</button></td>';
+  h+='</tr>';
+  return h;
+}
+
+var _ssrDataCache={};
+function _ssrKey(mNum){return 'ssr_'+mNum.replace(/\./g,'_');}
+function _ssrGetData(mNum){
+  if(_ssrDataCache[mNum])return _ssrDataCache[mNum];
+  var raw=(S.fvals||{})[_ssrKey(mNum)];
+  try{_ssrDataCache[mNum]=raw?JSON.parse(raw):[]; }catch(e){_ssrDataCache[mNum]=[];}
+  return _ssrDataCache[mNum];
+}
+function _ssrSetData(mNum,rows){
+  _ssrDataCache[mNum]=rows;
+  if(!S.fvals)S.fvals={};
+  S.fvals[_ssrKey(mNum)]=JSON.stringify(rows);
+  _saveDraftLocal();
+}
+function _ssrAddRow(mNum){
+  var tpl=_SSR_TEMPLATES[mNum];if(!tpl)return;
+  var rows=_ssrGetData(mNum);
+  var nr={};tpl.keys.forEach(function(k){nr[k]='';});
+  rows.push(nr);_ssrSetData(mNum,rows);
+  var tb=document.getElementById('ssr-tb-'+mNum.replace(/\./g,'_'));
+  if(tb)tb.insertAdjacentHTML('beforeend',_ssrRowHtml(mNum,nr,rows.length-1,tpl,true));
+}
+function _ssrDelRow(mNum,ri){
+  var rows=_ssrGetData(mNum);rows.splice(ri,1);_ssrSetData(mNum,rows);
+  var tb=document.getElementById('ssr-tb-'+mNum.replace(/\./g,'_'));
+  if(!tb)return;
+  var tpl=_SSR_TEMPLATES[mNum];var h='';
+  rows.forEach(function(r,i){h+=_ssrRowHtml(mNum,r,i,tpl,true);});
+  tb.innerHTML=h;
+}
+function _ssrUpdate(mNum,ri,key,val){
+  var rows=_ssrGetData(mNum);if(!rows[ri])return;
+  rows[ri][key]=val===''||isNaN(val)?val:Number(val);
+  var tpl=_SSR_TEMPLATES[mNum];
+  if(tpl&&tpl.auto){
+    tpl.keys.forEach(function(k,ki){
+      var fn=tpl.auto[ki];
+      if(typeof fn==='function'){
+        var calc=fn(rows[ri]);rows[ri][k]=calc;
+        var cell=document.getElementById('ssr-c-'+mNum.replace(/\./g,'_')+'-'+ri+'-'+k);
+        if(cell)cell.textContent=calc!==undefined&&calc!==''?String(calc):'';
+      }
+    });
+  }
+  _ssrSetData(mNum,rows);
+  var rv=tpl.resp(rows);
+  var rvEl=document.getElementById('ssr-rv-'+mNum.replace(/\./g,'_'));
+  if(rvEl)rvEl.textContent=rv;
+  var panel=document.getElementById('ssr-panel-'+mNum.replace(/\./g,'_'));
+  if(panel&&panel.previousElementSibling){
+    var b=panel.previousElementSibling.querySelector('.ssr-response-badge');
+    if(b){b.textContent=rv;b.classList.toggle('empty',rv==='—');}
+  }
+}
+function _ssrSave(mNum,btn){
+  _ssrSetData(mNum,_ssrGetData(mNum));
+  if(btn){var o=btn.textContent;btn.textContent='✓ Saved';btn.style.background='#166534';setTimeout(function(){btn.textContent=o;btn.style.background='';},1500);}
+}
+function _exportSSR(){
+  var lines=['<!DOCTYPE html><html><head><meta charset="UTF-8"><title>FLAME University — NAAC SSR Data</title><style>'];
+  lines.push('body{font-family:Arial,sans-serif;font-size:11pt;color:#222;margin:20px 30px}');
+  lines.push('h1{color:#0C3F6A;font-size:16pt}h2{color:#0C3F6A;font-size:12pt;margin:18px 0 5px;border-bottom:2px solid #0C3F6A;padding-bottom:3px}');
+  lines.push('h3{font-size:11pt;margin:12px 0 3px;color:#334155}.resp{background:#0C3F6A;color:#fff;padding:3px 10px;border-radius:4px;font-weight:800;display:inline-block;margin-bottom:6px}');
+  lines.push('table{width:100%;border-collapse:collapse;font-size:9.5pt;margin:5px 0 12px}th{background:#f0f4fa;color:#0C3F6A;font-weight:700;padding:5px 8px;border:1px solid #c5cdd8;text-align:left}');
+  lines.push('td{padding:4px 8px;border:1px solid #dde3ed}.formula{font-size:9pt;color:#6b7280;font-style:italic;margin:3px 0 8px}@media print{.np{display:none}}</style></head><body>');
+  lines.push('<div class="np" style="background:#f0f4fa;padding:10px;margin-bottom:16px;display:flex;gap:8px"><button onclick="window.print()" style="background:#0C3F6A;color:#fff;border:none;padding:7px 16px;border-radius:6px;cursor:pointer;font-weight:700">🗘️ Print / Save PDF</button><button onclick="window.close()" style="border:1px solid #e0e8f0;background:#fff;padding:7px 12px;border-radius:6px;cursor:pointer">✕ Close</button></div>');
+  lines.push('<h1>FLAME University — NAAC Self-Study Report (Part B)</h1>');
+  lines.push('<p style="color:#6b7280;font-size:10pt">Assessment Period: 2019-20 to 2023-24 &nbsp;·&nbsp; Generated: '+new Date().toLocaleDateString('en-IN')+'</p>');
+  Object.keys(_SSR_CRITERIA).forEach(function(ck){
+    var c=_SSR_CRITERIA[ck];
+    lines.push('<h2>'+ck+' — '+c.name+'</h2>');
+    c.metrics.forEach(function(mNum){
+      var tpl=_SSR_TEMPLATES[mNum];if(!tpl)return;
+      var rows=_ssrGetData(mNum);
+      var info=_getNaacMetricInfo(mNum);
+      var rv=rows.length?tpl.resp(rows):'Data not entered';
+      lines.push('<h3>'+mNum+'. '+(info.desc||mNum).substring(0,100)+'</h3>');
+      lines.push('<div class="resp">Response Value: '+rv+'</div>');
+      lines.push('<p class="formula">Formula: '+tpl.formula+'</p>');
+      if(rows.length){
+        lines.push('<table><thead><tr>'+tpl.cols.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr></thead><tbody>');
+        rows.forEach(function(r){lines.push('<tr>'+tpl.keys.map(function(k){return '<td>'+(r[k]!==undefined&&r[k]!==''?String(r[k]):'—')+'</td>';}).join('')+'</tr>');});
+        lines.push('</tbody></table>');
+      }else{lines.push('<p style="color:#94a3b8;font-style:italic">No data entered.</p>');}
+    });
+  });
+  lines.push('</body></html>');
+  var w=window.open('','_blank','width=1100,height=900,scrollbars=yes');
+  if(w){w.document.write(lines.join('\n'));w.document.close();}
+}
 
 /* ── NAAC Metric → Governance Body Mapping (85 metrics) ──────────────
    Array order: first element = PRIMARY responsible body, rest = secondary
@@ -5023,6 +5429,11 @@ async function doLogin(){
   if(!pin){showMsg('l-msg','Please enter the Department PIN.','error');return;}
   const dept=DEPTS.find(d=>d.id===deptId);
   if(!dept){showMsg('l-msg','Invalid department.','error');return;}
+
+  /* ── Sub-role PIN check (Registrar: ARC / Dean / Board Member) ── */
+  var _matchedRole=null;
+  (dept.subRoles||[]).forEach(function(r){if(r.pin===pin)_matchedRole=r;});
+
   // Check Firebase for custom PIN override, fall back to hardcoded
   let effectivePin=dept.pin;
   try{
@@ -5032,13 +5443,24 @@ async function doLogin(){
       if(snap.exists()&&snap.val())effectivePin=snap.val();
     }
   }catch(e){/* network issue — use default pin */}
-  if(effectivePin!==pin){
+
+  /* Accept main dept PIN or any sub-role PIN */
+  if(effectivePin!==pin && !_matchedRole){
     showMsg('l-msg','Incorrect PIN. Please try again.','error');
     $('l-pin').value='';
     $('l-pin').focus();
     return;
   }
-  S={dept:dept,admin:false,year:yr,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
+  S={dept:dept,admin:false,year:yr,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{},
+    role:_matchedRole||{id:'main',name:dept.name,access:'full'}};
+  /* Restrict sections for readonly / review roles */
+  if(_matchedRole&&_matchedRole.access==='readonly'){
+    S._visibleSecs=['r_dash','r_momreview'];
+  } else if(_matchedRole&&_matchedRole.access==='review'){
+    S._visibleSecs=null; /* all sections, read-only */
+  } else {
+    S._visibleSecs=null;
+  }
   sessionStorage.setItem('flame_session',JSON.stringify({type:'dept',deptId:dept.id,year:yr}));
   showScreen('sc-form');
   var _period=dept.type==='monthly'?'Apr':'Annual';
@@ -5130,6 +5552,10 @@ function renderSec(idx){
 
   /* ── MoM Governance Dashboard ── */
   if(sec.mode==='mom_dashboard'){_renderMoMDashboard(sec);return;}
+  /* ── MoM Review Panel (Dean / Board Member read-only) ── */
+  if(sec.mode==='mom_review'){_renderMoMReview(sec);return;}
+  /* ── NAAC SSR Live Data Builder ── */
+  if(sec.mode==='ssr_builder'){_renderSSRBuilder(sec);return;}
 
   /* ── Faculty Master Sheet mode ── */
   if(sec.mode==='faculty'){
@@ -5191,7 +5617,7 @@ function renderSec(idx){
           /* Registrar Office — smart dropdowns */
           if(S.dept&&S.dept.id==='registrar'){
             var _dd=_momDropdownCell(k,row[k]||'');
-            if(_dd){html+='<td>'+_dd+'</td>';return;}
+            if(_dd){html+='<td>'+_dd+'</td>';continue;}
           }
           const _ct=_detectColType(c);
           if(_ct==='date'){
@@ -5213,16 +5639,20 @@ function renderSec(idx){
       html+='<td><button type="button" class="del-r" onclick="delRow(\''+sec.id+'\','+ri+')">✕</button></td></tr>';
     });
     html+='</tbody></table></div>';
+    var _canEdit=!S.role||(S.role.access==='full')||(!S.role.access);
     html+='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;">';
+    if(_canEdit){
     html+='<button type="button" class="btn-add-row" onclick="addRow(\''+sec.id+'\')">+ Add Row</button>';
     html+='<button type="button" class="btn-import" onclick="importTableData(\''+sec.id+'\')" title="Import data from Excel / CSV">📥 Import Excel/CSV</button>';
-    if(isCert){
+    }
+    if(isCert&&_canEdit){
       html+='<button type="button" class="btn-bulk-cert" onclick="bulkGenerateFILCerts(\''+sec.id+'\')" title="Generate certificates for all eligible participants">🎓 Bulk Generate Certs</button>';
     }
     if(S.dept&&S.dept.id==='registrar'&&['r_gb','r_bom','r_ac','r_bos','r_boe','r_iqac'].includes(sec.id)){
     html+='<button type="button" class="btn-mom-gen" onclick="openMoMGenerator(\''+sec.id+'\')">📄 Generate MoM</button>';
   }
-  html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')"" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
+  if(_canEdit)html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')"" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
+  if(S.role&&S.role.access!=='full')html+='<span style="font-size:10.5px;color:#94a3b8;font-style:italic;margin-left:6px">👁 Read-only — '+esc(S.role.name||'')+'</span>';
     html+='</div>';
 
   /* ── NAAC Compliance Panel (Registrar governance body sections) ── */
