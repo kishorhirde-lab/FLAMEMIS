@@ -3858,7 +3858,7 @@ function _renderMoMReview(sec){
       var meetDate=row['Meeting_Date']||row[san('Meeting Date')]||'';
       var status=row['Status']||row[san('Status')]||'';
       var sc=status==='Completed'||status==='Approved'?'background:#dcfce7;color:#166534':status==='Pending'?'background:#fef3c7;color:#92400e':'background:#f1f5f9;color:#64748b';
-      h+='<div class="momrev-row" onclick="_momRevExpand(''+body.id+'','+i+')">';
+      h+='<div class="momrev-row" onclick="_momRevExpand(\''+body.id+'\','+i+')">';
       h+='<span class="momrev-row-date">'+esc(meetDate||'—')+'</span>';
       h+='<span class="momrev-row-title">'+esc(agTitle)+'</span>';
       if(status)h+='<span style="font-size:9.5px;padding:2px 7px;border-radius:5px;font-weight:700;white-space:nowrap;'+sc+'">'+esc(status)+'</span>';
@@ -3979,7 +3979,7 @@ function _renderSSRBuilder(sec){
   Object.keys(_SSR_CRITERIA).forEach(function(ck){
     var c=_SSR_CRITERIA[ck];
     var isA=ck===_ssrActiveCrit;
-    h+='<button class="ssr-crit-tab'+(isA?' active':'')+'" onclick="_ssrSwitchCrit(''+ck+'')" style="'+(isA?'background:'+c.color+';border-color:'+c.color+';color:#fff;':'')+'">'+ck+'</button>';
+    h+='<button class="ssr-crit-tab'+(isA?' active':'')+'" onclick="_ssrSwitchCrit(\''+ck+'\')" style="'+(isA?'background:'+c.color+';border-color:'+c.color+';color:#fff;':'')+'">'+ck+'</button>';
   });
   h+='</div>';
   if(role.access==='full')h+='<button class="ssr-btn-export" onclick="_exportSSR()">📥 Export SSR</button>';
@@ -4036,8 +4036,8 @@ function _ssrRenderCritMetrics(ck){
     h+='</tbody></table>';
     if(role.access==='full'){
       h+='<div style="display:flex;gap:8px;margin-top:7px">';
-      h+='<button class="ssr-btn-add" onclick="_ssrAddRow(''+mNum+'')">+ Add Row</button>';
-      h+='<button class="ssr-btn-save" onclick="_ssrSave(''+mNum+'',this)">💾 Save</button>';
+      h+='<button class="ssr-btn-add" onclick="_ssrAddRow(\''+mNum+'\')">+ Add Row</button>';
+      h+='<button class="ssr-btn-save" onclick="_ssrSave(\''+mNum+'\',this)">💾 Save</button>';
       h+='</div>';
     }
     h+='</div></div>';
@@ -4066,7 +4066,7 @@ function _ssrRowHtml(mNum,row,ri,tpl,canEdit){
       h+='<td>'+esc(String(val||'—'))+'</td>';
     }
   });
-  if(canEdit)h+='<td><button onclick="_ssrDelRow(''+mNum+'','+ri+')" style="background:none;border:none;color:#e53e3e;cursor:pointer;font-size:13px">✕</button></td>';
+  if(canEdit)h+='<td><button onclick="_ssrDelRow(\''+mNum+'\','+ri+')" style="background:none;border:none;color:#e53e3e;cursor:pointer;font-size:13px">✕</button></td>';
   h+='</tr>';
   return h;
 }
@@ -5464,7 +5464,7 @@ async function doLogin(){
   sessionStorage.setItem('flame_session',JSON.stringify({type:'dept',deptId:dept.id,year:yr}));
   showScreen('sc-form');
   var _period=dept.type==='monthly'?'Apr':'Annual';
-  _applyDraft(dept,yr,_period).then(function(){renderForm();});
+  _applyDraft(dept,yr,_period).then(function(){renderForm();}).catch(function(e){console.warn('Draft load failed, rendering anyway:',e);renderForm();});
 }
 
 function doAdminLogin(){
@@ -5653,7 +5653,7 @@ function renderSec(idx){
     if(S.dept&&S.dept.id==='registrar'&&['r_gb','r_bom','r_ac','r_bos','r_boe','r_iqac'].includes(sec.id)){
     html+='<button type="button" class="btn-mom-gen" onclick="openMoMGenerator(\''+sec.id+'\')">📄 Generate MoM</button>';
   }
-  if(_canEdit)html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')"" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
+  if(_canEdit)html+='<button type="button" class="btn-ai-validate" onclick="runTableValidation(\''+sec.id+'\')" title="AI: checks formats, required fields, duplicates &amp; sends alert email on errors">🤖 AI Validate</button>';
   if(S.role&&S.role.access!=='full')html+='<span style="font-size:10.5px;color:#94a3b8;font-style:italic;margin-left:6px">👁 Read-only — '+esc(S.role.name||'')+'</span>';
     html+='</div>';
 
