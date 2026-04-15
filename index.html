@@ -4061,7 +4061,7 @@ function _ssrRowHtml(mNum,row,ri,tpl,canEdit){
     if(isCalc){
       h+='<td class="calc-cell" id="ssr-c-'+mNum.replace(/\./g,'_')+'-'+ri+'-'+k+'">'+esc(String(val||''))+'</td>';
     } else if(canEdit){
-      h+='<td><input type="text" value="'+esc(String(val||''))+'" onchange="_ssrUpdate(''+mNum+'','+ri+',''+k+'',this.value)" placeholder="'+esc(tpl.cols[ki])+'"></td>';
+      h+='<td><input type="text" value="'+esc(String(val||''))+'" onchange="_ssrUpdate(\''+mNum+'\','+ri+',\''+k+'\',this.value)" placeholder="'+esc(tpl.cols[ki])+'"></td>';
     } else {
       h+='<td>'+esc(String(val||'—'))+'</td>';
     }
