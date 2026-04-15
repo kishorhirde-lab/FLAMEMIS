@@ -5434,15 +5434,18 @@ async function doLogin(){
   var _matchedRole=null;
   (dept.subRoles||[]).forEach(function(r){if(r.pin===pin)_matchedRole=r;});
 
-  // Check Firebase for custom PIN override, fall back to hardcoded
+  // Check Firebase for custom PIN override, fall back to hardcoded (2.5s timeout)
   let effectivePin=dept.pin;
   try{
     const db=getDB();
     if(db){
-      const snap=await db.ref(ROOT+'/admin_pins/'+dept.id).once('value');
-      if(snap.exists()&&snap.val())effectivePin=snap.val();
+      const snap=await Promise.race([
+        db.ref(ROOT+'/admin_pins/'+dept.id).once('value'),
+        new Promise(function(_,reject){setTimeout(function(){reject(new Error('fb_timeout'));},2500);})
+      ]);
+      if(snap&&snap.exists&&snap.exists()&&snap.val())effectivePin=snap.val();
     }
-  }catch(e){/* network issue — use default pin */}
+  }catch(e){/* timeout or network issue — use default pin */}
 
   /* Accept main dept PIN or any sub-role PIN */
   if(effectivePin!==pin && !_matchedRole){
@@ -6289,10 +6292,10 @@ window.onclick=function(e){if(e.target===$('modal'))$('modal').hidden=true;};
     } else if(sess.type==='dept'){
       const dept=DEPTS.find(d=>d.id===sess.deptId);
       if(!dept){sessionStorage.removeItem('flame_session');return;}
-      S={dept:dept,admin:false,year:sess.year,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{}};
+      S={dept:dept,admin:false,year:sess.year,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{},role:{id:'main',name:dept.name,access:'full'}};
       showScreen('sc-form');
       var _rp=dept.type==='monthly'?'Apr':'Annual';
-      _applyDraft(dept,sess.year,_rp).then(function(){renderForm();});
+      _applyDraft(dept,sess.year,_rp).then(function(){renderForm();}).catch(function(){renderForm();});
     }
   }catch(e){sessionStorage.removeItem('flame_session');}
 })();
