@@ -269,12 +269,12 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
 .subrole-btn.active{border-color:#0C3F6A;background:#0C3F6A;color:#fff}
 .subrole-icon{font-size:20px;display:block;margin-bottom:3px}
 /* ── MoM Review ── */
-.momrev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-top:4px}
-.momrev-card{background:#fff;border:1px solid #e0e8f0;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.momrev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:8px;align-items:start}
+.momrev-card{background:#fff;border:1px solid #e0e8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06);display:flex;flex-direction:column}
 .momrev-card-hdr{color:#fff;padding:11px 15px;display:flex;align-items:center;justify-content:space-between}
 .momrev-card-title{font-size:12.5px;font-weight:700}
 .momrev-card-count{background:rgba(255,255,255,.2);font-size:10px;padding:2px 8px;border-radius:8px;font-weight:700}
-.momrev-body{max-height:320px;overflow-y:auto}
+.momrev-body{flex:1;max-height:300px;overflow-y:auto}
 .momrev-row{padding:9px 13px;border-bottom:1px solid #f1f5f9;font-size:12px;display:flex;align-items:flex-start;gap:9px;cursor:pointer}
 .momrev-row:hover{background:#f7faff}
 .momrev-row-date{color:#0C3F6A;font-weight:700;white-space:nowrap;font-size:10.5px;min-width:64px}
@@ -2447,31 +2447,91 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 
   <!-- MoM Review Tab -->
   <div class="adm-tab-content" id="adm-tab-momrev">
-    <div class="adm-body" id="momrev-adm-body">
-      <div style="padding:32px 24px;text-align:center">
-        <div style="font-size:40px;margin-bottom:12px">📋</div>
-        <div style="font-size:18px;font-weight:700;color:#1a2942;margin-bottom:8px">MoM Review Panel</div>
-        <p style="color:#64748b;font-size:13px;max-width:480px;margin:0 auto 20px">
-          Review Minutes of Meeting from all Registrar governance bodies (GB, BoM, AC, BoS, BoE, IQAC).<br>
-          ARC, Dean, and Board Members can also log in directly using their sub-role PIN below.
-        </p>
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <button class="adm-btn adm-btn-outline" style="font-size:13px;padding:10px 22px"
-            onclick="renderAdminMoMView()">📂 Load MoM Data (All Years)</button>
-        </div>
-        <div style="margin-top:28px;padding:16px;background:#f0f7ff;border-radius:10px;border:1px solid #dbeafe;max-width:480px;margin-left:auto;margin-right:auto;text-align:left">
-          <div style="font-size:12px;font-weight:700;color:#1e40af;margin-bottom:8px">🔑 Sub-Role Access (via Admin Login)</div>
-          <div style="font-size:12px;color:#374151;line-height:1.7">
-            ARC, Dean, and Board Members can click <strong>Admin Login</strong> on the home screen and enter their sub-role PIN to access the MoM Review directly.
-          </div>
-          <table style="margin-top:10px;width:100%;font-size:11.5px;border-collapse:collapse">
-            <tr style="background:#dbeafe"><th style="padding:5px 8px;text-align:left">Role</th><th style="padding:5px 8px;text-align:left">Access Level</th></tr>
-            <tr><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">ARC – Registrar</td><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">Full edit + all sections</td></tr>
-            <tr><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">Dean</td><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">Read-only + all sections</td></tr>
-            <tr><td style="padding:4px 8px">Board Member</td><td style="padding:4px 8px">Read-only + MoM Review only</td></tr>
-          </table>
+    <div class="adm-body" id="momrev-adm-body" style="padding:28px 32px;max-width:900px;margin:0 auto;width:100%">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+        <div style="width:48px;height:48px;background:linear-gradient(135deg,#0C3F6A,#1565c0);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">📋</div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:#1a2942">MoM Review Panel</div>
+          <div style="font-size:12px;color:#64748b;margin-top:2px">Minutes of Meeting — all governance bodies (GB · BoM · AC · BoS · BoE · IQAC)</div>
         </div>
       </div>
+
+      <!-- Load Button -->
+      <div style="margin-bottom:28px">
+        <button onclick="renderAdminMoMView()" style="display:inline-flex;align-items:center;gap:8px;padding:11px 26px;background:linear-gradient(135deg,#0C3F6A,#1565c0);color:#fff;border:none;border-radius:9px;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(12,63,106,.25);transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          📂&nbsp; Open MoM Review
+        </button>
+        <div style="font-size:11.5px;color:#94a3b8;margin-top:7px">Opens the full MoM Review panel with search, filter, and meeting details.</div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height:1px;background:#e2e8f0;margin-bottom:24px"></div>
+
+      <!-- Sub-Role Access Cards -->
+      <div style="font-size:14px;font-weight:700;color:#1a2942;margin-bottom:14px">🔑 Direct Sub-Role Access</div>
+      <div style="font-size:12px;color:#64748b;margin-bottom:16px">
+        ARC, Dean, and Board Members can log in directly using the <strong>Admin Login</strong> button on the home screen with their sub-role PIN — no need to select a department.
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:24px">
+
+        <!-- ARC Card -->
+        <div style="background:#fff;border:1.5px solid #e0e8f0;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:36px;height:36px;background:#dcfce7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">👷</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#166534">ARC – Registrar</div>
+              <div style="font-size:10.5px;color:#94a3b8">Full Access</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:10px">Edit all sections · Add/delete rows · Save data</div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;color:#64748b;font-weight:600">PIN</span>
+            <code style="font-size:13px;font-weight:800;color:#166534;letter-spacing:1px">ARC@FLAME2025</code>
+          </div>
+        </div>
+
+        <!-- Dean Card -->
+        <div style="background:#fff;border:1.5px solid #e0e8f0;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:36px;height:36px;background:#fef3c7;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🎓</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#92400e">Dean</div>
+              <div style="font-size:10.5px;color:#94a3b8">Read-only · All sections</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:10px">View all sections · No edit · All governance bodies</div>
+          <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;color:#64748b;font-weight:600">PIN</span>
+            <code style="font-size:13px;font-weight:800;color:#92400e;letter-spacing:1px">DEAN@FLAME2026</code>
+          </div>
+        </div>
+
+        <!-- Board Member Card -->
+        <div style="background:#fff;border:1.5px solid #e0e8f0;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:36px;height:36px;background:#ede9fe;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🏛️</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#5b21b6">Board Member</div>
+              <div style="font-size:10.5px;color:#94a3b8">Read-only · MoM only</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:10px">MoM Review panel only · Search &amp; filter · Print</div>
+          <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:7px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:11px;color:#64748b;font-weight:600">PIN</span>
+            <code style="font-size:13px;font-weight:800;color:#5b21b6;letter-spacing:1px">BOARD@FLAME2026</code>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Info Note -->
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:13px 16px;font-size:12px;color:#64748b;line-height:1.7">
+        💡 <strong>How to use:</strong> Go to the Home page → click <strong>Admin Login</strong> → enter the sub-role PIN above → you will land directly on the MoM Review panel with the appropriate access level.
+      </div>
+
     </div>
   </div>
 
@@ -3866,7 +3926,7 @@ var _REG_ACC=['NAAC','AACSB','NBA','AMBA-BGA','NECHE','ACBSP','NIRF','QS','THE',
    MOM REVIEW PANEL
 ════════════════════════════════════════════════════════════ */
 function _renderMoMReview(sec){
-  var wrap=document.getElementById('sc-form');if(!wrap)return;
+  var wrap=document.getElementById('f-main');if(!wrap)return;
   var bodies=[
     {id:'r_gb',name:'Governing Board',color:'#0C3F6A'},
     {id:'r_bom',name:'Board of Management',color:'#1b5e20'},
@@ -5539,7 +5599,8 @@ function submitAdmLogin(){
     closeAdmLogin();
     S={dept:_reg,admin:false,year:'2024-25',month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{},
        role:_sr,_visibleSecs:_sr.access==='readonly'?['r_dash','r_momreview']:null};
-    sessionStorage.setItem('flame_session',JSON.stringify({type:'dept',deptId:'registrar',year:'2024-25'}));
+    /* Save role id so session restore can navigate to the right section */
+    sessionStorage.setItem('flame_session',JSON.stringify({type:'dept',deptId:'registrar',year:'2024-25',roleId:_sr.id}));
     showScreen('sc-form');
     _applyDraft(_reg,'2024-25','Annual').then(function(){renderForm();}).catch(function(){renderForm();});
     return;
@@ -6129,19 +6190,26 @@ async function renderAdmin(){
 }
 
 function renderAdminMoMView(){
-  /* Load Registrar MoM data and show in sc-form using the existing MoM Review panel */
+  /* Load Registrar MoM data and show the MoM Review section in sc-form */
   var _reg=DEPTS.find(function(d){return d.id==='registrar';});
   if(!_reg){alert('Registrar department not found.');return;}
   var _momSec=_reg.sections.find(function(s){return s.mode==='mom_review';});
-  if(!_momSec){alert('MoM Review section not found in Registrar data.');return;}
+  if(!_momSec){alert('MoM Review section not configured in Registrar data.');return;}
   var _secIdx=_reg.sections.indexOf(_momSec);
-  /* Set up S as admin viewing registrar MoM */
+  /* Set up S as admin viewing registrar MoM — only MoM visible in nav */
   S={dept:_reg,admin:true,year:'2024-25',month:'Apr',secIdx:_secIdx,rows:{},fvals:{},uploads:{},
-     role:{id:'admin',name:'Admin (MoM View)',access:'full'},_visibleSecs:null};
+     role:{id:'admin',name:'Admin (MoM View)',access:'full'},_visibleSecs:['r_momreview']};
+  /* Do NOT save to sessionStorage — admin session stays; reload returns to admin panel */
   showScreen('sc-form');
   _applyDraft(_reg,'2024-25','Annual')
-    .then(function(){renderForm();renderSec(_secIdx);})
-    .catch(function(){renderForm();renderSec(_secIdx);});
+    .then(function(){
+      renderForm();          /* builds header + nav (1 item) + renderSec(0) */
+      renderSec(_secIdx);   /* override: show MoM Review in f-main */
+    })
+    .catch(function(){
+      renderForm();
+      renderSec(_secIdx);
+    });
 }
 
 function renderATable(rows){
@@ -6382,7 +6450,14 @@ window.onclick=function(e){if(e.target===$('modal'))$('modal').hidden=true;};
     } else if(sess.type==='dept'){
       const dept=DEPTS.find(d=>d.id===sess.deptId);
       if(!dept){sessionStorage.removeItem('flame_session');return;}
-      S={dept:dept,admin:false,year:sess.year,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{},role:{id:'main',name:dept.name,access:'full'}};
+      /* Restore sub-role if saved in session */
+      var _rRole={id:'main',name:dept.name,access:'full'};
+      var _rVis=null;
+      if(sess.roleId&&dept.subRoles){
+        var _rsr=dept.subRoles.find(function(r){return r.id===sess.roleId;});
+        if(_rsr){_rRole=_rsr;_rVis=_rsr.access==='readonly'?['r_dash','r_momreview']:null;}
+      }
+      S={dept:dept,admin:false,year:sess.year,month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{},role:_rRole,_visibleSecs:_rVis};
       showScreen('sc-form');
       var _rp=dept.type==='monthly'?'Apr':'Annual';
       _applyDraft(dept,sess.year,_rp).then(function(){renderForm();}).catch(function(){renderForm();});
