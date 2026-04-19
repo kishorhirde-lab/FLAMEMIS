@@ -193,6 +193,8 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:14px
   background:rgba(253,181,21,.18);padding:1px 5px;border-radius:3px;
   margin-right:5px;white-space:nowrap}
 .s-foot{padding:14px 18px;border-top:1px solid rgba(255,255,255,.1);margin-top:auto}
+.btn-home{width:100%;padding:8px;background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,0.12);border-radius:8px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .2s;margin-bottom:5px;letter-spacing:.01em}
+.btn-home:hover{background:rgba(255,255,255,0.07);color:#e2e8f0;border-color:rgba(255,255,255,0.25)}
 .btn-out{width:100%;background:rgba(255,255,255,.07);color:#a0b0cc;
   border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:8px;
   font-size:12px;cursor:pointer;text-align:center;letter-spacing:.03em}
@@ -1516,6 +1518,7 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
     </div>
     <div class="s-foot">
       <div id="draft-saved-ind" style="font-size:10px;color:#16a34a;text-align:center;margin-bottom:6px;opacity:0;transition:opacity 0.4s;">✓ Draft saved</div>
+      <button type="button" class="btn-home" id="btn-back-home">🏠 Home</button>
       <button type="button" class="btn-out" id="btn-logout">⏏ Logout</button>
     </div>
   </aside>
@@ -1552,6 +1555,7 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
       <button class="adm-btn adm-btn-outline" onclick="switchAdmTab('comprep',document.querySelector('[data-tab=comprep]'))">📑 Compliance Report</button>
       <button class="adm-btn adm-btn-outline" onclick="switchAdmTab('analytics',document.querySelector('[data-tab=analytics]'))">📈 Analytics</button>
       <button class="adm-btn adm-btn-outline" id="btn-export-xl" onclick="exportToExcel()">📊 Export Excel</button>
+      <button class="adm-btn adm-btn-outline" onclick="switchAdmTab('momrev',document.querySelector('[data-tab=momrev]'))">📋 MoM Review</button>
       <button class="adm-btn adm-btn-orange" id="btn-adm-out">⏏ Logout</button>
     </div>
   </div>
@@ -1639,6 +1643,17 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
       <div class="adm-nav-divider"></div>
 
       <!-- Reports placeholder (now above) --><div class="adm-nav-section" style="display:none">
+      </div>
+
+      <div class="adm-nav-divider"></div>
+
+      <!-- Governance / MoM -->
+      <div class="adm-nav-section">
+        <div class="adm-nav-section-label">Governance</div>
+        <div class="adm-nav-item" data-tab="momrev" onclick="switchAdmTab('momrev',this)">
+          <span class="adm-nav-icon">📋</span>
+          <span class="adm-nav-label">MoM Review</span>
+        </div>
       </div>
 
       <div class="adm-nav-divider"></div>
@@ -2429,6 +2444,36 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
     </div>
   </div>
 </div>
+
+  <!-- MoM Review Tab -->
+  <div class="adm-tab-content" id="adm-tab-momrev">
+    <div class="adm-body" id="momrev-adm-body">
+      <div style="padding:32px 24px;text-align:center">
+        <div style="font-size:40px;margin-bottom:12px">📋</div>
+        <div style="font-size:18px;font-weight:700;color:#1a2942;margin-bottom:8px">MoM Review Panel</div>
+        <p style="color:#64748b;font-size:13px;max-width:480px;margin:0 auto 20px">
+          Review Minutes of Meeting from all Registrar governance bodies (GB, BoM, AC, BoS, BoE, IQAC).<br>
+          ARC, Dean, and Board Members can also log in directly using their sub-role PIN below.
+        </p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="adm-btn adm-btn-outline" style="font-size:13px;padding:10px 22px"
+            onclick="renderAdminMoMView()">📂 Load MoM Data (All Years)</button>
+        </div>
+        <div style="margin-top:28px;padding:16px;background:#f0f7ff;border-radius:10px;border:1px solid #dbeafe;max-width:480px;margin-left:auto;margin-right:auto;text-align:left">
+          <div style="font-size:12px;font-weight:700;color:#1e40af;margin-bottom:8px">🔑 Sub-Role Access (via Admin Login)</div>
+          <div style="font-size:12px;color:#374151;line-height:1.7">
+            ARC, Dean, and Board Members can click <strong>Admin Login</strong> on the home screen and enter their sub-role PIN to access the MoM Review directly.
+          </div>
+          <table style="margin-top:10px;width:100%;font-size:11.5px;border-collapse:collapse">
+            <tr style="background:#dbeafe"><th style="padding:5px 8px;text-align:left">Role</th><th style="padding:5px 8px;text-align:left">Access Level</th></tr>
+            <tr><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">ARC – Registrar</td><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">Full edit + all sections</td></tr>
+            <tr><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">Dean</td><td style="padding:4px 8px;border-bottom:1px solid #e0e8f0">Read-only + all sections</td></tr>
+            <tr><td style="padding:4px 8px">Board Member</td><td style="padding:4px 8px">Read-only + MoM Review only</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!-- Firebase Compat — loaded last so DOM is fully ready -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -5486,7 +5531,19 @@ function toggleAdmPin(){
 }
 function submitAdmLogin(){
   const p=$('adm-pin-input').value;
-  if(!p){$('adm-login-msg').textContent='Please enter the Admin PIN.';return;}
+  if(!p){$('adm-login-msg').textContent='Please enter your PIN.';return;}
+  /* Check sub-role PINs (ARC / Dean / Board Member) */
+  var _reg=DEPTS.find(function(d){return d.id==='registrar';});
+  var _sr=(_reg&&_reg.subRoles||[]).find(function(r){return r.pin===p.trim();});
+  if(_sr){
+    closeAdmLogin();
+    S={dept:_reg,admin:false,year:'2024-25',month:'Apr',secIdx:0,rows:{},fvals:{},uploads:{},
+       role:_sr,_visibleSecs:_sr.access==='readonly'?['r_dash','r_momreview']:null};
+    sessionStorage.setItem('flame_session',JSON.stringify({type:'dept',deptId:'registrar',year:'2024-25'}));
+    showScreen('sc-form');
+    _applyDraft(_reg,'2024-25','Annual').then(function(){renderForm();}).catch(function(){renderForm();});
+    return;
+  }
   if(p.trim()===ADMIN_PIN){
     closeAdmLogin();
     S.admin=true;
@@ -5527,6 +5584,23 @@ function renderForm(){
   buildNav();
   renderSec(0);
   checkDupe();
+  /* Back / Home button — returns to admin panel if came from there, else login */
+  var _bhBtn=$('btn-back-home');
+  if(_bhBtn){
+    if(S.admin){
+      _bhBtn.textContent='← Admin Panel';
+      _bhBtn.onclick=function(){showScreen('sc-admin');};
+    } else {
+      _bhBtn.textContent='🏠 Home';
+      _bhBtn.onclick=function(){
+        sessionStorage.removeItem('flame_session');
+        showScreen('sc-login');
+        $('l-pin').value='';
+        $('l-pin').type='password';
+        var lbl=$('pin-lbl');if(lbl)lbl.textContent='Show';
+      };
+    }
+  }
   $('btn-logout').onclick=function(){
     sessionStorage.removeItem('flame_session');
     showScreen('sc-login');
@@ -6052,6 +6126,22 @@ async function renderAdmin(){
       };
     });
   }catch(e){$('adm-body').innerHTML='<p class="no-d">Error: '+e.message+'</p>';}
+}
+
+function renderAdminMoMView(){
+  /* Load Registrar MoM data and show in sc-form using the existing MoM Review panel */
+  var _reg=DEPTS.find(function(d){return d.id==='registrar';});
+  if(!_reg){alert('Registrar department not found.');return;}
+  var _momSec=_reg.sections.find(function(s){return s.mode==='mom_review';});
+  if(!_momSec){alert('MoM Review section not found in Registrar data.');return;}
+  var _secIdx=_reg.sections.indexOf(_momSec);
+  /* Set up S as admin viewing registrar MoM */
+  S={dept:_reg,admin:true,year:'2024-25',month:'Apr',secIdx:_secIdx,rows:{},fvals:{},uploads:{},
+     role:{id:'admin',name:'Admin (MoM View)',access:'full'},_visibleSecs:null};
+  showScreen('sc-form');
+  _applyDraft(_reg,'2024-25','Annual')
+    .then(function(){renderForm();renderSec(_secIdx);})
+    .catch(function(){renderForm();renderSec(_secIdx);});
 }
 
 function renderATable(rows){
@@ -7282,6 +7372,7 @@ const ADM_TAB_META = {
   comprep:   {title:'Compliance Report',    desc:'Cross-framework compliance summary',              section:'Reports & Analytics'},
   pindir:    {title:'PIN Directory',        desc:'View and manage department access PINs',          section:'System'},
   pinreset:  {title:'Reset PINs',           desc:'Reset department or admin PIN codes',             section:'System'},
+  momrev:    {title:'MoM Review',           desc:'Review Minutes of Meeting from all governance bodies',   section:'Governance'},
   emailcfg:  {title:'Email Configuration',  desc:'Set up EmailJS for automatic certificate emails', section:'System'},
 };
 
@@ -7303,6 +7394,7 @@ function switchAdmTab(id, el){
   if(secEl)   secEl.textContent   = meta.section;
   // \u2500\u2500 builders
   if(id==='dashboard'){try{buildDashboard();}catch(e){console.warn(e);}}
+  if(id==='momrev'){try{renderAdminMoMView();}catch(e){console.warn('MoM view error:',e);}}
   if(id==='dept'){
     const rows=getAdminRows();
     if(rows.length){
