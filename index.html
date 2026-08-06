@@ -1396,6 +1396,10 @@ input[type=date].ci::-webkit-calendar-picker-indicator{opacity:.6;cursor:pointer
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!-- EmailJS for automatic certificate email delivery -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- JSZip + html2canvas + jsPDF for bulk certificate ZIP export (one PDF file per participant) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -3658,16 +3662,10 @@ function _openFILCertWindow(row,certId,bulkMode){
     +"</div>";
 }
 
-function _buildCertPageHtml(pages,isMulti){
-  return "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">"
-    +"<title>"+(isMulti?"Bulk Certificates — FDP":"Certificate — FDP")+"</title>"
-    +"<style>"
-    +"*{margin:0;padding:0;box-sizing:border-box;}"
-    +"body{background:#d4d8e0;display:flex;flex-direction:column;align-items:center;padding:28px 20px;font-family:\"Arial\",Helvetica,sans-serif;}"
-    +".toolbar{display:flex;gap:12px;margin-bottom:26px;flex-wrap:wrap;justify-content:center;}"
-    +".btn{padding:10px 26px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:700;letter-spacing:.02em;}"
-    +".btn-print{background:#1a3570;color:#fff;}"
-    +".btn-close{background:#64748b;color:#fff;}"
+/* Shared certificate visual CSS — used by the print/preview popup (_buildCertPageHtml)
+   AND by the offscreen renderer used for ZIP export, so both stay pixel-identical. */
+function _certVisualCss(){
+  return "*{margin:0;padding:0;box-sizing:border-box;}"
     +".cert{width:1050px;min-height:742px;background:#fff;position:relative;overflow:hidden;"
     +"box-shadow:0 8px 40px rgba(0,0,0,.22);margin-bottom:44px;page-break-after:always;"
     +"border:12px solid transparent;border-image:repeating-linear-gradient(135deg,#1a3570 0 9px,#c8a030 9px 18px) 12;}"
@@ -3692,11 +3690,24 @@ function _buildCertPageHtml(pages,isMulti){
     +".cert2-sig-name{font-size:14px;font-weight:700;color:#1a3570;}"
     +".cert2-sig-role{font-size:13px;color:#64748b;margin-top:2px;}"
     +".cert2-ref{position:absolute;bottom:30px;right:44px;font-size:11.5px;color:#64748b;"
-    +"z-index:1;font-family:monospace;background:#fff;padding:0 4px;}"
+    +"z-index:1;font-family:monospace;background:#fff;padding:0 4px;}";
+}
+
+function _buildCertPageHtml(pages,isMulti){
+  return "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">"
+    +"<title>"+(isMulti?"Bulk Certificates — FDP":"Certificate — FDP")+"</title>"
+    +"<style>"
+    +_certVisualCss()
+    +"body{background:#d4d8e0;display:flex;flex-direction:column;align-items:center;padding:28px 20px;font-family:\"Arial\",Helvetica,sans-serif;}"
+    +".toolbar{display:flex;gap:12px;margin-bottom:26px;flex-wrap:wrap;justify-content:center;}"
+    +".btn{padding:10px 26px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-weight:700;letter-spacing:.02em;}"
+    +".btn-print{background:#1a3570;color:#fff;}"
+    +".btn-close{background:#64748b;color:#fff;}"
     +"@media print{"
+    +"@page{size:auto;margin:0;}"
     +"body{background:#fff;padding:0;}"
     +".toolbar{display:none;}"
-    +".cert{box-shadow:none;width:100%;margin-bottom:0;}"
+    +".cert{box-shadow:none;width:100%;min-height:100vh;margin-bottom:0;page-break-after:auto;}"
     +"}"
     +"</style></head><body>"
     +"<div class=\"toolbar\">"
@@ -3705,6 +3716,108 @@ function _buildCertPageHtml(pages,isMulti){
     +"</div>"
     +pages.join("\n")
     +"</body></html>";
+}
+
+/* ═══ Bulk certificate ZIP export — one PDF file per participant ═══ */
+function _ensureCertStylesInjected(){
+  if(document.getElementById("cert2-shared-style"))return;
+  var style=document.createElement("style");
+  style.id="cert2-shared-style";
+  style.textContent=_certVisualCss();
+  document.head.appendChild(style);
+}
+
+function _waitForCertImages(el){
+  var imgs=Array.prototype.slice.call(el.querySelectorAll("img"));
+  return Promise.all(imgs.map(function(img){
+    if(img.complete&&img.naturalWidth>0)return Promise.resolve();
+    return new Promise(function(res){img.onload=res;img.onerror=res;});
+  }));
+}
+
+function _zipProgressPanel(total){
+  var old=document.getElementById("fil-zip-progress-panel");
+  if(old)old.remove();
+  var html='<div id="fil-zip-progress-panel" style="margin:16px 0;border-radius:10px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:system-ui,sans-serif;">'
+    +'<div style="background:#1a3a6b;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;">'
+    +'<span style="font-size:22px;">🗜️</span>'
+    +'<div style="flex:1;"><div style="font-weight:700;font-size:15px;">Building Certificate ZIP…</div>'
+    +'<div id="fil-zip-progress-sub" style="font-size:12px;opacity:.85;">Preparing 0 / '+total+'</div></div>'
+    +'</div>'
+    +'<div style="background:#eef2f7;height:8px;"><div id="fil-zip-progress-bar" style="background:#1a3570;height:100%;width:0%;transition:width .2s;"></div></div>'
+    +'</div>';
+  var mount=document.getElementById("f-msg")||document.body;
+  mount.insertAdjacentHTML("afterend",html);
+  return document.getElementById("fil-zip-progress-panel");
+}
+function _zipProgressUpdate(panel,done,total,label){
+  if(!panel)return;
+  var sub=document.getElementById("fil-zip-progress-sub");
+  var bar=document.getElementById("fil-zip-progress-bar");
+  if(sub)sub.textContent=(label?label+" — ":"")+"Rendering "+done+" / "+total;
+  if(bar)bar.style.width=Math.round(done/total*100)+"%";
+}
+function _zipProgressDone(panel,ok){
+  if(!panel)return;
+  var sub=document.getElementById("fil-zip-progress-sub");
+  if(sub)sub.textContent=ok?"✅ ZIP downloaded.":"❌ Failed — see error message.";
+  setTimeout(function(){panel.remove();},ok?2500:6000);
+}
+
+/* Renders each row's certificate offscreen (full-quality, borderless — the
+   PDF page is sized to exactly match the certificate, so there's no extra
+   white margin), converts it to its own PDF, and packages all of them into
+   a single downloadable ZIP. */
+async function _downloadCertsAsZip(rows){
+  if(typeof JSZip==="undefined"||typeof html2canvas==="undefined"||!window.jspdf){
+    alert("Required libraries (JSZip / html2canvas / jsPDF) failed to load. Check your internet connection and try again.");
+    return;
+  }
+  _ensureCertStylesInjected();
+  var host=document.createElement("div");
+  host.style.cssText="position:fixed;left:-99999px;top:0;width:1074px;";
+  document.body.appendChild(host);
+  var panel=_zipProgressPanel(rows.length);
+  var zip=new JSZip();
+  var usedNames={};
+  try{
+    var jsPDFCtor=window.jspdf.jsPDF;
+    var scale=2;
+    for(var i=0;i<rows.length;i++){
+      var row=rows[i];
+      var certId=row[san("Certificate ID")];
+      var name_=(row[san("Name of Participant")]||"Participant").trim();
+      _zipProgressUpdate(panel,i,rows.length,name_);
+      host.innerHTML=_openFILCertWindow(row,certId,true);
+      var certEl=host.querySelector(".cert");
+      await _waitForCertImages(certEl);
+      var canvas=await html2canvas(certEl,{scale:scale,backgroundColor:"#ffffff"});
+      var imgData=canvas.toDataURL("image/jpeg",0.95);
+      var ptW=(canvas.width/scale)*0.75, ptH=(canvas.height/scale)*0.75; /* CSS px (96dpi) -> PDF pt (72dpi) */
+      var pdf=new jsPDFCtor({orientation:"landscape",unit:"pt",format:[ptW,ptH]});
+      pdf.addImage(imgData,"JPEG",0,0,ptW,ptH);
+      var fname=(certId+"_"+name_).replace(/[^a-zA-Z0-9_-]+/g,"_").replace(/_+/g,"_")+".pdf";
+      var base=fname,n=1;
+      while(usedNames[fname]){fname=base.replace(/\.pdf$/,"")+"_"+(++n)+".pdf";}
+      usedNames[fname]=true;
+      zip.file(fname,pdf.output("blob"));
+      _zipProgressUpdate(panel,i+1,rows.length,name_);
+    }
+    var blob=await zip.generateAsync({type:"blob"});
+    var zipName="FIL_Certificates_"+(S.year||"")+"_"+rows.length+".zip";
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=zipName;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},1000);
+    _zipProgressDone(panel,true);
+  }catch(err){
+    _zipProgressDone(panel,false);
+    alert("Error generating certificate ZIP: "+err.message);
+  }finally{
+    document.body.removeChild(host);
+  }
 }
 
 function generateFILCert(secId,ri){
@@ -3763,7 +3876,7 @@ function generateFILCert(secId,ri){
   }
 }
 
-function bulkGenerateFILCerts(secId){
+async function bulkGenerateFILCerts(secId){
   saveCurrent();
   var rows=S.rows[secId]||[];
   var eligible=rows.filter(function(r){
@@ -3771,7 +3884,7 @@ function bulkGenerateFILCerts(secId){
   });
   if(eligible.length===0){alert("No eligible participants found. Name of Participant and Amount Paid are required.");return;}
   var withEmail=eligible.filter(function(r){return (r[san("Email ID")]||"").trim();});
-  var confirmMsg="Generate certificates for all "+eligible.length+" eligible participant(s)?\n\nCertificate IDs will be assigned and status set to Generated.";
+  var confirmMsg="Generate certificates for all "+eligible.length+" eligible participant(s)?\n\nEach certificate will be saved as its own PDF file inside one downloaded ZIP.\n\nCertificate IDs will be assigned and status set to Generated.";
   if(withEmail.length)confirmMsg+="\n\n📧 Notification emails will be sent to "+withEmail.length+" participant(s) with registered email.";
   if(!confirm(confirmMsg))return;
   rows.forEach(function(row,ri){
@@ -3786,16 +3899,14 @@ function bulkGenerateFILCerts(secId){
     }
   });
   renderSec(S.secIdx);
-  var pages=[];
+  _commitRowsImmediate(secId);
+  var targets=[];
   rows.forEach(function(row){
     if(!(row[san("Name of Participant")]||"").trim())return;
     if(!row[san("Certificate ID")])return;
-    pages.push(_openFILCertWindow(row,row[san("Certificate ID")],true));
+    targets.push(row);
   });
-  var html=_buildCertPageHtml(pages,true);
-  var w=window.open("","_blank","width=1100,height=820,scrollbars=yes");
-  if(w){w.document.write(html);w.document.close();}
-  else{alert("Pop-up blocked. Please allow pop-ups for this page and try again.");}
+  await _downloadCertsAsZip(targets);
 
   /* Send individual notification emails with staggered delay */
   if(withEmail.length>0){
