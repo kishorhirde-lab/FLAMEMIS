@@ -5548,7 +5548,7 @@ function importTableData(secId){
     var reader=new FileReader();
     reader.onload=function(evt){
       try{
-        var wb=XLSX.read(new Uint8Array(evt.target.result),{type:"array"});
+        var wb=XLSX.read(new Uint8Array(evt.target.result),{type:"array",cellDates:true});
         var ws=wb.Sheets[wb.SheetNames[0]];
         var data=XLSX.utils.sheet_to_json(ws,{defval:""});
         if(!data||data.length===0){showMsg("f-msg","No data rows found in the file.","error");return;}
@@ -5561,29 +5561,75 @@ function importTableData(secId){
 }
 
 function _processImportedData(secId,sec,jsonData){
-  function mapKey(h){
-    var ih=h.toLowerCase().trim();
-    for(var i=0;i<sec.cols.length;i++){
-      var col=sec.cols[i]; var ck=col.toLowerCase().trim();
-      if(ck===ih)return san(col);
-      if(ck.replace(/[^a-z0-9]/g,"")===ih.replace(/[^a-z0-9]/g,""))return san(col);
-      if(ck.includes(ih)||ih.includes(ck))return san(col);
-      var fw=ck.split(" ")[0];
-      if(fw.length>3&&ih.startsWith(fw))return san(col);
+  /* Score how well an imported header matches a target column, then resolve
+     all headers together (best matches claimed first) so near-duplicate
+     names sharing a leading word (e.g. "Program Start Date" / "Program End
+     Date", "Name of Participant" / "Name of Company") can't steal each
+     other's column — the bug that made date columns land on the wrong field. */
+  function _matchScore(col,h){
+    var ck=col.toLowerCase().trim(), ih=h.toLowerCase().trim();
+    if(!ck||!ih)return 0;
+    if(ck===ih)return 100;
+    if(ck.replace(/[^a-z0-9]/g,"")===ih.replace(/[^a-z0-9]/g,""))return 90;
+    if(ck.includes(ih)||ih.includes(ck))return 70-Math.abs(ck.length-ih.length);
+    var fw=ck.split(" ")[0];
+    if(fw.length>3&&ih.startsWith(fw))return 20;
+    return 0;
+  }
+  function _buildHeaderMap(headers){
+    var candidates=[];
+    headers.forEach(function(h){
+      sec.cols.forEach(function(col){
+        var sc=_matchScore(col,h);
+        if(sc>0)candidates.push({h:h,col:col,score:sc});
+      });
+    });
+    candidates.sort(function(a,b){return b.score-a.score;});
+    var map={},claimedCols={};
+    candidates.forEach(function(c){
+      if(map[c.h]||claimedCols[c.col])return;
+      map[c.h]={key:san(c.col),isDate:_detectColType(c.col)==="date"};
+      claimedCols[c.col]=true;
+    });
+    return map;
+  }
+  /* Excel date cells arrive as JS Date objects (cellDates:true) or, for some
+     CSV/edge cases, as raw serial numbers — normalise both to DD/MM/YYYY,
+     the same format used by manual entry (_fromDateInput). */
+  function _fmtImportDate(v){
+    if(v instanceof Date&&!isNaN(v)){
+      var dd=String(v.getDate()).padStart(2,"0");
+      var mm=String(v.getMonth()+1).padStart(2,"0");
+      return dd+"/"+mm+"/"+v.getFullYear();
+    }
+    if(typeof v==="number"&&v>20000&&v<80000){
+      var epoch=Date.UTC(1899,11,30);
+      var d=new Date(epoch+v*86400000);
+      var dd2=String(d.getUTCDate()).padStart(2,"0");
+      var mm2=String(d.getUTCMonth()+1).padStart(2,"0");
+      return dd2+"/"+mm2+"/"+d.getUTCFullYear();
     }
     return null;
   }
   var importedHeaders=Object.keys(jsonData[0]||{});
-  var headerMap={};
-  importedHeaders.forEach(function(h){var k=mapKey(h);if(k)headerMap[h]=k;});
+  var headerMap=_buildHeaderMap(importedHeaders);
   var newRows=jsonData.map(function(r){
     var row={};
     sec.cols.forEach(function(c){row[san(c)]="";});
     if(sec.certSection)row[san("Certificate Status")]="Pending";
-    Object.keys(r).forEach(function(h){var k=headerMap[h];if(k!==undefined)row[k]=String(r[h]||"");});
+    Object.keys(r).forEach(function(h){
+      var m=headerMap[h];if(!m)return;
+      var raw=r[h];
+      if(m.isDate){
+        var fmt=_fmtImportDate(raw);
+        row[m.key]=fmt!==null?fmt:String(raw||"");
+      }else{
+        row[m.key]=String(raw||"");
+      }
+    });
     return row;
   }).filter(function(r){return Object.values(r).some(function(v){return v!=="";});});
-  var matchedCols=Object.values(headerMap).length;
+  var matchedCols=Object.keys(headerMap).length;
   var unmatchedHdrs=importedHeaders.filter(function(h){return !headerMap[h];});
   if(newRows.length===0){showMsg("f-msg","No matching columns found. File headers: ["+importedHeaders.join(", ")+"]. Expected: ["+sec.cols.join(", ")+"]","error");return;}
   /* Build user-visible header mismatch report */
@@ -6157,6 +6203,7 @@ function renderSec(idx){
     if(_canEdit){
     html+='<button type="button" class="btn-add-row" onclick="addRow(\''+sec.id+'\')">+ Add Row</button>';
     html+='<button type="button" class="btn-import" onclick="importTableData(\''+sec.id+'\')" title="Import data from Excel / CSV">📥 Import Excel/CSV</button>';
+    html+='<button type="button" class="btn-bulk-delete" onclick="bulkDeleteRows(\''+sec.id+'\')" title="Permanently delete all rows in this table" style="background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5;">🗑️ Bulk Delete</button>';
     }
     if(isCert&&_canEdit){
       html+='<button type="button" class="btn-bulk-cert" onclick="bulkGenerateFILCerts(\''+sec.id+'\')" title="Generate certificates for all eligible participants">🎓 Bulk Generate Certs</button>';
@@ -6332,7 +6379,35 @@ function delRow(secId,ri){
   if(!S.rows[secId])return;
   S.rows[secId].splice(ri,1);
   renderSec(S.secIdx);
+  _commitRowsImmediate(secId);
+}
+
+/* Delete ALL rows in a table section — persists immediately so rows cannot
+   reappear from a stale draft or a previously-submitted record. */
+function bulkDeleteRows(secId){
+  saveCurrent();
+  var rows=S.rows[secId]||[];
+  if(!rows.length){alert("This table has no rows to delete.");return;}
+  if(!confirm("Permanently delete all "+rows.length+" row(s) in this table?\n\nThis cannot be undone — the rows will be removed immediately and will not reappear after reload."))return;
+  S.rows[secId]=[];
+  renderSec(S.secIdx);
+  _commitRowsImmediate(secId);
+  showMsg("f-msg","🗑️ All "+rows.length+" row(s) deleted permanently.","ok");
+}
+
+/* Immediately (not debounced) persist S.rows[secId] to localStorage, the
+   Firebase draft, AND — if a submitted record already exists for this
+   dept/year/period — directly patch that record's rows too, so deletions
+   survive even if the draft is later lost, expired, or overwritten. */
+function _commitRowsImmediate(secId){
   _saveDraftLocal();
+  clearTimeout(_draftSaveTimer);
+  _saveDraftFB();
+  var db=getDB();
+  if(db&&S.dept){
+    var period=S.dept.type==='monthly'?S.month:'Annual';
+    try{db.ref(dbPath(S.dept.id,S.year,period)+'/rows/'+secId).set(S.rows[secId]||[]);}catch(e){}
+  }
 }
 
 function saveCurrent(){
