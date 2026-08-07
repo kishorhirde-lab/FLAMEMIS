@@ -3638,10 +3638,10 @@ function _openFILCertWindow(row,certId,bulkMode){
     +"<strong>"+FDP_CENTRE+"</strong>, held from <strong>"+FDP_FROM+"</strong> to <strong>"+FDP_TO+"</strong>.";
 
   /* Registration No. display format: "<year> <3-digit seq>", e.g. "2025 001" */
-  var regMatch = /FIL-(\d{4})-(\d+)/.exec(certId||"");
-  var regNo = regMatch ? (regMatch[1]+" "+regMatch[2].slice(-3).padStart(3,"0")) : certId;
+  var regMatch = /FDP-(\d{4})-(\d+)/.exec(certId||"");
+  var regNo = regMatch ? (regMatch[1]+" "+regMatch[2].padStart(3,"0")) : certId;
 
-  return "<div class=\"cert cert2\" id=\"cert-"+certId+"\">"
+  return "<div class=\"cert cert2\" id=\"cert-"+certId.replace(/\s+/g,"_")+"\">"
     +"<div class=\"cert2-corner cert2-corner-tl\"></div>"
     +"<div class=\"cert2-corner cert2-corner-tr\"></div>"
     +"<div class=\"cert2-corner cert2-corner-bl\"></div>"
@@ -3796,7 +3796,7 @@ async function _downloadCertsAsZip(rows){
       var ptW=(canvas.width/scale)*0.75, ptH=(canvas.height/scale)*0.75; /* CSS px (96dpi) -> PDF pt (72dpi) */
       var pdf=new jsPDFCtor({orientation:"landscape",unit:"pt",format:[ptW,ptH]});
       pdf.addImage(imgData,"JPEG",0,0,ptW,ptH);
-      var fname=(certId+"_"+name_).replace(/[^a-zA-Z0-9_-]+/g,"_").replace(/_+/g,"_")+".pdf";
+      var fname=certId.replace(/[\\/:*?"<>|]+/g,"").replace(/\s+/g," ").trim()+".pdf";
       var base=fname,n=1;
       while(usedNames[fname]){fname=base.replace(/\.pdf$/,"")+"_"+(++n)+".pdf";}
       usedNames[fname]=true;
@@ -3833,9 +3833,8 @@ function generateFILCert(secId,ri){
   var isNew=!certId;
   if(!certId){
     var yr=(S.year||String(new Date().getFullYear())).replace("-","").substring(0,4);
-    var seq=String(ri+1).padStart(4,"0");
-    var rand=Math.random().toString(36).substr(2,4).toUpperCase();
-    certId="FIL-"+yr+"-"+seq+"-"+rand;
+    var seq=String(ri+1).padStart(3,"0");
+    certId="FDP-"+yr+"-"+seq+"-"+name_;
     S.rows[secId][ri][san("Certificate ID")]=certId;
     S.rows[secId][ri][san("Certificate Status")]="Generated";
     renderSec(S.secIdx);
@@ -3888,13 +3887,13 @@ async function bulkGenerateFILCerts(secId){
   if(withEmail.length)confirmMsg+="\n\n📧 Notification emails will be sent to "+withEmail.length+" participant(s) with registered email.";
   if(!confirm(confirmMsg))return;
   rows.forEach(function(row,ri){
-    if(!(row[san("Name of Participant")]||"").trim())return;
+    var pname=(row[san("Name of Participant")]||"").trim();
+    if(!pname)return;
     if(!(row[san("Amount Paid")]||"").trim())return;
     if(!row[san("Certificate ID")]){
       var yr=(S.year||String(new Date().getFullYear())).replace("-","").substring(0,4);
-      var seq=String(ri+1).padStart(4,"0");
-      var rand=Math.random().toString(36).substr(2,4).toUpperCase();
-      row[san("Certificate ID")]="FIL-"+yr+"-"+seq+"-"+rand;
+      var seq=String(ri+1).padStart(3,"0");
+      row[san("Certificate ID")]="FDP-"+yr+"-"+seq+"-"+pname;
       row[san("Certificate Status")]="Generated";
     }
   });
