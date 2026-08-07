@@ -5708,9 +5708,15 @@ function _processImportedData(secId,sec,jsonData){
      the same format used by manual entry (_fromDateInput). */
   function _fmtImportDate(v){
     if(v instanceof Date&&!isNaN(v)){
-      var dd=String(v.getDate()).padStart(2,"0");
-      var mm=String(v.getMonth()+1).padStart(2,"0");
-      return dd+"/"+mm+"/"+v.getFullYear();
+      /* SheetJS's serial->Date conversion for date-only cells can land a
+         few seconds BEFORE local midnight due to floating-point rounding
+         (e.g. 23:59:50 the previous day instead of 00:00:00) — nudge the
+         time forward before reading the calendar fields so that drift
+         can't roll the date back a day. */
+      var d=new Date(v.getTime()+3600000); /* +1h — safely inside the intended day, still far from the next boundary */
+      var dd=String(d.getDate()).padStart(2,"0");
+      var mm=String(d.getMonth()+1).padStart(2,"0");
+      return dd+"/"+mm+"/"+d.getFullYear();
     }
     if(typeof v==="number"&&v>20000&&v<80000){
       var epoch=Date.UTC(1899,11,30);
