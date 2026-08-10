@@ -3627,9 +3627,12 @@ function _openFILCertWindow(row,certId,bulkMode){
   var FDP_CONVENOR = (row[san("Convenor")]||"").trim()                || "Dr. Kaushik Gopalan";
   var FDP_DEAN     = (row[san("Dean")]||"").trim()                    || "Dr. Prasad Pathak";
 
-  /* Simple text-only wordmark: "CIAI" in an attractive serif face — no icon graphic */
-  var logoHtml = "<div class=\"cert2-word\"><span class=\"cert2-word-text\">CIAI</span><span class=\"cert2-word-rule\"></span>"
-    +"<span class=\"cert2-word-full\">"+esc(FDP_CENTRE)+"</span></div>";
+  /* Three-line stacked text wordmark — no icon graphic */
+  var logoHtml = "<div class=\"cert2-word\">"
+    +"<span class=\"cert2-word-top\">CENTER FOR</span>"
+    +"<span class=\"cert2-word-mid\">INTERDISCIPLINARY</span>"
+    +"<span class=\"cert2-word-bot\">ARTIFICIAL INTELLIGENCE</span>"
+    +"</div>";
 
   var descHtml = "This is to certify that <strong>"+esc(name_)+"</strong> has successfully participated in the "
     +"Faculty Development Programme (FDP) titled &ldquo;<strong>"+FDP_TITLE+"</strong>&rdquo;, organised by the "
@@ -3673,13 +3676,11 @@ function _certVisualCss(){
     +".cert2-corner-tr{top:11px;right:11px;}"
     +".cert2-corner-bl{bottom:11px;left:11px;}"
     +".cert2-corner-br{bottom:11px;right:11px;}"
-    +".cert2-hdr{display:flex;align-items:center;justify-content:center;padding:52px 60px 0;position:relative;z-index:1;}"
-    +".cert2-word{text-align:center;}"
-    +".cert2-word-text{font-family:Georgia,\"Times New Roman\",serif;font-size:50px;font-weight:700;"
-    +"letter-spacing:.32em;color:#1a3570;padding-left:.32em;}"
-    +".cert2-word-rule{display:block;width:90px;height:3px;background:#c8a030;margin:12px auto 10px;border-radius:2px;}"
-    +".cert2-word-full{display:block;font-family:\"Segoe UI\",Arial,sans-serif;font-size:13px;font-weight:600;"
-    +"letter-spacing:.14em;color:#475569;text-transform:uppercase;}"
+    +".cert2-hdr{display:flex;align-items:center;justify-content:center;padding:42px 60px 0;position:relative;z-index:1;}"
+    +".cert2-word{text-align:center;font-family:\"Century Gothic\",\"Trebuchet MS\",\"Segoe UI\",Arial,sans-serif;}"
+    +".cert2-word-top{display:block;font-size:15px;font-weight:600;letter-spacing:.4em;color:#94a3b8;padding-left:.4em;}"
+    +".cert2-word-mid{display:block;font-size:32px;font-weight:800;letter-spacing:.01em;color:#1a3570;line-height:1.25;margin-top:2px;}"
+    +".cert2-word-bot{display:block;font-size:32px;font-weight:800;letter-spacing:.01em;color:#2f6fb8;line-height:1.25;}"
     +".cert2-presented{text-align:center;font-size:17px;color:#475569;margin-top:30px;position:relative;z-index:1;}"
     +".cert2-pname{text-align:center;font-size:52px;font-weight:400;color:#1a3570;"
     +"font-family:\"Brush Script MT\",\"Segoe Script\",cursive;margin:6px 0 10px;line-height:1.2;position:relative;z-index:1;}"
